@@ -1,0 +1,71 @@
+# Greek translation of Xbook project.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Simos Xenitellis <simos.lists@googlemail.com>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Xbook project\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-10-31 09:25+0100\n"
+"PO-Revision-Date: 2007-07-25 18:53+0100\n"
+"Last-Translator: Simos Xenitellis <simos.lists@googlemail.com>\n"
+"Language-Team: Greek <olpc@grnet.gr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: activity/activity.info:2 readactivity.py:77
+msgid "Read"
+msgstr ""
+
+#: readactivity.py:73
+msgid "Edit"
+msgstr ""
+
+#: readactivity.py:81
+msgid "View"
+msgstr "Προβολή"
+
+#: readtoolbar.py:60
+msgid "Previous"
+msgstr "Προηγούμενο"
+
+#: readtoolbar.py:67
+msgid "Next"
+msgstr "Επόμενο"
+
+#: readtoolbar.py:105
+msgid "Back"
+msgstr "Πίσω"
+
+#: readtoolbar.py:112
+msgid "Forward"
+msgstr "Μπροστά"
+
+#: readtoolbar.py:207
+msgid "Zoom out"
+msgstr ""
+
+#: readtoolbar.py:213
+msgid "Zoom in"
+msgstr ""
+
+#: readtoolbar.py:219
+msgid "Zoom to width"
+msgstr ""
+
+#: readtoolbar.py:225
+msgid "Zoom to fit"
+msgstr ""
+
+#: readtoolbar.py:230
+msgid "Actual size"
+msgstr ""
+
+#: readtoolbar.py:248
+msgid "%"
+msgstr ""
+
+#~ msgid "Read Activity"
+#~ msgstr "Ανάγνωση δραστηριότητας"

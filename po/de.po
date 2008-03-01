@@ -1,0 +1,71 @@
+# This file is distributed under the same license as the PACKAGE package.
+# Fabian Affolter <fab@fedoraproject.org>, 2007.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: xbook\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-10-31 09:25+0100\n"
+"PO-Revision-Date: 2007-07-30 10:11+0100\n"
+"Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
+"Language-Team: cvs@fedoraproject.org <fedora-trans-de@redhat.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+
+#: activity/activity.info:2 readactivity.py:77
+msgid "Read"
+msgstr ""
+
+#: readactivity.py:73
+msgid "Edit"
+msgstr ""
+
+#: readactivity.py:81
+msgid "View"
+msgstr "Ansehen"
+
+#: readtoolbar.py:60
+msgid "Previous"
+msgstr "Vorheriges"
+
+#: readtoolbar.py:67
+msgid "Next"
+msgstr "Nächstes"
+
+#: readtoolbar.py:105
+msgid "Back"
+msgstr "Zurück"
+
+#: readtoolbar.py:112
+msgid "Forward"
+msgstr "Weiter"
+
+#: readtoolbar.py:207
+msgid "Zoom out"
+msgstr ""
+
+#: readtoolbar.py:213
+msgid "Zoom in"
+msgstr ""
+
+#: readtoolbar.py:219
+msgid "Zoom to width"
+msgstr ""
+
+#: readtoolbar.py:225
+msgid "Zoom to fit"
+msgstr ""
+
+#: readtoolbar.py:230
+msgid "Actual size"
+msgstr ""
+
+#: readtoolbar.py:248
+msgid "%"
+msgstr ""
+
+#~ msgid "Read Activity"
+#~ msgstr "Lese-Aktivitäten"

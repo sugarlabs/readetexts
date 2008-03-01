@@ -1,0 +1,74 @@
+# translation of xbook.master.po to Arabic
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Khaled Hosny <khaledhosny@eglug.org>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: xbook.master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-10-31 09:25+0100\n"
+"PO-Revision-Date: 2007-06-28 21:41+0300\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"Language-Team: Arabic <doc@arabeyes.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=10 ? 2 : "
+"3\n"
+
+#: activity/activity.info:2 readactivity.py:77
+msgid "Read"
+msgstr ""
+
+#: readactivity.py:73
+msgid "Edit"
+msgstr ""
+
+#: readactivity.py:81
+msgid "View"
+msgstr "اعرض"
+
+#: readtoolbar.py:60
+msgid "Previous"
+msgstr "السابق"
+
+#: readtoolbar.py:67
+msgid "Next"
+msgstr "التالي"
+
+#: readtoolbar.py:105
+msgid "Back"
+msgstr "للخلف"
+
+#: readtoolbar.py:112
+msgid "Forward"
+msgstr "للأمام"
+
+#: readtoolbar.py:207
+msgid "Zoom out"
+msgstr ""
+
+#: readtoolbar.py:213
+msgid "Zoom in"
+msgstr ""
+
+#: readtoolbar.py:219
+msgid "Zoom to width"
+msgstr ""
+
+#: readtoolbar.py:225
+msgid "Zoom to fit"
+msgstr ""
+
+#: readtoolbar.py:230
+msgid "Actual size"
+msgstr ""
+
+#: readtoolbar.py:248
+msgid "%"
+msgstr ""
+
+#~ msgid "Read Activity"
+#~ msgstr "نشاط القراءة"

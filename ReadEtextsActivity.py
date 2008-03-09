@@ -17,23 +17,52 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import sys
 import os
+import logging
+import tempfile
+import time
 import zipfile
 import pygtk
 import gtk
 import string
 from sugar.activity import activity
+from sugar import network
+from sugar.datastore import datastore
 from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar
 from gettext import gettext as _
 import pango
+import dbus
+import gobject
+import hippo
+import telepathy
 
-_PAGE_SIZE = 40
+_HARDWARE_MANAGER_INTERFACE = 'org.laptop.HardwareManager'
+_HARDWARE_MANAGER_SERVICE = 'org.laptop.HardwareManager'
+_HARDWARE_MANAGER_OBJECT_PATH = '/org/laptop/HardwareManager'
+_PAGE_SIZE = 38
 _TOOLBAR_READ = 2
+
+_logger = logging.getLogger('read-activity')
+
+class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
+    def translate_path(self, path):
+        return self.server._filepath
+
+class ReadHTTPServer(network.GlibTCPServer):
+    def __init__(self, server_address, filepath):
+        self._filepath = filepath
+        network.GlibTCPServer.__init__(self, server_address, ReadHTTPRequestHandler)
+
+READ_STREAM_SERVICE = 'read-activity-http'
 
 class ReadEtextsActivity(activity.Activity):
     def __init__(self, handle):
         "The entry point to the Activity"
         activity.Activity.__init__(self, handle)
         self.connect("key_press_event", self.keypress_cb)
+        
+        self._fileserver = None
+        self._object_id = handle.object_id
+       
         toolbox = activity.ActivityToolbox(self)
         self.set_toolbox(toolbox)
         
@@ -78,6 +107,26 @@ class ReadEtextsActivity(activity.Activity):
         
         # start on the read toolbar
         self.toolbox.set_current_toolbar(_TOOLBAR_READ)
+        self.unused_download_tubes = set()
+        self._want_document = True
+        self.connect("shared", self._shared_cb)
+        h = hash(self._activity_id)
+        self.port = 1024 + (h % 64511)
+
+        if handle.uri:
+            self._load_document(handle.uri)
+
+        if self._shared_activity:
+            # We're joining
+            if self.get_shared():
+                # Already joined for some reason, just get the document
+                self._joined_cb(self)
+            else:
+                # Wait for a successful join before trying to get the document
+                self.connect("joined", self._joined_cb)
+        # uncomment this and adjust the path for easier testing
+        #else:
+        #    self._load_document('file:///home/smcv/tmp/test.pdf')
     
     def mark_set_cb(self, textbuffer, iter, textmark):
         if textbuffer.get_has_selection():
@@ -187,12 +236,13 @@ class ReadEtextsActivity(activity.Activity):
         while linecount < _PAGE_SIZE:
             line = self.etext_file.readline()
             if not line:
-                continue
+                break
             else:
                 label_text = label_text + unicode(line,  "iso-8859-1")
             linecount = linecount + 1
-            textbuffer = self.textview.get_buffer()
-            textbuffer.set_text(label_text)
+        textbuffer = self.textview.get_buffer()
+        label_text = label_text + '\n\n\n'
+        textbuffer.set_text(label_text)
 
     def show_found_page(self, page_tuple):
         position = self.page_index[page_tuple[0]]
@@ -202,10 +252,11 @@ class ReadEtextsActivity(activity.Activity):
         while linecount < _PAGE_SIZE:
             line = self.etext_file.readline()
             if not line:
-                label_text = label_text + '\n'
+               break
             else:
                 label_text = label_text + unicode(line, "iso-8859-1")
                 linecount = linecount + 1
+        label_text = label_text + '\n\n\n'
         textbuffer = self.textview.get_buffer()
         tag = textbuffer.create_tag()
         tag.set_property('weight', pango.WEIGHT_BOLD)
@@ -226,37 +277,10 @@ class ReadEtextsActivity(activity.Activity):
         finally:
             f.close
 
-    def read_file(self, filename):
-        "Read the Etext file"
-        if filename.endswith(".zip"):
-            self.zf = zipfile.ZipFile(filename, 'r')
-            self.book_files = self.zf.namelist()
-            self.save_extracted_file(self.zf, self.book_files[0])
-            current_file_name = "/tmp/" + self.book_files[0]
-        else:
-            current_file_name = filename
-            
-        self.etext_file = open(current_file_name,"r")
-        
-        self.page_index = [ 0 ]
-        pagecount = 0
-        linecount = 0
-        while self.etext_file:
-            line = self.etext_file.readline()
-            if not line:
-                break
-            linecount = linecount + 1
-            if linecount >= _PAGE_SIZE:
-                position = self.etext_file.tell()
-                self.page_index.append(position)
-                linecount = 0
-                pagecount = pagecount + 1
-        self.page = int(self.metadata.get('current_page', '0'))
-        self.show_page(self.page)
-        self._read_toolbar.set_total_pages(pagecount + 1)
-        self._read_toolbar.set_current_page(self.page)
-        if filename.endswith(".zip"):
-            os.remove(current_file_name)
+    def read_file(self, file_path):
+        """Load a file from the datastore on activity start"""
+        _logger.debug('ReadEtextsActivity.read_file: %s', file_path)
+        self._load_document(file_path)
 
     def write_file(self, filename):
         "Save meta data for the file."
@@ -322,3 +346,175 @@ class ReadEtextsActivity(activity.Activity):
     
     def get_current_page(self):
         return self.page
+
+    # The code from here on down is for sharing.
+    def _download_result_cb(self, getter, tempfile, suggested_name, tube_id):
+        del self.unused_download_tubes
+
+        _logger.debug("Got document %s (%s) from tube %u",
+                      tempfile, suggested_name, tube_id)
+        self._load_document("file://%s" % tempfile)
+        _logger.debug("Saving %s to datastore...", tempfile)
+        self.save()
+
+    def _download_progress_cb(self, getter, bytes_downloaded, tube_id):
+        # FIXME: signal the expected size somehow, so we can draw a progress
+        # bar
+        _logger.debug("Downloaded %u bytes from tube %u...",
+                      bytes_downloaded, tube_id)
+
+    def _download_error_cb(self, getter, err, tube_id):
+        _logger.debug("Error getting document from tube %u: %s",
+                      tube_id, err)
+        self._want_document = True
+        gobject.idle_add(self._get_document)
+
+    def _download_document(self, tube_id):
+        # FIXME: should ideally have the CM listen on a Unix socket
+        # instead of IPv4 (might be more compatible with Rainbow)
+        chan = self._shared_activity.telepathy_tubes_chan
+        iface = chan[telepathy.CHANNEL_TYPE_TUBES]
+        addr = iface.AcceptStreamTube(tube_id,
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+                utf8_strings=True)
+        _logger.debug('Accepted stream tube: listening address is %r', addr)
+        # SOCKET_ADDRESS_TYPE_IPV4 is defined to have addresses of type '(sq)'
+        assert isinstance(addr, dbus.Struct)
+        assert len(addr) == 2
+        assert isinstance(addr[0], str)
+        assert isinstance(addr[1], (int, long))
+        assert addr[1] > 0 and addr[1] < 65536
+        port = int(addr[1])
+
+        getter = network.GlibURLDownloader("http://%s:%d/document"
+                                           % (addr[0], port))
+        getter.connect("finished", self._download_result_cb, tube_id)
+        getter.connect("progress", self._download_progress_cb, tube_id)
+        getter.connect("error", self._download_error_cb, tube_id)
+        _logger.debug("Starting download to %s...", self._jobject.file_path)
+        getter.start(self._jobject.file_path)
+        return False
+
+    def _get_document(self):
+        if not self._want_document:
+            return False
+
+        # Assign a file path to download if one doesn't exist yet
+        if not self._jobject.file_path:
+            self._jobject.file_path = os.path.join(tempfile.gettempdir(), '%i' % time.time())
+            self._owns_file = True
+
+        # Pick an arbitrary tube we can try to download the document from
+        try:
+            tube_id = self.unused_download_tubes.pop()
+        except (ValueError, KeyError), e:
+            _logger.debug('No tubes to get the document from right now: %s',
+                          e)
+            return False
+
+        # Avoid trying to download the document multiple times at once
+        self._want_document = False
+        gobject.idle_add(self._download_document, tube_id)
+        return False
+
+    def _joined_cb(self, also_self):
+        self.watch_for_tubes()
+        gobject.idle_add(self._get_document)
+
+    def _load_document(self, filename):
+        "Read the Etext file"
+        if filename.endswith(".zip"):
+            self.zf = zipfile.ZipFile(filename, 'r')
+            self.book_files = self.zf.namelist()
+            self.save_extracted_file(self.zf, self.book_files[0])
+            current_file_name = "/tmp/" + self.book_files[0]
+        else:
+            current_file_name = filename
+            
+        self.etext_file = open(current_file_name,"r")
+        
+        self.page_index = [ 0 ]
+        pagecount = 0
+        linecount = 0
+        while self.etext_file:
+            line = self.etext_file.readline()
+            if not line:
+                break
+            linecount = linecount + 1
+            if linecount >= _PAGE_SIZE:
+                position = self.etext_file.tell()
+                self.page_index.append(position)
+                linecount = 0
+                pagecount = pagecount + 1
+        self.page = int(self.metadata.get('current_page', '0'))
+        self.show_page(self.page)
+        self._read_toolbar.set_total_pages(pagecount + 1)
+        self._read_toolbar.set_current_page(self.page)
+        if filename.endswith(".zip"):
+            os.remove(current_file_name)
+
+        # We've got the document, so if we're a shared activity, offer it
+        if self.get_shared():
+            self.watch_for_tubes()
+            self._share_document()
+
+    def _share_document(self):
+        # FIXME: should ideally have the fileserver listen on a Unix socket
+        # instead of IPv4 (might be more compatible with Rainbow)
+
+        # FIXME: there is an issue with the Activity class and Read that makes
+        # the pdf file disappear; probably related to write_file not writing a
+        # file. This is a dirty fix and should be improved later.
+        if self._jobject is None:
+            self._jobject = datastore.get(self._object_id)
+        elif not os.path.exists(self._jobject.get_file_path()):
+            self._jobject.destroy()
+            self._jobject = datastore.get(self._object_id)
+
+        self._fileserver = ReadHTTPServer(("", self.port),
+            self._jobject.get_file_path())
+
+        # Make a tube for it
+        chan = self._shared_activity.telepathy_tubes_chan
+        iface = chan[telepathy.CHANNEL_TYPE_TUBES]
+        self._fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
+                {},
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                ('127.0.0.1', dbus.UInt16(self.port)),
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
+
+    def watch_for_tubes(self):
+        tubes_chan = self._shared_activity.telepathy_tubes_chan
+
+        tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
+            self._new_tube_cb)
+        tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
+            reply_handler=self._list_tubes_reply_cb,
+            error_handler=self._list_tubes_error_cb)
+
+    def _new_tube_cb(self, tube_id, initiator, tube_type, service, params,
+                     state):
+        _logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
+                      'params=%r state=%d', tube_id, initiator, tube_type,
+                      service, params, state)
+        if self._document is None and service == READ_STREAM_SERVICE:
+            _logger.debug('I could download from that tube')
+            self.unused_download_tubes.add(tube_id)
+            # if no download is in progress, let's fetch the document
+            if self._want_document:
+                gobject.idle_add(self._get_document)
+
+    def _list_tubes_reply_cb(self, tubes):
+        for tube_info in tubes:
+            self._new_tube_cb(*tube_info)
+
+    def _list_tubes_error_cb(self, e):
+        _logger.error('ListTubes() failed: %s', e)
+
+    def _shared_cb(self, activity):
+        # We initiated this activity and have now shared it, so by
+        # definition we have the file.
+        _logger.debug('Activity became shared')
+        self.watch_for_tubes()
+        self._share_document()

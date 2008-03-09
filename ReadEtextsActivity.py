@@ -40,6 +40,8 @@ _HARDWARE_MANAGER_SERVICE = 'org.laptop.HardwareManager'
 _HARDWARE_MANAGER_OBJECT_PATH = '/org/laptop/HardwareManager'
 _PAGE_SIZE = 38
 _TOOLBAR_READ = 2
+_SOCKET_TYPE_IPv4 = 2
+_SOCKET_ACCESS_CONTROL_LOCALHOST = 0
 
 _logger = logging.getLogger('read-activity')
 
@@ -375,8 +377,10 @@ class ReadEtextsActivity(activity.Activity):
         chan = self._shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         addr = iface.AcceptStreamTube(tube_id,
-                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+                # telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                _SOCKET_TYPE_IPv4,
+                # telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+                _SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
                 utf8_strings=True)
         _logger.debug('Accepted stream tube: listening address is %r', addr)
         # SOCKET_ADDRESS_TYPE_IPV4 is defined to have addresses of type '(sq)'
@@ -480,9 +484,11 @@ class ReadEtextsActivity(activity.Activity):
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         self._fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
                 {},
-                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                # telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                _SOCKET_TYPE_IPv4,
                 ('127.0.0.1', dbus.UInt16(self.port)),
-                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
+                # telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
+                _SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
 
     def watch_for_tubes(self):
         tubes_chan = self._shared_activity.telepathy_tubes_chan
@@ -498,7 +504,7 @@ class ReadEtextsActivity(activity.Activity):
         _logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
                       'params=%r state=%d', tube_id, initiator, tube_type,
                       service, params, state)
-        if self._document is None and service == READ_STREAM_SERVICE:
+        if service == READ_STREAM_SERVICE:
             _logger.debug('I could download from that tube')
             self.unused_download_tubes.add(tube_id)
             # if no download is in progress, let's fetch the document

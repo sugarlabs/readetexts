@@ -355,7 +355,7 @@ class ReadEtextsActivity(activity.Activity):
 
         _logger.debug("Got document %s (%s) from tube %u",
                       tempfile, suggested_name, tube_id)
-        self._load_document("file://%s" % tempfile)
+        self._load_document(tempfile)
         _logger.debug("Saving %s to datastore...", tempfile)
         self.save()
 

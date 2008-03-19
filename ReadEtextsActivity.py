@@ -428,7 +428,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def _load_document(self, filename):
         "Read the Etext file"
-        if filename.endswith(".zip"):
+        if zipfile.is_zipfile(filename):
             self.zf = zipfile.ZipFile(filename, 'r')
             self.book_files = self.zf.namelist()
             self.save_extracted_file(self.zf, self.book_files[0])

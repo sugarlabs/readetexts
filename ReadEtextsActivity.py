@@ -106,7 +106,33 @@ class ReadEtextsActivity(activity.Activity):
         self.scrolled.show()
         v_adjustment = self.scrolled.get_vadjustment()
         self.clipboard = gtk.Clipboard(display=gtk.gdk.display_get_default(), selection="CLIPBOARD")
-        
+
+        # Set up for idle suspend
+        self._idle_timer = 0
+        self._service = None
+
+        # start with sleep off
+        self._sleep_inhibit = True
+
+        fname = os.path.join('/etc', 'inhibit-ebook-sleep')
+        if not os.path.exists(fname):
+            try:
+                bus = dbus.SystemBus()
+                proxy = bus.get_object(_HARDWARE_MANAGER_SERVICE,
+                                       _HARDWARE_MANAGER_OBJECT_PATH)
+                self._service = dbus.Interface(proxy, _HARDWARE_MANAGER_INTERFACE)
+                scrolled.props.vadjustment.connect("value-changed", self._user_action_cb)
+                scrolled.props.hadjustment.connect("value-changed", self._user_action_cb)
+                self.connect("focus-in-event", self._focus_in_event_cb)
+                self.connect("focus-out-event", self._focus_out_event_cb)
+                self.connect("notify::active", self._now_active_cb)
+
+                logging.debug('Suspend on idle enabled')
+            except dbus.DBusException, e:
+                _logger.info('Hardware manager service not found, no idle suspend.')
+        else:
+            logging.debug('Suspend on idle disabled')
+    
         # start on the read toolbar
         self.toolbox.set_current_toolbar(_TOOLBAR_READ)
         self.unused_download_tubes = set()
@@ -118,6 +144,8 @@ class ReadEtextsActivity(activity.Activity):
         if handle.uri:
             self._load_document(handle.uri)
 
+        self.is_received_document = False
+        
         if self._shared_activity:
             # We're joining
             if self.get_shared():
@@ -286,6 +314,17 @@ class ReadEtextsActivity(activity.Activity):
 
     def write_file(self, filename):
         "Save meta data for the file."
+        if self.is_received_document == True:
+            # This document was given to us by someone, so we have
+            # to save it to the Journal.
+            self.etext_file.seek(0)
+            filebytes = self.etext_file.read()
+            f = open(filename, 'w')
+            try:
+                f.write(filebytes)
+            finally:
+                f.close
+
         self.metadata['current_page'] =str(self.page)
 
     def find_previous(self):
@@ -398,6 +437,7 @@ class ReadEtextsActivity(activity.Activity):
         getter.connect("error", self._download_error_cb, tube_id)
         _logger.debug("Starting download to %s...", self._jobject.file_path)
         getter.start(self._jobject.file_path)
+        self.is_received_document = True
         return False
 
     def _get_document(self):
@@ -468,7 +508,7 @@ class ReadEtextsActivity(activity.Activity):
         # instead of IPv4 (might be more compatible with Rainbow)
 
         # FIXME: there is an issue with the Activity class and Read that makes
-        # the pdf file disappear; probably related to write_file not writing a
+        # the file disappear; probably related to write_file not writing a
         # file. This is a dirty fix and should be improved later.
         if self._jobject is None:
             self._jobject = datastore.get(self._object_id)
@@ -524,3 +564,35 @@ class ReadEtextsActivity(activity.Activity):
         _logger.debug('Activity became shared')
         self.watch_for_tubes()
         self._share_document()
+
+    # From here down is power management stuff.
+    def _now_active_cb(self, widget, pspec):
+        if self.props.active:
+            # Now active, start initial suspend timeout
+            if self._idle_timer > 0:
+                gobject.source_remove(self._idle_timer)
+            self._idle_timer = gobject.timeout_add(15000, self._suspend_cb)
+            self._sleep_inhibit = False
+        else:
+            # Now inactive
+            self._sleep_inhibit = True
+
+    def _focus_in_event_cb(self, widget, event):
+        self._sleep_inhibit = False
+        self._user_action_cb(self)
+
+    def _focus_out_event_cb(self, widget, event):
+        self._sleep_inhibit = True
+
+    def _user_action_cb(self, widget):
+        if self._idle_timer > 0:
+            gobject.source_remove(self._idle_timer)
+        self._idle_timer = gobject.timeout_add(5000, self._suspend_cb)
+
+    def _suspend_cb(self):
+        # If the machine has been idle for 5 seconds, suspend
+        self._idle_timer = 0
+        if not self._sleep_inhibit:
+            self._service.set_kernel_suspend()
+        return False
+        

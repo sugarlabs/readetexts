@@ -43,7 +43,7 @@ _TOOLBAR_READ = 2
 _SOCKET_TYPE_IPv4 = 2
 _SOCKET_ACCESS_CONTROL_LOCALHOST = 0
 
-_logger = logging.getLogger('read-activity')
+_logger = logging.getLogger('read-etexts-activity')
 
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
     def translate_path(self, path):
@@ -121,8 +121,8 @@ class ReadEtextsActivity(activity.Activity):
                 proxy = bus.get_object(_HARDWARE_MANAGER_SERVICE,
                                        _HARDWARE_MANAGER_OBJECT_PATH)
                 self._service = dbus.Interface(proxy, _HARDWARE_MANAGER_INTERFACE)
-                scrolled.props.vadjustment.connect("value-changed", self._user_action_cb)
-                scrolled.props.hadjustment.connect("value-changed", self._user_action_cb)
+                self.scrolled.props.vadjustment.connect("value-changed", self._user_action_cb)
+                self.scrolled.props.hadjustment.connect("value-changed", self._user_action_cb)
                 self.connect("focus-in-event", self._focus_in_event_cb)
                 self.connect("focus-out-event", self._focus_out_event_cb)
                 self.connect("notify::active", self._now_active_cb)

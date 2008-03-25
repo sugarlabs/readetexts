@@ -40,8 +40,6 @@ _HARDWARE_MANAGER_SERVICE = 'org.laptop.HardwareManager'
 _HARDWARE_MANAGER_OBJECT_PATH = '/org/laptop/HardwareManager'
 _PAGE_SIZE = 38
 _TOOLBAR_READ = 2
-_SOCKET_TYPE_IPv4 = 2
-_SOCKET_ACCESS_CONTROL_LOCALHOST = 0
 
 _logger = logging.getLogger('read-etexts-activity')
 
@@ -106,6 +104,7 @@ class ReadEtextsActivity(activity.Activity):
         self.scrolled.show()
         v_adjustment = self.scrolled.get_vadjustment()
         self.clipboard = gtk.Clipboard(display=gtk.gdk.display_get_default(), selection="CLIPBOARD")
+        self.page = 0
 
         # Set up for idle suspend
         self._idle_timer = 0
@@ -319,13 +318,14 @@ class ReadEtextsActivity(activity.Activity):
             # to save it to the Journal.
             self.etext_file.seek(0)
             filebytes = self.etext_file.read()
+            print 'saving shared document'
             f = open(filename, 'w')
             try:
                 f.write(filebytes)
             finally:
                 f.close
 
-        self.metadata['current_page'] =str(self.page)
+        self.metadata['current_page']  = str(self.page)
 
     def find_previous(self):
         self.current_found_item = self.current_found_item - 1
@@ -416,10 +416,8 @@ class ReadEtextsActivity(activity.Activity):
         chan = self._shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         addr = iface.AcceptStreamTube(tube_id,
-                # telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                _SOCKET_TYPE_IPv4,
-                # telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
-                _SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
                 utf8_strings=True)
         _logger.debug('Accepted stream tube: listening address is %r', addr)
         # SOCKET_ADDRESS_TYPE_IPV4 is defined to have addresses of type '(sq)'
@@ -524,11 +522,9 @@ class ReadEtextsActivity(activity.Activity):
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         self._fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
                 {},
-                # telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                _SOCKET_TYPE_IPv4,
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
                 ('127.0.0.1', dbus.UInt16(self.port)),
-                # telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
-                _SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
 
     def watch_for_tubes(self):
         tubes_chan = self._shared_activity.telepathy_tubes_chan

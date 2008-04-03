@@ -156,7 +156,30 @@ class ReadEtextsActivity(activity.Activity):
         # uncomment this and adjust the path for easier testing
         #else:
         #    self._load_document('file:///home/smcv/tmp/test.pdf')
-    
+        self.karaoke = False
+        self.current_word = 0
+
+    def next_word_cb(self):
+        if self.current_word < len(self.word_tuples) and self.karaoke == True:
+            word_tuple = self.word_tuples[self.current_word]
+            self.current_word = self.current_word + 1
+            textbuffer = self.textview.get_buffer()
+            tag = textbuffer.create_tag()
+            tag.set_property('weight', pango.WEIGHT_BOLD)
+            tag.set_property( 'foreground', "white")
+            tag.set_property( 'background', "black")
+            iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
+            iterEnd = textbuffer.get_iter_at_offset(word_tuple[1])
+            bounds = textbuffer.get_bounds()
+            textbuffer.remove_all_tags(bounds[0], bounds[1])
+            textbuffer.apply_tag(tag, iterStart, iterEnd)
+            v_adjustment = self.scrolled.get_vadjustment()
+            max = v_adjustment.upper - v_adjustment.page_size
+            max = max * self.current_word
+            max = max / len(self.word_tuples)
+            v_adjustment.value = max
+        return self.karaoke
+
     def mark_set_cb(self, textbuffer, iter, textmark):
         if textbuffer.get_has_selection():
             self._edit_toolbar.copy.set_sensitive(True)
@@ -172,6 +195,13 @@ class ReadEtextsActivity(activity.Activity):
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"
         keyname = gtk.gdk.keyval_name(event.keyval)
+        if keyname == 'space':
+            if self.karaoke == True:
+                self.karaoke = False
+            else:
+                timeout_id = gobject.timeout_add(500, self.next_word_cb)
+                self.karaoke = True
+            return True
         if keyname == 'plus':
             self.font_increase()
             return True
@@ -272,6 +302,23 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer = self.textview.get_buffer()
         label_text = label_text + '\n\n\n'
         textbuffer.set_text(label_text)
+        i = 0
+        j = 0
+        word_begin = 0
+        word_end = 0
+        self.current_word = 0
+        self.word_tuples = []
+        while i < len(label_text):
+            if label_text[i] != ' ' and label_text[i] != '_' and label_text[i] != '-' and label_text[i] != '\n':
+                word_begin = i
+                j = i
+                while  j < len(label_text) and label_text[j] != ' ' and label_text[j] != '_' and label_text[j] != '-' and label_text[j] != '\n':
+                    j = j + 1
+                    word_end = j
+                    i = j
+                word_tuple = (word_begin, word_end, label_text[word_begin: word_end])
+                self.word_tuples.append(word_tuple)
+            i = i + 1
 
     def show_found_page(self, page_tuple):
         position = self.page_index[page_tuple[0]]
@@ -591,4 +638,4 @@ class ReadEtextsActivity(activity.Activity):
         if not self._sleep_inhibit:
             self._service.set_kernel_suspend()
         return False
-        
+ 

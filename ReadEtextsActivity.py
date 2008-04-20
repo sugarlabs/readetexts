@@ -34,6 +34,7 @@ import dbus
 import gobject
 import hippo
 import telepathy
+# import speechd
 
 _HARDWARE_MANAGER_INTERFACE = 'org.laptop.HardwareManager'
 _HARDWARE_MANAGER_SERVICE = 'org.laptop.HardwareManager'
@@ -59,6 +60,7 @@ class ReadEtextsActivity(activity.Activity):
         "The entry point to the Activity"
         activity.Activity.__init__(self, handle)
         self.connect("key_press_event", self.keypress_cb)
+        self.connect('delete-event', self.delete_cb)
         
         self._fileserver = None
         self._object_id = handle.object_id
@@ -158,9 +160,17 @@ class ReadEtextsActivity(activity.Activity):
         #    self._load_document('file:///home/smcv/tmp/test.pdf')
         self.karaoke = False
         self.current_word = 0
+        # self.client = speechd.SSIPClient('readetexts')
+        # self.client.set_language('en')
+        # self.client.set_punctuation(speechd.PunctuationMode.SOME)
+        self.finished_flag = True
+
+    def delete_cb(self, widget, event):
+        # self.client.close
+        return False
 
     def next_word_cb(self):
-        if self.current_word < len(self.word_tuples) and self.karaoke == True:
+        if self.current_word < len(self.word_tuples) and self.karaoke == True and self.finished_flag == True:
             word_tuple = self.word_tuples[self.current_word]
             self.current_word = self.current_word + 1
             textbuffer = self.textview.get_buffer()
@@ -178,7 +188,17 @@ class ReadEtextsActivity(activity.Activity):
             max = max * self.current_word
             max = max / len(self.word_tuples)
             v_adjustment.value = max
+            self.finished_flag = False
+            # self.client.speak(word_tuple[2], callback=self.finished_speaking_cb, 
+            #                event_types=(speechd.CallbackType.END))
+            # print 'speaking word', word_tuple[2]
+            # while self.finished_flag != True:
+            #    gtk.events_pending()
+            #     time.sleep(.01)
         return self.karaoke
+
+    def finished_speaking_cb(self, callback_type):
+        self.finished_flag = True
 
     def mark_set_cb(self, textbuffer, iter, textmark):
         if textbuffer.get_has_selection():
@@ -195,13 +215,15 @@ class ReadEtextsActivity(activity.Activity):
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"
         keyname = gtk.gdk.keyval_name(event.keyval)
-        if keyname == 'space':
-            if self.karaoke == True:
-                self.karaoke = False
-            else:
-                timeout_id = gobject.timeout_add(500, self.next_word_cb)
-                self.karaoke = True
-            return True
+        # if keyname == 'space':
+        #    if self.karaoke == True:
+        #        self.karaoke = False
+        #        self.finished_flag = True
+        #    else:
+        #        timeout_id = gobject.timeout_add(100, self.next_word_cb)
+        #        self.karaoke = True
+        #        self.finished_flag = True
+        #    return True
         if keyname == 'plus':
             self.font_increase()
             return True
@@ -446,10 +468,9 @@ class ReadEtextsActivity(activity.Activity):
         self.save()
 
     def _download_progress_cb(self, getter, bytes_downloaded, tube_id):
-        # FIXME: signal the expected size somehow, so we can draw a progress
-        # bar
-        _logger.debug("Downloaded %u bytes from tube %u...",
-                      bytes_downloaded, tube_id)
+        self._read_toolbar.set_downloaded_bytes(bytes_downloaded)
+        # _logger.debug("Downloaded %u bytes from tube %u...",
+        #              bytes_downloaded, tube_id)
 
     def _download_error_cb(self, getter, err, tube_id):
         _logger.debug("Error getting document from tube %u: %s",
@@ -463,8 +484,9 @@ class ReadEtextsActivity(activity.Activity):
         chan = self._shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         addr = iface.AcceptStreamTube(tube_id,
-                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+                # telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                # telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+                2, 0, 0, 
                 utf8_strings=True)
         _logger.debug('Accepted stream tube: listening address is %r', addr)
         # SOCKET_ADDRESS_TYPE_IPV4 is defined to have addresses of type '(sq)'
@@ -549,12 +571,6 @@ class ReadEtextsActivity(activity.Activity):
             self._share_document()
 
     def _share_document(self):
-        # FIXME: should ideally have the fileserver listen on a Unix socket
-        # instead of IPv4 (might be more compatible with Rainbow)
-
-        # FIXME: there is an issue with the Activity class and Read that makes
-        # the file disappear; probably related to write_file not writing a
-        # file. This is a dirty fix and should be improved later.
         if self._jobject is None:
             self._jobject = datastore.get(self._object_id)
         elif not os.path.exists(self._jobject.get_file_path()):
@@ -569,9 +585,11 @@ class ReadEtextsActivity(activity.Activity):
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         self._fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
                 {},
-                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                # telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                2,
                 ('127.0.0.1', dbus.UInt16(self.port)),
-                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
+                # telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST,
+               0, 0)
 
     def watch_for_tubes(self):
         tubes_chan = self._shared_activity.telepathy_tubes_chan

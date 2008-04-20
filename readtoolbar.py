@@ -79,7 +79,21 @@ class ReadToolbar(gtk.Toolbar):
 
         self.insert(total_page_item, -1)
         total_page_item.show()
+
+        downloaded_item = gtk.ToolItem()
+        self._downloaded_label = gtk.Label()
+        self._downloaded_label.set_attributes(label_attributes)
+
+        self._downloaded_label.set_text('')
+        downloaded_item.add(self._downloaded_label)
+        self._downloaded_label.show()
+
+        self.insert(downloaded_item, -1)
+        downloaded_item.show()
  
+    def set_downloaded_bytes(self, bytes):
+        self._downloaded_label.props.label = '     ' + str(bytes) + ' received'
+
     def _num_page_entry_insert_text_cb(self, entry, text, length, position):
         if not re.match('[0-9]', text):
             entry.emit_stop_by_name('insert-text')

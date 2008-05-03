@@ -34,15 +34,77 @@ import dbus
 import gobject
 import hippo
 import telepathy
-# import speechd
+import time
+import threading
+
+speech_supported = True
+
+try:
+    import speechd
+except:
+    speech_supported = False
 
 _HARDWARE_MANAGER_INTERFACE = 'org.laptop.HardwareManager'
 _HARDWARE_MANAGER_SERVICE = 'org.laptop.HardwareManager'
 _HARDWARE_MANAGER_OBJECT_PATH = '/org/laptop/HardwareManager'
 _PAGE_SIZE = 38
 _TOOLBAR_READ = 2
+done = True
+current_word = 0
 
 _logger = logging.getLogger('read-etexts-activity')
+
+class EspeakThread(threading.Thread):
+    def run(self):
+        "This is the code that is executed when the start() method is called"
+        global done
+        global current_word
+        done = False
+        current_word = 0
+        gtk.gdk.threads_enter()
+        self.activity.highlight_next_word()
+        gtk.gdk.threads_leave()
+        self.client = speechd.SSIPClient('readetexts')
+        self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
+        self.client.set_rate(-10)
+        # self.client.set_voice("male2")
+        self.client.set_pause_context(0)
+        self.client.speak(self.words_on_page, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
+                    speechd.CallbackType.END))
+        while not done:
+            time.sleep(0.1)
+        self.client.close()
+    
+    def set_words_on_page(self, words):
+        self.words_on_page = words
+        
+    def set_activity(self, activity):
+        self.activity = activity
+
+    def pause(self):
+        self.client.pause()
+        print 'pausing'
+
+    def resume(self):
+        self.client.resume()
+        print 'resuming'
+
+    def stop(self):
+        self.client.stop()
+
+    def cancel(self):
+        self.client.cancel()
+    
+    def next_word_cb(self, type, **kargs):
+        global done
+        if type == speechd.CallbackType.INDEX_MARK:
+            mark = kargs['index_mark']
+            # print mark
+        elif type == speechd.CallbackType.END:
+            done = True
+        gtk.gdk.threads_enter()
+        self.activity.highlight_next_word()
+        gtk.gdk.threads_leave()
 
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
     def translate_path(self, path):
@@ -58,6 +120,8 @@ READ_STREAM_SERVICE = 'read-activity-http'
 class ReadEtextsActivity(activity.Activity):
     def __init__(self, handle):
         "The entry point to the Activity"
+        gtk.gdk.threads_init()
+        
         activity.Activity.__init__(self, handle)
         self.connect("key_press_event", self.keypress_cb)
         self.connect('delete-event', self.delete_cb)
@@ -142,9 +206,6 @@ class ReadEtextsActivity(activity.Activity):
         h = hash(self._activity_id)
         self.port = 1024 + (h % 64511)
 
-        if handle.uri:
-            self._load_document(handle.uri)
-
         self.is_received_document = False
         
         if self._shared_activity:
@@ -158,21 +219,16 @@ class ReadEtextsActivity(activity.Activity):
         # uncomment this and adjust the path for easier testing
         #else:
         #    self._load_document('file:///home/smcv/tmp/test.pdf')
-        self.karaoke = False
-        self.current_word = 0
-        # self.client = speechd.SSIPClient('readetexts')
-        # self.client.set_language('en')
-        # self.client.set_punctuation(speechd.PunctuationMode.SOME)
-        self.finished_flag = True
+        current_word = 0
 
     def delete_cb(self, widget, event):
-        # self.client.close
         return False
 
-    def next_word_cb(self):
-        if self.current_word < len(self.word_tuples) and self.karaoke == True and self.finished_flag == True:
-            word_tuple = self.word_tuples[self.current_word]
-            self.current_word = self.current_word + 1
+    def highlight_next_word(self):
+        global current_word
+        if current_word < len(self.word_tuples) :
+            word_tuple = self.word_tuples[current_word]
+            current_word = current_word + 1
             textbuffer = self.textview.get_buffer()
             tag = textbuffer.create_tag()
             tag.set_property('weight', pango.WEIGHT_BOLD)
@@ -185,20 +241,10 @@ class ReadEtextsActivity(activity.Activity):
             textbuffer.apply_tag(tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
             max = v_adjustment.upper - v_adjustment.page_size
-            max = max * self.current_word
+            max = max * current_word
             max = max / len(self.word_tuples)
             v_adjustment.value = max
-            self.finished_flag = False
-            # self.client.speak(word_tuple[2], callback=self.finished_speaking_cb, 
-            #                event_types=(speechd.CallbackType.END))
-            # print 'speaking word', word_tuple[2]
-            # while self.finished_flag != True:
-            #    gtk.events_pending()
-            #     time.sleep(.01)
-        return self.karaoke
-
-    def finished_speaking_cb(self, callback_type):
-        self.finished_flag = True
+        return True
 
     def mark_set_cb(self, textbuffer, iter, textmark):
         if textbuffer.get_has_selection():
@@ -214,21 +260,32 @@ class ReadEtextsActivity(activity.Activity):
 
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"
+        global done
         keyname = gtk.gdk.keyval_name(event.keyval)
-        # if keyname == 'space':
-        #    if self.karaoke == True:
-        #        self.karaoke = False
-        #        self.finished_flag = True
-        #    else:
-        #        timeout_id = gobject.timeout_add(100, self.next_word_cb)
-        #        self.karaoke = True
-        #        self.finished_flag = True
-        #    return True
+        if keyname == 'space' and speech_supported:
+            if (done):
+                self.et = EspeakThread()
+                self.et.set_words_on_page(self.words_on_page)
+                self.et.set_activity(self)
+                self.et.start()
+            else:
+                self.et.stop()
+                done = True
+                #if self.paused == True:
+                #   self.paused = False
+                #   self.et.resume()
+                #else:
+                #    self.paused = True
+                #    self.et.pause()
+            return True
         if keyname == 'plus':
             self.font_increase()
             return True
         if keyname == 'minus':
             self.font_decrease()
+            return True
+        if done == False:
+            # If speech is in progress, ignore other keys.
             return True
         if keyname == 'KP_Right':
             self.scroll_down()
@@ -324,23 +381,33 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer = self.textview.get_buffer()
         label_text = label_text + '\n\n\n'
         textbuffer.set_text(label_text)
+        self.prepare_highlighting(label_text)
+
+    def prepare_highlighting(self, label_text):
         i = 0
         j = 0
         word_begin = 0
         word_end = 0
-        self.current_word = 0
         self.word_tuples = []
         while i < len(label_text):
-            if label_text[i] != ' ' and label_text[i] != '_' and label_text[i] != '-' and label_text[i] != '\n':
+            if label_text[i] != ' ' and label_text[i] != '_' and label_text[i] != '\n':
                 word_begin = i
                 j = i
-                while  j < len(label_text) and label_text[j] != ' ' and label_text[j] != '_' and label_text[j] != '-' and label_text[j] != '\n':
+                while  j < len(label_text) and label_text[j] != ' ' and label_text[j] != '_' and label_text[j] != '\n':
                     j = j + 1
                     word_end = j
                     i = j
                 word_tuple = (word_begin, word_end, label_text[word_begin: word_end])
-                self.word_tuples.append(word_tuple)
+                if word_tuple[2] != u'\r':
+                    self.word_tuples.append(word_tuple)
             i = i + 1
+        self.words_on_page = "<speak>" + self.add_word_marks() + "</speak>"
+        # print self.words_on_page
+
+    def add_word_marks(self):
+        "Adds a mark between each word of text."
+        return " ".join([ ('%s<mark name="%s%s"/>' % (word_tuple[2], "w_", word_tuple[2])) for 
+                    word_tuple in self.word_tuples ])
 
     def show_found_page(self, page_tuple):
         position = self.page_index[page_tuple[0]]
@@ -468,9 +535,8 @@ class ReadEtextsActivity(activity.Activity):
         self.save()
 
     def _download_progress_cb(self, getter, bytes_downloaded, tube_id):
-        self._read_toolbar.set_downloaded_bytes(bytes_downloaded)
-        # _logger.debug("Downloaded %u bytes from tube %u...",
-        #              bytes_downloaded, tube_id)
+        total = getter._info.headers["Content-Length"]
+        self._read_toolbar.set_downloaded_bytes(bytes_downloaded,  total)
 
     def _download_error_cb(self, getter, err, tube_id):
         _logger.debug("Error getting document from tube %u: %s",
@@ -484,9 +550,8 @@ class ReadEtextsActivity(activity.Activity):
         chan = self._shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         addr = iface.AcceptStreamTube(tube_id,
-                # telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                # telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
-                2, 0, 0, 
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
                 utf8_strings=True)
         _logger.debug('Accepted stream tube: listening address is %r', addr)
         # SOCKET_ADDRESS_TYPE_IPV4 is defined to have addresses of type '(sq)'
@@ -585,11 +650,9 @@ class ReadEtextsActivity(activity.Activity):
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         self._fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
                 {},
-                # telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                2,
-                ('127.0.0.1', dbus.UInt16(self.port)),
-                # telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST,
-               0, 0)
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                 ('127.0.0.1', dbus.UInt16(self.port)),
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST,  0)
 
     def watch_for_tubes(self):
         tubes_chan = self._shared_activity.telepathy_tubes_chan

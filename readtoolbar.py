@@ -91,8 +91,8 @@ class ReadToolbar(gtk.Toolbar):
         self.insert(downloaded_item, -1)
         downloaded_item.show()
  
-    def set_downloaded_bytes(self, bytes):
-        self._downloaded_label.props.label = '     ' + str(bytes) + ' received'
+    def set_downloaded_bytes(self, bytes,  total):
+        self._downloaded_label.props.label = '     ' + str(bytes) + ' of ' + str(total) + ' received'
 
     def _num_page_entry_insert_text_cb(self, entry, text, length, position):
         if not re.match('[0-9]', text):

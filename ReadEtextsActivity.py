@@ -262,7 +262,7 @@ class ReadEtextsActivity(activity.Activity):
         "Respond when the user presses one of the arrow keys"
         global done
         keyname = gtk.gdk.keyval_name(event.keyval)
-        if keyname == 'space' and speech_supported:
+        if keyname == 'KP_End' and speech_supported:
             if (done):
                 self.et = EspeakThread()
                 self.et.set_words_on_page(self.words_on_page)

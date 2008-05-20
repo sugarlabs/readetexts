@@ -67,7 +67,6 @@ class EspeakThread(threading.Thread):
         self.client = speechd.SSIPClient('readetexts')
         self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
         self.client.set_rate(-10)
-        # self.client.set_voice("male2")
         self.client.set_pause_context(0)
         self.client.speak(self.words_on_page, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
                     speechd.CallbackType.END))
@@ -83,11 +82,11 @@ class EspeakThread(threading.Thread):
 
     def pause(self):
         self.client.pause()
-        print 'pausing'
+        print 'paused'
 
     def resume(self):
         self.client.resume()
-        print 'resuming'
+        print 'resumed'
 
     def stop(self):
         self.client.stop()
@@ -123,7 +122,6 @@ class ReadEtextsActivity(activity.Activity):
         gtk.gdk.threads_init()
         
         activity.Activity.__init__(self, handle)
-        self.connect("key_press_event", self.keypress_cb)
         self.connect('delete-event', self.delete_cb)
         
         self._fileserver = None
@@ -161,6 +159,7 @@ class ReadEtextsActivity(activity.Activity):
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
         self.textview.set_left_margin(50)
+        self.textview.connect("key_press_event", self.keypress_cb)
         buffer = self.textview.get_buffer()
         buffer.connect("mark-set", self.mark_set_cb)
         self.font_desc = pango.FontDescription("sans 12")
@@ -220,6 +219,7 @@ class ReadEtextsActivity(activity.Activity):
         #else:
         #    self._load_document('file:///home/smcv/tmp/test.pdf')
         current_word = 0
+        self.paused = False
 
     def delete_cb(self, widget, event):
         return False
@@ -269,14 +269,14 @@ class ReadEtextsActivity(activity.Activity):
                 self.et.set_activity(self)
                 self.et.start()
             else:
-                self.et.stop()
-                done = True
-                #if self.paused == True:
-                #   self.paused = False
-                #   self.et.resume()
-                #else:
-                #    self.paused = True
-                #    self.et.pause()
+                # self.et.stop()
+                # done = True
+                if self.paused == True:
+                    self.paused = False
+                    self.et.resume()
+                else:
+                    self.paused = True
+                    self.et.pause()
             return True
         if keyname == 'plus':
             self.font_increase()

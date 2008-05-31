@@ -66,7 +66,7 @@ class EspeakThread(threading.Thread):
         gtk.gdk.threads_leave()
         self.client = speechd.SSIPClient('readetexts')
         self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
-        self.client.set_rate(-10)
+        self.client.set_rate(-30)
         self.client.set_pause_context(0)
         self.client.speak(self.words_on_page, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
                     speechd.CallbackType.END))
@@ -170,6 +170,7 @@ class ReadEtextsActivity(activity.Activity):
         v_adjustment = self.scrolled.get_vadjustment()
         self.clipboard = gtk.Clipboard(display=gtk.gdk.display_get_default(), selection="CLIPBOARD")
         self.page = 0
+        self.textview.grab_focus()
 
         # Set up for idle suspend
         self._idle_timer = 0
@@ -388,12 +389,14 @@ class ReadEtextsActivity(activity.Activity):
         j = 0
         word_begin = 0
         word_end = 0
+        ignore_chars = [' ',  '\n',  '\t',  u'\r',  '`',  '~',  '!',  '@',  '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '[', '{', ']', '}', '|', ';', ':', ',', '<', '.', '>', '/', '?', '"']
+        ignore_set = set(ignore_chars)
         self.word_tuples = []
         while i < len(label_text):
-            if label_text[i] != ' ' and label_text[i] != '_' and label_text[i] != '\n':
+            if label_text[i] not in ignore_set:
                 word_begin = i
                 j = i
-                while  j < len(label_text) and label_text[j] != ' ' and label_text[j] != '_' and label_text[j] != '\n':
+                while  j < len(label_text) and label_text[j] not in ignore_set:
                     j = j + 1
                     word_end = j
                     i = j
@@ -406,7 +409,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def add_word_marks(self):
         "Adds a mark between each word of text."
-        return " ".join([ ('%s<mark name="%s%s"/>' % (word_tuple[2], "w_", word_tuple[2])) for 
+        return " ".join([ ('%s<mark name="%s%s"/>' % (word_tuple[2], "w_", word_tuple[0])) for 
                     word_tuple in self.word_tuples ])
 
     def show_found_page(self, page_tuple):
@@ -504,8 +507,8 @@ class ReadEtextsActivity(activity.Activity):
             if not line:
                 break
             linecount = linecount + 1
-            position = string.find(line, search_text)
-            if (position >= 0):
+            positions = self.allindices(line.lower(), search_text.lower())
+            for position in positions:
                 found_pos = charcount + position + 3
                 found_tuple = (pagecount, found_pos, len(search_text) + found_pos)
                 self.found_records.append(found_tuple)
@@ -520,6 +523,18 @@ class ReadEtextsActivity(activity.Activity):
             self.page = current_found_tuple[0]
             self._read_toolbar.set_current_page(self.page)
             self.show_found_page(current_found_tuple)
+
+    def allindices(self,  line, search, listindex=None,  offset=0):
+        #call as l = allindices(line, search) 
+        if listindex is None:   
+            listindex = [] 
+        if (line.find(search) == -1):
+            return listindex 
+        else: 
+            offset = line.index(search)+offset 
+            listindex.append(offset) 
+            line = line[(line.index(search)+1):] 
+            return self.allindices(line, search, listindex, offset+1)
     
     def get_current_page(self):
         return self.page

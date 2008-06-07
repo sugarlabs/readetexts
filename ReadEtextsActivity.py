@@ -50,7 +50,6 @@ _HARDWARE_MANAGER_OBJECT_PATH = '/org/laptop/HardwareManager'
 _PAGE_SIZE = 38
 _TOOLBAR_READ = 2
 done = True
-current_word = 0
 
 _logger = logging.getLogger('read-etexts-activity')
 
@@ -58,15 +57,10 @@ class EspeakThread(threading.Thread):
     def run(self):
         "This is the code that is executed when the start() method is called"
         global done
-        global current_word
         done = False
-        current_word = 0
-        gtk.gdk.threads_enter()
-        self.activity.highlight_next_word()
-        gtk.gdk.threads_leave()
         self.client = speechd.SSIPClient('readetexts')
         self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
-        self.client.set_rate(-30)
+        self.client.set_rate(-50)
         self.client.set_pause_context(0)
         self.client.speak(self.words_on_page, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
                     speechd.CallbackType.END))
@@ -98,12 +92,12 @@ class EspeakThread(threading.Thread):
         global done
         if type == speechd.CallbackType.INDEX_MARK:
             mark = kargs['index_mark']
-            # print mark
+            word_count = int(mark)
+            gtk.gdk.threads_enter()
+            self.activity.highlight_next_word(word_count)
+            gtk.gdk.threads_leave()
         elif type == speechd.CallbackType.END:
             done = True
-        gtk.gdk.threads_enter()
-        self.activity.highlight_next_word()
-        gtk.gdk.threads_leave()
 
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
     def translate_path(self, path):
@@ -225,11 +219,9 @@ class ReadEtextsActivity(activity.Activity):
     def delete_cb(self, widget, event):
         return False
 
-    def highlight_next_word(self):
-        global current_word
-        if current_word < len(self.word_tuples) :
-            word_tuple = self.word_tuples[current_word]
-            current_word = current_word + 1
+    def highlight_next_word(self,  word_count):
+        if word_count < len(self.word_tuples) :
+            word_tuple = self.word_tuples[word_count]
             textbuffer = self.textview.get_buffer()
             tag = textbuffer.create_tag()
             tag.set_property('weight', pango.WEIGHT_BOLD)
@@ -242,7 +234,7 @@ class ReadEtextsActivity(activity.Activity):
             textbuffer.apply_tag(tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
             max = v_adjustment.upper - v_adjustment.page_size
-            max = max * current_word
+            max = max * word_count
             max = max / len(self.word_tuples)
             v_adjustment.value = max
         return True
@@ -404,13 +396,18 @@ class ReadEtextsActivity(activity.Activity):
                 if word_tuple[2] != u'\r':
                     self.word_tuples.append(word_tuple)
             i = i + 1
-        self.words_on_page = "<speak>" + self.add_word_marks() + "</speak>"
+        self.words_on_page = self.add_word_marks()
         # print self.words_on_page
 
     def add_word_marks(self):
         "Adds a mark between each word of text."
-        return " ".join([ ('%s<mark name="%s%s"/>' % (word_tuple[2], "w_", word_tuple[0])) for 
-                    word_tuple in self.word_tuples ])
+        i = 0
+        marked_up_text  = '<speak> '
+        while i < len(self.word_tuples):
+            word_tuple = self.word_tuples[i]
+            marked_up_text = marked_up_text + '<mark name="' + str(i) + '"/>' + word_tuple[2]
+            i = i + 1
+        return marked_up_text + '</speak>'
 
     def show_found_page(self, page_tuple):
         position = self.page_index[page_tuple[0]]

@@ -27,7 +27,7 @@ import string
 from sugar.activity import activity
 from sugar import network
 from sugar.datastore import datastore
-from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar
+from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  SpeechToolbar
 from gettext import gettext as _
 import pango
 import dbus
@@ -60,8 +60,10 @@ class EspeakThread(threading.Thread):
         done = False
         self.client = speechd.SSIPClient('readetexts')
         self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
-        self.client.set_rate(-50)
-        self.client.set_pause_context(0)
+        if self.speech_voice:
+            self.client.set_language(self.speech_voice[1])
+            self.client.set_rate(self.speech_rate)
+            self.client.set_pitch(self.speech_pitch)
         self.client.speak(self.words_on_page, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
                     speechd.CallbackType.END))
         while not done:
@@ -74,16 +76,10 @@ class EspeakThread(threading.Thread):
     def set_activity(self, activity):
         self.activity = activity
 
-    def pause(self):
-        self.client.pause()
-        print 'paused'
-
-    def resume(self):
-        self.client.resume()
-        print 'resumed'
-
-    def stop(self):
-        self.client.stop()
+    def set_speech_options(self,  speech_voice,  speech_pitch,  speech_rate):
+        self.speech_rate = speech_rate
+        self.speech_pitch = speech_pitch
+        self.speech_voice = speech_voice
 
     def cancel(self):
         self.client.cancel()
@@ -97,6 +93,7 @@ class EspeakThread(threading.Thread):
             self.activity.highlight_next_word(word_count)
             gtk.gdk.threads_leave()
         elif type == speechd.CallbackType.END:
+            self.activity.reset_current_word()
             done = True
 
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
@@ -114,6 +111,11 @@ class ReadEtextsActivity(activity.Activity):
     def __init__(self, handle):
         "The entry point to the Activity"
         gtk.gdk.threads_init()
+        self.current_word = 0
+        
+        self.speech_voice = None
+        self.speech_rate = 0
+        self.speech_pitch = 0
         
         activity.Activity.__init__(self, handle)
         self.connect('delete-event', self.delete_cb)
@@ -144,6 +146,11 @@ class ReadEtextsActivity(activity.Activity):
         toolbox.add_toolbar(_('View'), self._view_toolbar)
         self._view_toolbar.set_activity(self)
         self._view_toolbar.show()
+
+        self._speech_toolbar = SpeechToolbar()
+        toolbox.add_toolbar(_('Speech'), self._speech_toolbar)
+        self._speech_toolbar.set_activity(self)
+        self._speech_toolbar.show()
 
         toolbox.show()
         self.scrolled = gtk.ScrolledWindow()
@@ -213,8 +220,9 @@ class ReadEtextsActivity(activity.Activity):
         # uncomment this and adjust the path for easier testing
         #else:
         #    self._load_document('file:///home/smcv/tmp/test.pdf')
-        current_word = 0
-        self.paused = False
+
+    def reset_current_word(self):
+        self.current_word = 0
 
     def delete_cb(self, widget, event):
         return False
@@ -237,6 +245,7 @@ class ReadEtextsActivity(activity.Activity):
             max = max * word_count
             max = max / len(self.word_tuples)
             v_adjustment.value = max
+            self.current_word = word_count
         return True
 
     def mark_set_cb(self, textbuffer, iter, textmark):
@@ -258,18 +267,14 @@ class ReadEtextsActivity(activity.Activity):
         if keyname == 'KP_End' and speech_supported:
             if (done):
                 self.et = EspeakThread()
-                self.et.set_words_on_page(self.words_on_page)
+                words_on_page = self.add_word_marks()
+                self.et.set_words_on_page(words_on_page)
                 self.et.set_activity(self)
+                self.et.set_speech_options(self.speech_voice,  self.speech_pitch,  self.speech_rate)
                 self.et.start()
             else:
-                # self.et.stop()
-                # done = True
-                if self.paused == True:
-                    self.paused = False
-                    self.et.resume()
-                else:
-                    self.paused = True
-                    self.et.pause()
+                self.et.cancel()
+                done = True
             return True
         if keyname == 'plus':
             self.font_increase()
@@ -396,18 +401,25 @@ class ReadEtextsActivity(activity.Activity):
                 if word_tuple[2] != u'\r':
                     self.word_tuples.append(word_tuple)
             i = i + 1
-        self.words_on_page = self.add_word_marks()
-        # print self.words_on_page
 
     def add_word_marks(self):
         "Adds a mark between each word of text."
-        i = 0
+        i = self.current_word
         marked_up_text  = '<speak> '
         while i < len(self.word_tuples):
             word_tuple = self.word_tuples[i]
             marked_up_text = marked_up_text + '<mark name="' + str(i) + '"/>' + word_tuple[2]
             i = i + 1
         return marked_up_text + '</speak>'
+
+    def set_speech_pitch(self,  pitch):
+        self.speech_pitch = pitch
+        
+    def set_speech_rate(self,  rate):
+        self.speech_rate = rate
+        
+    def set_speech_voice(self,  voice):
+        self.speech_voice = voice
 
     def show_found_page(self, page_tuple):
         position = self.page_index[page_tuple[0]]
@@ -522,7 +534,6 @@ class ReadEtextsActivity(activity.Activity):
             self.show_found_page(current_found_tuple)
 
     def allindices(self,  line, search, listindex=None,  offset=0):
-        #call as l = allindices(line, search) 
         if listindex is None:   
             listindex = [] 
         if (line.find(search) == -1):

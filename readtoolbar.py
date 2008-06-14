@@ -25,7 +25,14 @@ import gtk
 
 from sugar.graphics.toolbutton import ToolButton
 from sugar.graphics.menuitem import MenuItem
+from sugar.graphics.toolcombobox import ToolComboBox
+from sugar.graphics.combobox import ComboBox
 from sugar.activity import activity
+
+try:
+    import speechd
+except:
+    print "Speech not supported"
 
 class ReadToolbar(gtk.Toolbar):
     __gtype_name__ = 'ReadToolbar'
@@ -228,3 +235,70 @@ class EditToolbar(activity.EditToolbar):
     def _update_find_buttons(self):
         self._prev.props.sensitive = self.activity.can_find_previous()
         self._next.props.sensitive = self.activity.can_find_next()
+
+class   SpeechToolbar(gtk.Toolbar):
+    def __init__(self):
+        gtk.Toolbar.__init__(self)
+        voicebar = gtk.Toolbar()
+        
+        client = speechd.SSIPClient('readetextstest')
+        self.voices = client.list_synthesis_voices()
+        client.close()
+
+        self.voice_combo = ComboBox()
+        self.voice_combo.connect('changed', self.voice_changed_cb)
+        for voice in self.voices:
+            self.voice_combo.append_item(voice, voice[0])
+        # self.voice_combo.set_active(self.voices.index('english'))
+        combotool = ToolComboBox(self.voice_combo)
+        self.insert(combotool, -1)
+        combotool.show()
+
+        self.pitchadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
+        self.pitchadj.connect("value_changed", self.pitch_adjusted_cb, self.pitchadj)
+        pitchbar = gtk.HScale(self.pitchadj)
+        pitchbar.set_draw_value(False)
+        pitchbar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
+        pitchbar.set_size_request(240,15)
+        pitchtool = gtk.ToolItem()
+        pitchtool.add(pitchbar)
+        pitchtool.show()
+        self.insert(pitchtool, -1)
+        pitchbar.show()
+
+        self.rateadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
+        self.rateadj.connect("value_changed", self.rate_adjusted_cb, self.rateadj)
+        ratebar = gtk.HScale(self.rateadj)
+        ratebar.set_draw_value(False)
+        ratebar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
+        ratebar.set_size_request(240,15)
+        ratetool = gtk.ToolItem()
+        ratetool.add(ratebar)
+        ratetool.show()
+        self.insert(ratetool, -1)
+        ratebar.show()
+
+    def voice_changed_cb(self, combo):
+        self.selected_voice = combo.props.value
+        self.activity.set_speech_voice(self.selected_voice)
+        self.say(self.selected_voice[0])
+
+    def pitch_adjusted_cb(self, get, data=None):
+        self.activity.set_speech_pitch(int(self.pitchadj.value))
+        self.say(_("pitch adjusted"))
+
+    def rate_adjusted_cb(self, get, data=None):
+        self.activity.set_speech_rate(int(self.rateadj.value))
+        self.say(_("rate adjusted"))
+      
+    def set_activity(self, activity):
+        self.activity = activity
+    
+    def say(self,  words):
+        client = speechd.SSIPClient('readetextstest')
+        client.set_rate(int(self.rateadj.value))
+        client.set_pitch(int(self.pitchadj.value))
+        client.set_language(self.selected_voice[1])
+        client.speak(words)
+        client.close()
+

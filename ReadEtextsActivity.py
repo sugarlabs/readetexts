@@ -110,6 +110,7 @@ READ_STREAM_SERVICE = 'read-activity-http'
 class ReadEtextsActivity(activity.Activity):
     def __init__(self, handle):
         "The entry point to the Activity"
+        global speech_supported
         gtk.gdk.threads_init()
         self.current_word = 0
         
@@ -147,10 +148,11 @@ class ReadEtextsActivity(activity.Activity):
         self._view_toolbar.set_activity(self)
         self._view_toolbar.show()
 
-        self._speech_toolbar = SpeechToolbar()
-        toolbox.add_toolbar(_('Speech'), self._speech_toolbar)
-        self._speech_toolbar.set_activity(self)
-        self._speech_toolbar.show()
+        if speech_supported:
+            self._speech_toolbar = SpeechToolbar()
+            toolbox.add_toolbar(_('Speech'), self._speech_toolbar)
+            self._speech_toolbar.set_activity(self)
+            self._speech_toolbar.show()
 
         toolbox.show()
         self.scrolled = gtk.ScrolledWindow()
@@ -263,6 +265,7 @@ class ReadEtextsActivity(activity.Activity):
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"
         global done
+        global speech_supported
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'KP_End' and speech_supported:
             if (done):
@@ -366,6 +369,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def show_page(self, page_number):
         position = self.page_index[page_number]
+        self.reset_current_word()
         self.etext_file.seek(position)
         linecount = 0
         label_text = '\n\n\n'

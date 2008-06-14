@@ -242,14 +242,24 @@ class   SpeechToolbar(gtk.Toolbar):
         voicebar = gtk.Toolbar()
         
         client = speechd.SSIPClient('readetextstest')
-        self.voices = client.list_synthesis_voices()
+        voices = client.list_synthesis_voices()
         client.close()
+        self.sorted_voices = []
+        for voice in voices:
+            self.sorted_voices.append(voice)
+        self.sorted_voices.sort(self.compare_voices)
+        default = 0
+        for voice in self.sorted_voices:
+            if voice[0] == 'default':
+                break
+            default = default + 1
 
         self.voice_combo = ComboBox()
         self.voice_combo.connect('changed', self.voice_changed_cb)
-        for voice in self.voices:
+        for voice in self.sorted_voices:
             self.voice_combo.append_item(voice, voice[0])
-        # self.voice_combo.set_active(self.voices.index('english'))
+        self.voice_combo.set_active(default)
+        self.selected_voice = self.voice_combo.props.value
         combotool = ToolComboBox(self.voice_combo)
         self.insert(combotool, -1)
         combotool.show()
@@ -278,6 +288,14 @@ class   SpeechToolbar(gtk.Toolbar):
         self.insert(ratetool, -1)
         ratebar.show()
 
+    def compare_voices(self,  a,  b):
+        if a[0].lower() == b[0].lower():
+            return 0
+        if a[0] .lower()< b[0].lower():
+            return -1
+        if a[0] .lower()> b[0].lower():
+            return 1
+        
     def voice_changed_cb(self, combo):
         self.selected_voice = combo.props.value
         self.activity.set_speech_voice(self.selected_voice)
@@ -293,6 +311,7 @@ class   SpeechToolbar(gtk.Toolbar):
       
     def set_activity(self, activity):
         self.activity = activity
+        self.activity.set_speech_voice(self.selected_voice)
     
     def say(self,  words):
         client = speechd.SSIPClient('readetextstest')

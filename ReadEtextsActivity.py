@@ -57,18 +57,22 @@ class EspeakThread(threading.Thread):
     def run(self):
         "This is the code that is executed when the start() method is called"
         global done
-        done = False
-        self.client = speechd.SSIPClient('readetexts')
-        self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
-        if self.speech_voice:
-            self.client.set_language(self.speech_voice[1])
-            self.client.set_rate(self.speech_rate)
-            self.client.set_pitch(self.speech_pitch)
-        self.client.speak(self.words_on_page, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
-                    speechd.CallbackType.END))
-        while not done:
-            time.sleep(0.1)
-        self.client.close()
+        self.client = None
+        try:
+            self.client = speechd.SSIPClient('readetexts')
+            self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
+            if self.speech_voice:
+                self.client.set_language(self.speech_voice[1])
+                self.client.set_rate(self.speech_rate)
+                self.client.set_pitch(self.speech_pitch)
+            self.client.speak(self.words_on_page, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
+                        speechd.CallbackType.END))
+            done = False
+            while not done:
+                time.sleep(0.1)
+            self.client.close()
+        except:
+            print 'speech-dispatcher client not created'
     
     def set_words_on_page(self, words):
         self.words_on_page = words
@@ -82,7 +86,8 @@ class EspeakThread(threading.Thread):
         self.speech_voice = speech_voice
 
     def cancel(self):
-        self.client.cancel()
+        if self.client:
+            self.client.cancel()
     
     def next_word_cb(self, type, **kargs):
         global done
@@ -175,31 +180,7 @@ class ReadEtextsActivity(activity.Activity):
         self.page = 0
         self.textview.grab_focus()
 
-        # Set up for idle suspend
-        self._idle_timer = 0
-        self._service = None
-
-        # start with sleep off
-        self._sleep_inhibit = True
-
-        fname = os.path.join('/etc', 'inhibit-ebook-sleep')
-        if not os.path.exists(fname):
-            try:
-                bus = dbus.SystemBus()
-                proxy = bus.get_object(_HARDWARE_MANAGER_SERVICE,
-                                       _HARDWARE_MANAGER_OBJECT_PATH)
-                self._service = dbus.Interface(proxy, _HARDWARE_MANAGER_INTERFACE)
-                self.scrolled.props.vadjustment.connect("value-changed", self._user_action_cb)
-                self.scrolled.props.hadjustment.connect("value-changed", self._user_action_cb)
-                self.connect("focus-in-event", self._focus_in_event_cb)
-                self.connect("focus-out-event", self._focus_out_event_cb)
-                self.connect("notify::active", self._now_active_cb)
-
-                logging.debug('Suspend on idle enabled')
-            except dbus.DBusException, e:
-                _logger.info('Hardware manager service not found, no idle suspend.')
-        else:
-            logging.debug('Suspend on idle disabled')
+        # self.setup_idle_timeout()
     
         # start on the read toolbar
         self.toolbox.set_current_toolbar(_TOOLBAR_READ)
@@ -222,6 +203,33 @@ class ReadEtextsActivity(activity.Activity):
         # uncomment this and adjust the path for easier testing
         #else:
         #    self._load_document('file:///home/smcv/tmp/test.pdf')
+
+    def setup_idle_timeout(self):
+        # Set up for idle suspend
+        self._idle_timer = 0
+        self._service = None
+        
+        # start with sleep off
+        self._sleep_inhibit = True
+        
+        fname = os.path.join('/etc', 'inhibit-ebook-sleep')
+        if not os.path.exists(fname):
+            try:
+                bus = dbus.SystemBus()
+                proxy = bus.get_object(_HARDWARE_MANAGER_SERVICE,
+                                       _HARDWARE_MANAGER_OBJECT_PATH)
+                self._service = dbus.Interface(proxy, _HARDWARE_MANAGER_INTERFACE)
+                self.scrolled.props.vadjustment.connect("value-changed", self._user_action_cb)
+                self.scrolled.props.hadjustment.connect("value-changed", self._user_action_cb)
+                self.connect("focus-in-event", self._focus_in_event_cb)
+                self.connect("focus-out-event", self._focus_out_event_cb)
+                self.connect("notify::active", self._now_active_cb)
+        
+                logging.debug('Suspend on idle enabled')
+            except dbus.DBusException, e:
+                _logger.info('Hardware manager service not found, no idle suspend.')
+        else:
+            logging.debug('Suspend on idle disabled')
 
     def reset_current_word(self):
         self.current_word = 0

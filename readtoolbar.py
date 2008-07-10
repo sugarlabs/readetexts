@@ -240,10 +240,15 @@ class   SpeechToolbar(gtk.Toolbar):
     def __init__(self):
         gtk.Toolbar.__init__(self)
         voicebar = gtk.Toolbar()
+        self.activity = None
+        voices = []
         
-        client = speechd.SSIPClient('readetextstest')
-        voices = client.list_synthesis_voices()
-        client.close()
+        try:
+            client = speechd.SSIPClient('readetextstest')
+            voices = client.list_synthesis_voices()
+            client.close()
+        except:
+            print 'speech dispatcher not started'
         self.sorted_voices = []
         for voice in voices:
             self.sorted_voices.append(voice)
@@ -298,8 +303,9 @@ class   SpeechToolbar(gtk.Toolbar):
         
     def voice_changed_cb(self, combo):
         self.selected_voice = combo.props.value
-        self.activity.set_speech_voice(self.selected_voice)
-        self.say(self.selected_voice[0])
+        if self.activity != None:
+            self.activity.set_speech_voice(self.selected_voice)
+            self.say(self.selected_voice[0])
 
     def pitch_adjusted_cb(self, get, data=None):
         self.activity.set_speech_pitch(int(self.pitchadj.value))
@@ -314,10 +320,13 @@ class   SpeechToolbar(gtk.Toolbar):
         self.activity.set_speech_voice(self.selected_voice)
     
     def say(self,  words):
-        client = speechd.SSIPClient('readetextstest')
-        client.set_rate(int(self.rateadj.value))
-        client.set_pitch(int(self.pitchadj.value))
-        client.set_language(self.selected_voice[1])
-        client.speak(words)
-        client.close()
+        try:
+            client = speechd.SSIPClient('readetextstest')
+            client.set_rate(int(self.rateadj.value))
+            client.set_pitch(int(self.pitchadj.value))
+            client.set_language(self.selected_voice[1])
+            client.speak(words)
+            client.close()
+        except:
+            print 'speech dispatcher not running'
 

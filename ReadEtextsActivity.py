@@ -70,6 +70,7 @@ class EspeakThread(threading.Thread):
             done = False
             while not done:
                 time.sleep(0.1)
+            self.cancel()
             self.client.close()
         except:
             print 'speech-dispatcher client not created'
@@ -87,7 +88,10 @@ class EspeakThread(threading.Thread):
 
     def cancel(self):
         if self.client:
-            self.client.cancel()
+            try:
+                self.client.cancel()
+            except:
+                print 'speech dispatcher cancel failed'
     
     def next_word_cb(self, type, **kargs):
         global done
@@ -284,7 +288,6 @@ class ReadEtextsActivity(activity.Activity):
                 self.et.set_speech_options(self.speech_voice,  self.speech_pitch,  self.speech_rate)
                 self.et.start()
             else:
-                self.et.cancel()
                 done = True
             return True
         if keyname == 'plus':

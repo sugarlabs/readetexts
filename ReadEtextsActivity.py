@@ -184,7 +184,7 @@ class ReadEtextsActivity(activity.Activity):
         self.page = 0
         self.textview.grab_focus()
 
-        # self.setup_idle_timeout()
+        self.setup_idle_timeout()
     
         # start on the read toolbar
         self.toolbox.set_current_toolbar(_TOOLBAR_READ)
@@ -239,6 +239,8 @@ class ReadEtextsActivity(activity.Activity):
         self.current_word = 0
 
     def delete_cb(self, widget, event):
+        global done
+        done = True
         return False
 
     def highlight_next_word(self,  word_count):

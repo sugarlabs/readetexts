@@ -27,6 +27,7 @@ import string
 from sugar.activity import activity
 from sugar import network
 from sugar.datastore import datastore
+from sugar.graphics.objectchooser import ObjectChooser
 from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  SpeechToolbar
 from gettext import gettext as _
 import pango
@@ -190,6 +191,11 @@ class ReadEtextsActivity(activity.Activity):
         self.toolbox.set_current_toolbar(_TOOLBAR_READ)
         self.unused_download_tubes = set()
         self._want_document = True
+        self._download_content_length = 0
+        self._download_content_type = None
+        # Status of temp file used for write_file:
+        self._tempfile = None
+        self._close_requested = False
         self.connect("shared", self._shared_cb)
         h = hash(self._activity_id)
         self.port = 1024 + (h % 64511)
@@ -204,9 +210,37 @@ class ReadEtextsActivity(activity.Activity):
             else:
                 # Wait for a successful join before trying to get the document
                 self.connect("joined", self._joined_cb)
+        elif self._object_id is None:
+            # Not joining, not resuming
+            self._show_journal_object_picker()
         # uncomment this and adjust the path for easier testing
         #else:
         #    self._load_document('file:///home/smcv/tmp/test.pdf')
+       # uncomment this and adjust the path for easier testing
+        #else:
+        #    self._load_document('file:///home/smcv/tmp/test.pdf')
+
+    def _show_journal_object_picker(self):
+        """Show the journal object picker to load a document.
+
+        This is for if Read is launched without a document.
+        """
+        if not self._want_document:
+            return
+        chooser = ObjectChooser(_('Choose document'), self, 
+                                gtk.DIALOG_MODAL | 
+                                gtk.DIALOG_DESTROY_WITH_PARENT)
+        try:
+            result = chooser.run()
+            if result == gtk.RESPONSE_ACCEPT:
+                logging.debug('ObjectChooser: %r' % 
+                              chooser.get_selected_object())
+                jobject = chooser.get_selected_object()
+                if jobject and jobject.file_path:
+                    self.read_file(jobject.file_path)
+        finally:
+            chooser.destroy()
+            del chooser
 
     def setup_idle_timeout(self):
         # Set up for idle suspend
@@ -474,7 +508,10 @@ class ReadEtextsActivity(activity.Activity):
     def read_file(self, file_path):
         """Load a file from the datastore on activity start"""
         _logger.debug('ReadEtextsActivity.read_file: %s', file_path)
-        self._load_document(file_path)
+        tempfile = os.path.join(self.get_activity_root(),  'instance', 'tmp%i' % time.time())
+        os.link(file_path,  tempfile)
+        self._tempfile = tempfile
+        self._load_document(self._tempfile)
 
     def write_file(self, filename):
         "Save meta data for the file."
@@ -489,6 +526,13 @@ class ReadEtextsActivity(activity.Activity):
                 f.write(filebytes)
             finally:
                 f.close
+        else:
+            os.link(self._tempfile,  filename)
+            
+            if self._close_requested:
+                _logger.debug("Removing temp file %s because we will close", self._tempfile)
+                os.unlink(self._tempfile)
+                self._tempfile = None
 
         self.metadata['current_page']  = str(self.page)
 

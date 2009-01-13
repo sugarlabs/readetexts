@@ -146,7 +146,7 @@
        y="35" />
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:italic;font-weight:bold;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:URW Chancery L;font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;line-height:100%"
+       style="font-size:12px;font-style:italic;font-weight:bold;fill:&stroke_color;;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:URW Chancery L;font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;line-height:100%"
        x="14"
        y="22.714287"
        id="text3249"

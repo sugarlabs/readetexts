@@ -213,17 +213,10 @@ class ReadEtextsActivity(activity.Activity):
         elif self._object_id is None:
             # Not joining, not resuming
             self._show_journal_object_picker()
-        # uncomment this and adjust the path for easier testing
-        #else:
-        #    self._load_document('file:///home/smcv/tmp/test.pdf')
-       # uncomment this and adjust the path for easier testing
-        #else:
-        #    self._load_document('file:///home/smcv/tmp/test.pdf')
-
+ 
     def _show_journal_object_picker(self):
         """Show the journal object picker to load a document.
-
-        This is for if Read is launched without a document.
+        This is for if Read Etexts is launched without a document.
         """
         if not self._want_document:
             return
@@ -237,6 +230,7 @@ class ReadEtextsActivity(activity.Activity):
                               chooser.get_selected_object())
                 jobject = chooser.get_selected_object()
                 if jobject and jobject.file_path:
+                    self.metadata['title'] = jobject.metadata['title']
                     self.read_file(jobject.file_path)
         finally:
             chooser.destroy()
@@ -665,7 +659,8 @@ class ReadEtextsActivity(activity.Activity):
             self._jobject.file_path = os.path.join(tempfile.gettempdir(), '%i' % time.time())
             self._owns_file = True
 
-        # Pick an arbitrary tube we can try to download the document from
+        self.metadata['title'] = self._jobject.metadata['title']
+       # Pick an arbitrary tube we can try to download the document from
         try:
             tube_id = self.unused_download_tubes.pop()
         except (ValueError, KeyError), e:

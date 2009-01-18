@@ -530,6 +530,10 @@ class ReadEtextsActivity(activity.Activity):
 
         self.metadata['current_page']  = str(self.page)
 
+    def can_close(self):
+        self._close_requested = True
+        return True
+
     def find_previous(self):
         self.current_found_item = self.current_found_item - 1
         if self.current_found_item <= 0:

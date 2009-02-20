@@ -29,3 +29,4 @@ po/mk.po
 po/es.po
 po/pt.po
 po/de.po
+speech.py

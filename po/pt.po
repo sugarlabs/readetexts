@@ -1,84 +1,73 @@
 # Portuguese translations for PACKAGE package.
-# Copyright (C) 2007 THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Tomeu Vizoso <tomeu@tomeuvizoso.net>, 2007.
+# James Simmons <ja.simmons@sbcglobal.net>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-31 09:25+0100\n"
-"PO-Revision-Date: 2007-03-23 16:51+0100\n"
-"Last-Translator: Tomeu Vizoso <tomeu@tomeuvizoso.net>\n"
-"Language-Team: Portuguese <translation-team-pt@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2009-02-19 18:25-0600\n"
+"PO-Revision-Date: 2009-02-19 18:34-0600\n"
+"Last-Translator: James Simmons <ja.simmons@sbcglobal.net>\n"
+"Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: activity/activity.info:2 readactivity.py:77
-msgid "Read"
+#: activity/activity.info:2
+msgid "Read ETexts"
 msgstr ""
 
-#: readactivity.py:73
+#: ReadEtextsActivity.py:147
 msgid "Edit"
 msgstr ""
 
-#: readactivity.py:81
+#: ReadEtextsActivity.py:152
+msgid "Read"
+msgstr ""
+
+#: ReadEtextsActivity.py:157
 msgid "View"
 msgstr ""
 
-#: readtoolbar.py:60
-msgid "Previous"
-msgstr "Anterior"
+#: ReadEtextsActivity.py:163
+msgid "Speech"
+msgstr ""
 
-#: readtoolbar.py:67
-msgid "Next"
-msgstr "Seguinte"
+#: ReadEtextsActivity.py:228
+msgid "Choose document"
+msgstr ""
 
-#: readtoolbar.py:105
+#: readtoolbar.py:43
 msgid "Back"
-msgstr "Voltar"
+msgstr ""
 
-#: readtoolbar.py:112
+#: readtoolbar.py:50
 msgid "Forward"
-msgstr "Avançar"
+msgstr ""
 
-#: readtoolbar.py:207
+#: readtoolbar.py:159
 msgid "Zoom out"
 msgstr ""
 
-#: readtoolbar.py:213
+#: readtoolbar.py:165
 msgid "Zoom in"
 msgstr ""
 
-#: readtoolbar.py:219
-msgid "Zoom to width"
+#: readtoolbar.py:205
+msgid "Previous"
 msgstr ""
 
-#: readtoolbar.py:225
-msgid "Zoom to fit"
+#: readtoolbar.py:212
+msgid "Next"
 msgstr ""
 
-#: readtoolbar.py:230
-msgid "Actual size"
+#: readtoolbar.py:312
+msgid "pitch adjusted"
 msgstr ""
 
-#: readtoolbar.py:248
-msgid "%"
+#: readtoolbar.py:316
+msgid "rate adjusted"
 msgstr ""
-
-#~ msgid "Read Activity"
-#~ msgstr "Actividade Ler"
-
-#~ msgid "Open a document to read"
-#~ msgstr "Abrir um documento para o ler"
-
-#~ msgid "All supported formats"
-#~ msgstr "Todos os formatos suportados"
-
-#~ msgid "All files"
-#~ msgstr "Todos os ficheiros"
-
-#~ msgid "Open"
-#~ msgstr "Abrir"

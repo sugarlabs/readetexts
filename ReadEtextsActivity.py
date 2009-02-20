@@ -185,6 +185,12 @@ class ReadEtextsActivity(activity.Activity):
         self.page = 0
         self.textview.grab_focus()
 
+        textbuffer = self.textview.get_buffer()
+        self.tag = textbuffer.create_tag()
+        self.tag.set_property('weight', pango.WEIGHT_BOLD)
+        self.tag.set_property( 'foreground', "white")
+        self.tag.set_property( 'background', "black")
+
         self.setup_idle_timeout()
     
         # start on the read toolbar
@@ -275,15 +281,11 @@ class ReadEtextsActivity(activity.Activity):
         if word_count < len(self.word_tuples) :
             word_tuple = self.word_tuples[word_count]
             textbuffer = self.textview.get_buffer()
-            tag = textbuffer.create_tag()
-            tag.set_property('weight', pango.WEIGHT_BOLD)
-            tag.set_property( 'foreground', "white")
-            tag.set_property( 'background', "black")
             iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
             iterEnd = textbuffer.get_iter_at_offset(word_tuple[1])
             bounds = textbuffer.get_bounds()
             textbuffer.remove_all_tags(bounds[0], bounds[1])
-            textbuffer.apply_tag(tag, iterStart, iterEnd)
+            textbuffer.apply_tag(self.tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
             max = v_adjustment.upper - v_adjustment.page_size
             max = max * word_count

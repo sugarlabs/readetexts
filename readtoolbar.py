@@ -330,7 +330,6 @@ class   SpeechToolbar(gtk.Toolbar):
         self.say(_("pitch adjusted"))
 
     def rate_adjusted_cb(self, get, data=None):
-        self.activity.set_speech_rate(int(self.rateadj.value))
         self.say(_("rate adjusted"))
       
     def set_activity(self, activity):
@@ -356,7 +355,7 @@ class   SpeechToolbar(gtk.Toolbar):
             self.et.set_words_on_page(words_on_page)
             self.et.set_activity(self.activity)
             self.et.set_speech_options(self.selected_voice,
-                    int(self.rateadj.value), int(self.pitchadj.value))
+                    int(self.pitchadj.value), int(self.rateadj.value))
             self.et.start()
         else:
             speech.done = True

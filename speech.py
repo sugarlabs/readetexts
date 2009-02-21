@@ -79,4 +79,5 @@ class EspeakThread(threading.Thread):
             gtk.gdk.threads_leave()
         elif type == speechd.CallbackType.END:
             self.activity.reset_current_word()
+            self.activity.reset_play_button()
             done = True

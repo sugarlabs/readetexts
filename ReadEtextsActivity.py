@@ -206,6 +206,11 @@ class ReadEtextsActivity(activity.Activity):
 
     def reset_current_word(self):
         self.current_word = 0
+        
+    def reset_play_button(self):
+        play = self._speech_toolbar.play_btn
+        play.set_active(int(not play.get_active()))
+        self.textview.grab_focus()
 
     def delete_cb(self, widget, event):
         speech.done = True

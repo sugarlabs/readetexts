@@ -28,11 +28,12 @@ from sugar.graphics.menuitem import MenuItem
 from sugar.graphics.toolcombobox import ToolComboBox
 from sugar.graphics.combobox import ComboBox
 from sugar.activity import activity
+from sugar.graphics.toggletoolbutton import ToggleToolButton
 
-try:
+import speech
+
+if speech.supported:
     import speechd
-except:
-    print "Speech not supported"
 
 class ReadToolbar(gtk.Toolbar):
     __gtype_name__ = 'ReadToolbar'
@@ -259,6 +260,25 @@ class   SpeechToolbar(gtk.Toolbar):
                 break
             default = default + 1
 
+        # Play button Image
+        play_img = gtk.Image()
+        play_img.show()
+        play_img.set_from_icon_name('media-playback-start',
+                gtk.ICON_SIZE_LARGE_TOOLBAR)
+
+        # Pause button Image
+        pause_img = gtk.Image()
+        pause_img.show()
+        pause_img.set_from_icon_name('media-playback-pause',
+                gtk.ICON_SIZE_LARGE_TOOLBAR)
+
+        # Play button
+        self.play_btn = ToggleToolButton('media-playback-start')
+        self.play_btn.show()
+        self.play_btn.connect('toggled', self._play_cb, [play_img, pause_img])
+        self.insert(self.play_btn, -1)
+        self.play_btn.set_tooltip(_('Play / Pause'))
+
         self.voice_combo = ComboBox()
         self.voice_combo.connect('changed', self.voice_changed_cb)
         for voice in self.sorted_voices:
@@ -304,11 +324,9 @@ class   SpeechToolbar(gtk.Toolbar):
     def voice_changed_cb(self, combo):
         self.selected_voice = combo.props.value
         if self.activity != None:
-            self.activity.set_speech_voice(self.selected_voice)
             self.say(self.selected_voice[0])
 
     def pitch_adjusted_cb(self, get, data=None):
-        self.activity.set_speech_pitch(int(self.pitchadj.value))
         self.say(_("pitch adjusted"))
 
     def rate_adjusted_cb(self, get, data=None):
@@ -317,7 +335,6 @@ class   SpeechToolbar(gtk.Toolbar):
       
     def set_activity(self, activity):
         self.activity = activity
-        self.activity.set_speech_voice(self.selected_voice)
     
     def say(self,  words):
         try:
@@ -330,3 +347,16 @@ class   SpeechToolbar(gtk.Toolbar):
         except:
             print 'speech dispatcher not running'
 
+    def _play_cb(self, widget, images):
+        widget.set_icon_widget(images[int(widget.get_active())])
+
+        if (speech.done):
+            self.et = speech.EspeakThread()
+            words_on_page = self.activity.add_word_marks()
+            self.et.set_words_on_page(words_on_page)
+            self.et.set_activity(self.activity)
+            self.et.set_speech_options(self.selected_voice,
+                    int(self.rateadj.value), int(self.pitchadj.value))
+            self.et.start()
+        else:
+            speech.done = True

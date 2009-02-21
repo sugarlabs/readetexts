@@ -35,76 +35,16 @@ import dbus
 import gobject
 import hippo
 import telepathy
-import time
-import threading
 
-speech_supported = True
-
-try:
-    import speechd
-except:
-    speech_supported = False
+import speech
 
 _HARDWARE_MANAGER_INTERFACE = 'org.laptop.HardwareManager'
 _HARDWARE_MANAGER_SERVICE = 'org.laptop.HardwareManager'
 _HARDWARE_MANAGER_OBJECT_PATH = '/org/laptop/HardwareManager'
 _PAGE_SIZE = 38
 _TOOLBAR_READ = 2
-done = True
 
 _logger = logging.getLogger('read-etexts-activity')
-
-class EspeakThread(threading.Thread):
-    def run(self):
-        "This is the code that is executed when the start() method is called"
-        global done
-        self.client = None
-        try:
-            self.client = speechd.SSIPClient('readetexts')
-            self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
-            if self.speech_voice:
-                self.client.set_language(self.speech_voice[1])
-                self.client.set_rate(self.speech_rate)
-                self.client.set_pitch(self.speech_pitch)
-            self.client.speak(self.words_on_page, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
-                        speechd.CallbackType.END))
-            done = False
-            while not done:
-                time.sleep(0.1)
-            self.cancel()
-            self.client.close()
-        except:
-            print 'speech-dispatcher client not created'
-    
-    def set_words_on_page(self, words):
-        self.words_on_page = words
-        
-    def set_activity(self, activity):
-        self.activity = activity
-
-    def set_speech_options(self,  speech_voice,  speech_pitch,  speech_rate):
-        self.speech_rate = speech_rate
-        self.speech_pitch = speech_pitch
-        self.speech_voice = speech_voice
-
-    def cancel(self):
-        if self.client:
-            try:
-                self.client.cancel()
-            except:
-                print 'speech dispatcher cancel failed'
-    
-    def next_word_cb(self, type, **kargs):
-        global done
-        if type == speechd.CallbackType.INDEX_MARK:
-            mark = kargs['index_mark']
-            word_count = int(mark)
-            gtk.gdk.threads_enter()
-            self.activity.highlight_next_word(word_count)
-            gtk.gdk.threads_leave()
-        elif type == speechd.CallbackType.END:
-            self.activity.reset_current_word()
-            done = True
 
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
     def translate_path(self, path):
@@ -120,13 +60,8 @@ READ_STREAM_SERVICE = 'read-activity-http'
 class ReadEtextsActivity(activity.Activity):
     def __init__(self, handle):
         "The entry point to the Activity"
-        global speech_supported
         gtk.gdk.threads_init()
         self.current_word = 0
-        
-        self.speech_voice = None
-        self.speech_rate = 0
-        self.speech_pitch = 0
         
         activity.Activity.__init__(self, handle)
         self.connect('delete-event', self.delete_cb)
@@ -158,7 +93,7 @@ class ReadEtextsActivity(activity.Activity):
         self._view_toolbar.set_activity(self)
         self._view_toolbar.show()
 
-        if speech_supported:
+        if speech.supported:
             self._speech_toolbar = SpeechToolbar()
             toolbox.add_toolbar(_('Speech'), self._speech_toolbar)
             self._speech_toolbar.set_activity(self)
@@ -273,8 +208,7 @@ class ReadEtextsActivity(activity.Activity):
         self.current_word = 0
 
     def delete_cb(self, widget, event):
-        global done
-        done = True
+        speech.done = True
         return False
 
     def highlight_next_word(self,  word_count):
@@ -308,19 +242,10 @@ class ReadEtextsActivity(activity.Activity):
 
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"
-        global done
-        global speech_supported
         keyname = gtk.gdk.keyval_name(event.keyval)
-        if keyname == 'KP_End' and speech_supported:
-            if (done):
-                self.et = EspeakThread()
-                words_on_page = self.add_word_marks()
-                self.et.set_words_on_page(words_on_page)
-                self.et.set_activity(self)
-                self.et.set_speech_options(self.speech_voice,  self.speech_pitch,  self.speech_rate)
-                self.et.start()
-            else:
-                done = True
+        if keyname == 'KP_End' and speech.supported:
+            play = self._speech_toolbar.play_btn
+            play.set_active(int(not play.get_active()))
             return True
         if keyname == 'plus':
             self.font_increase()
@@ -328,7 +253,7 @@ class ReadEtextsActivity(activity.Activity):
         if keyname == 'minus':
             self.font_decrease()
             return True
-        if done == False:
+        if speech.done == False:
             # If speech is in progress, ignore other keys.
             return True
         if keyname == 'KP_Right':
@@ -458,15 +383,6 @@ class ReadEtextsActivity(activity.Activity):
             marked_up_text = marked_up_text + '<mark name="' + str(i) + '"/>' + word_tuple[2]
             i = i + 1
         return marked_up_text + '</speak>'
-
-    def set_speech_pitch(self,  pitch):
-        self.speech_pitch = pitch
-        
-    def set_speech_rate(self,  rate):
-        self.speech_rate = rate
-        
-    def set_speech_voice(self,  voice):
-        self.speech_voice = voice
 
     def show_found_page(self, page_tuple):
         position = self.page_index[page_tuple[0]]

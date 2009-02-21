@@ -12,13 +12,13 @@ msgstr ""
 "Last-Translator: James Simmons <ja.simmons@sbcglobal.net>\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr ""
+msgstr "Actividade Ler"
 
 #: ReadEtextsActivity.py:147
 msgid "Edit"
@@ -38,15 +38,15 @@ msgstr ""
 
 #: ReadEtextsActivity.py:228
 msgid "Choose document"
-msgstr ""
+msgstr "Abrir um documento para o ler"
 
 #: readtoolbar.py:43
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 #: readtoolbar.py:50
 msgid "Forward"
-msgstr ""
+msgstr "Avançar"
 
 #: readtoolbar.py:159
 msgid "Zoom out"
@@ -58,11 +58,11 @@ msgstr ""
 
 #: readtoolbar.py:205
 msgid "Previous"
-msgstr ""
+msgstr "Anterior"
 
 #: readtoolbar.py:212
 msgid "Next"
-msgstr ""
+msgstr "Seguinte"
 
 #: readtoolbar.py:312
 msgid "pitch adjusted"

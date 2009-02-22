@@ -12,8 +12,6 @@ locale/fr/activity.linfo
 locale/fr/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 locale/de/activity.linfo
 locale/de/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
-locale/pt_BR/activity.linfo
-locale/pt_BR/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 locale/mk/activity.linfo
 locale/mk/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 locale/ar/activity.linfo
@@ -28,3 +26,5 @@ po/es.po
 po/pt.po
 po/de.po
 speech.py
+po/ReadETexts.pot
+po/POTFILES.in

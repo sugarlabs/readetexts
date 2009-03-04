@@ -30,6 +30,10 @@ except:
 done = True
 
 class EspeakThread(threading.Thread):
+    def __init__(self, stop_cb):
+        threading.Thread.__init__(self)
+        self.stop_cb = stop_cb
+
     def run(self):
         "This is the code that is executed when the start() method is called"
         global done
@@ -48,6 +52,7 @@ class EspeakThread(threading.Thread):
                 time.sleep(0.1)
             self.cancel()
             self.client.close()
+            self.stop_cb()
         except:
             print 'speech-dispatcher client not created'
     

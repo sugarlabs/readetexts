@@ -349,13 +349,17 @@ class   SpeechToolbar(gtk.Toolbar):
     def _play_cb(self, widget, images):
         widget.set_icon_widget(images[int(widget.get_active())])
 
-        if (speech.done):
-            self.et = speech.EspeakThread()
-            words_on_page = self.activity.add_word_marks()
-            self.et.set_words_on_page(words_on_page)
-            self.et.set_activity(self.activity)
-            self.et.set_speech_options(self.selected_voice,
-                    int(self.pitchadj.value), int(self.rateadj.value))
-            self.et.start()
+        if widget.get_active():
+            if speech.done:
+                self.et = speech.EspeakThread(self._stop_cb)
+                words_on_page = self.activity.add_word_marks()
+                self.et.set_words_on_page(words_on_page)
+                self.et.set_activity(self.activity)
+                self.et.set_speech_options(self.selected_voice,
+                        int(self.pitchadj.value), int(self.rateadj.value))
+                self.et.start()
         else:
             speech.done = True
+
+    def _stop_cb(self):
+        self.play_btn.set_active(False)

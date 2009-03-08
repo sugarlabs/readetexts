@@ -27,6 +27,7 @@ import string
 from sugar.activity import activity
 from sugar import network
 from sugar.datastore import datastore
+from sugar.graphics.alert import NotifyAlert
 from sugar.graphics.objectchooser import ObjectChooser
 from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  SpeechToolbar
 from gettext import gettext as _

@@ -535,6 +535,7 @@ class ReadEtextsActivity(activity.Activity):
 
         _logger.debug("Got document %s (%s) from tube %u",
                       tempfile, suggested_name, tube_id)
+        self._tempfile = tempfile
         self._load_document(tempfile)
         _logger.debug("Saving %s to datastore...", tempfile)
         self.save()
@@ -546,6 +547,7 @@ class ReadEtextsActivity(activity.Activity):
     def _download_error_cb(self, getter, err, tube_id):
         _logger.debug("Error getting document from tube %u: %s",
                       tube_id, err)
+        self._alert('Failure', 'Error getting document from tube: '  + tube_id + '' + err)
         self._want_document = True
         gobject.idle_add(self._get_document)
 
@@ -593,6 +595,7 @@ class ReadEtextsActivity(activity.Activity):
         except (ValueError, KeyError), e:
             _logger.debug('No tubes to get the document from right now: %s',
                           e)
+            self._alert('Failure', 'No tubes to get the document from right now: '  + e)
             return False
 
         # Avoid trying to download the document multiple times at once
@@ -687,13 +690,25 @@ class ReadEtextsActivity(activity.Activity):
 
     def _list_tubes_error_cb(self, e):
         _logger.error('ListTubes() failed: %s', e)
-
+        self._alert('Failure', 'ListrTubes() failed: '  + e)
+ 
     def _shared_cb(self, activity):
         # We initiated this activity and have now shared it, so by
         # definition we have the file.
         _logger.debug('Activity became shared')
         self.watch_for_tubes()
         self._share_document()
+
+    def _alert(self, title, text=None):
+        alert = NotifyAlert(timeout=5)
+        alert.props.title = title
+        alert.props.msg = text
+        self.add_alert(alert)
+        alert.connect('response', self._alert_cancel_cb)
+        alert.show()
+
+    def _alert_cancel_cb(self, alert, response_id):
+        self.remove_alert(alert)
 
     # From here down is power management stuff.
     def _now_active_cb(self, widget, pspec):

@@ -63,6 +63,7 @@ class ReadEtextsActivity(activity.Activity):
         "The entry point to the Activity"
         gtk.gdk.threads_init()
         self.current_word = 0
+        self.word_tuples = []
         
         activity.Activity.__init__(self, handle)
         self.connect('delete-event', self.delete_cb)
@@ -445,13 +446,16 @@ class ReadEtextsActivity(activity.Activity):
                 f.write(filebytes)
             finally:
                 f.close
-        else:
+        elif self._tempfile:
             os.link(self._tempfile,  filename)
             
             if self._close_requested:
                 _logger.debug("Removing temp file %s because we will close", self._tempfile)
                 os.unlink(self._tempfile)
                 self._tempfile = None
+        else:
+            # skip saving empty file
+            raise NotImplementedError
 
         self.metadata['current_page']  = str(self.page)
 

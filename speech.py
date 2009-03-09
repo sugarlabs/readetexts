@@ -19,7 +19,6 @@ import logging
 _logger = logging.getLogger('read-etexts-activity')
 
 supported = True
-done = True
 
 try:
     import gst
@@ -38,3 +37,5 @@ voice = None
 pitch = PITCH_DEFAULT
 rate = RATE_DEFAULT
 
+highlight_cb = None
+reset_cb = None

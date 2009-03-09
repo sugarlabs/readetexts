@@ -32,6 +32,8 @@ PITCH_MIN = -100
 PITCH_MAX = 100
 PITCH_DEFAULT = 0
 
+done = True
+
 def voices():
     try:
         client = speechd.SSIPClient('readetextstest')
@@ -53,17 +55,22 @@ def say(words):
     except Exception, e:
         _logger.warning('speech dispatcher not running: %s' % e)
 
-def play(words, highlight_cb, reset_cb):
+def is_stopped():
+    return done
+
+def stop():
+    global done
+    done = True
+
+def play(words):
     global thread
-    thread = EspeakThread(words, highlight_cb, reset_cb)
+    thread = EspeakThread(words)
     thread.start()
 
 class EspeakThread(threading.Thread):
-    def __init__(self, words, highlight_cb, reset_cb):
+    def __init__(self, words):
         threading.Thread.__init__(self)
         self.words = words
-        self.highlight_cb = highlight_cb
-        self.reset_cb = reset_cb
 
     def run(self):
         "This is the code that is executed when the start() method is called"
@@ -77,8 +84,9 @@ class EspeakThread(threading.Thread):
                 self.client.set_pitch(speech.pitch)
             self.client.speak(self.words, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
                         speechd.CallbackType.END))
-            speech.done = False
-            while not speech.done:
+            global done
+            done = False
+            while not done:
                 time.sleep(0.1)
             self.cancel()
             self.client.close()
@@ -97,8 +105,11 @@ class EspeakThread(threading.Thread):
             mark = kargs['index_mark']
             word_count = int(mark)
             gtk.gdk.threads_enter()
-            self.highlight_cb(word_count)
+            speech.highlight_cb(word_count)
             gtk.gdk.threads_leave()
         elif type == speechd.CallbackType.END:
-            self.reset_cb()
-            speech.done = True
+            gtk.gdk.threads_enter()
+            speech.reset_cb()
+            gtk.gdk.threads_leave()
+            global done
+            done = True

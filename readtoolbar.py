@@ -329,9 +329,7 @@ class   SpeechToolbar(gtk.Toolbar):
         widget.set_icon_widget(images[int(widget.get_active())])
 
         if widget.get_active():
-            if speech.done:
-                speech.play(self.activity.add_word_marks(),
-                        self.activity.highlight_next_word,
-                        self.activity.reset_play_button)
+            if speech.is_stopped():
+                speech.play(self.activity.add_word_marks())
         else:
-            speech.done = True
+            speech.stop()

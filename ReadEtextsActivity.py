@@ -156,6 +156,9 @@ class ReadEtextsActivity(activity.Activity):
         elif self._object_id is None:
             # Not joining, not resuming
             self._show_journal_object_picker()
+
+        speech.highlight_cb = self.highlight_next_word
+        speech.reset_cb = self.reset_play_button
  
     def _show_journal_object_picker(self):
         """Show the journal object picker to load a document.
@@ -216,7 +219,7 @@ class ReadEtextsActivity(activity.Activity):
         self.textview.grab_focus()
 
     def delete_cb(self, widget, event):
-        speech.done = True
+        speech.stop()
         return False
 
     def highlight_next_word(self,  word_count):
@@ -261,7 +264,7 @@ class ReadEtextsActivity(activity.Activity):
         if keyname == 'minus':
             self.font_decrease()
             return True
-        if speech.done == False:
+        if speech.is_stopped() == False:
             # If speech is in progress, ignore other keys.
             return True
         if keyname == 'KP_Right':

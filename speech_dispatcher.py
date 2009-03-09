@@ -22,7 +22,7 @@ import logging
 
 import speech
 
-logger = logging.getLogger('readetexts')
+_logger = logging.getLogger('read-etexts-activity')
 
 RATE_MIN = -100
 RATE_MAX = 100
@@ -39,7 +39,7 @@ def voices():
         client.close()
         return voices
     except Exception, e:
-        logger.warning('speech dispatcher not started: %s' % e)
+        _logger.warning('speech dispatcher not started: %s' % e)
         return []
 
 def say(words):
@@ -51,7 +51,7 @@ def say(words):
         client.speak(words)
         client.close()
     except Exception, e:
-        logger.warning('speech dispatcher not running: %s' % e)
+        _logger.warning('speech dispatcher not running: %s' % e)
 
 def play(words, highlight_cb, reset_cb):
     global thread
@@ -83,14 +83,14 @@ class EspeakThread(threading.Thread):
             self.cancel()
             self.client.close()
         except Exception, e:
-            logger.warning('speech-dispatcher client not created: %s' % e)
+            _logger.warning('speech-dispatcher client not created: %s' % e)
     
     def cancel(self):
         if self.client:
             try:
                 self.client.cancel()
             except Exception, e:
-                logger.warning('speech dispatcher cancel failed: %s' % e)
+                _logger.warning('speech dispatcher cancel failed: %s' % e)
     
     def next_word_cb(self, type, **kargs):
         if type == speechd.CallbackType.INDEX_MARK:

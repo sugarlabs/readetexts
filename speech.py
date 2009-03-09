@@ -16,7 +16,7 @@
 
 import logging
 
-logger = logging.getLogger('readetexts')
+_logger = logging.getLogger('read-etexts-activity')
 
 supported = True
 done = True
@@ -25,14 +25,14 @@ try:
     import gst
     gst.element_factory_make('espeak')
     from speech_gst import *
-    logger.info('use gst-plugins-espeak')
+    _logger.info('use gst-plugins-espeak')
 except:
     try:
         from speech_dispatcher import *
-        logger.info('use speech-dispatcher')
+        _logger.info('use speech-dispatcher')
     except Exception, e:
         supported = False
-        logger.info('disable speech: %s' % e)
+        _logger.info('disable speech: %s' % e)
 
 voice = None
 pitch = PITCH_DEFAULT

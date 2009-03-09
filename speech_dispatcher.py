@@ -24,14 +24,6 @@ import speech
 
 _logger = logging.getLogger('read-etexts-activity')
 
-RATE_MIN = -100
-RATE_MAX = 100
-RATE_DEFAULT = 0
-
-PITCH_MIN = -100
-PITCH_MAX = 100
-PITCH_DEFAULT = 0
-
 done = True
 
 def voices():

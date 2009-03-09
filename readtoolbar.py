@@ -275,8 +275,7 @@ class   SpeechToolbar(gtk.Toolbar):
         self.insert(combotool, -1)
         combotool.show()
 
-        self.pitchadj = gtk.Adjustment(speech.PITCH_DEFAULT, speech.PITCH_MIN,
-                speech.PITCH_MAX, 1, 10, 0)
+        self.pitchadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
         self.pitchadj.connect("value_changed", self.pitch_adjusted_cb)
         pitchbar = gtk.HScale(self.pitchadj)
         pitchbar.set_draw_value(False)
@@ -288,8 +287,7 @@ class   SpeechToolbar(gtk.Toolbar):
         self.insert(pitchtool, -1)
         pitchbar.show()
 
-        self.rateadj = gtk.Adjustment(speech.RATE_DEFAULT, speech.RATE_MIN,
-                speech.RATE_MAX, 1, 10, 0)
+        self.rateadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
         self.rateadj.connect("value_changed", self.rate_adjusted_cb)
         ratebar = gtk.HScale(self.rateadj)
         ratebar.set_draw_value(False)

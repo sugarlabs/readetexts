@@ -239,7 +239,7 @@ class   SpeechToolbar(gtk.Toolbar):
         gtk.Toolbar.__init__(self)
         voicebar = gtk.Toolbar()
         self.activity = None
-        self.sorted_voices = speech.voice()
+        self.sorted_voices = [i for i in speech.voices()]
         self.sorted_voices.sort(self.compare_voices)
         default = 0
         for voice in self.sorted_voices:
@@ -271,13 +271,13 @@ class   SpeechToolbar(gtk.Toolbar):
         for voice in self.sorted_voices:
             self.voice_combo.append_item(voice, voice[0])
         self.voice_combo.set_active(default)
-        self.selected_voice = self.voice_combo.props.value
         combotool = ToolComboBox(self.voice_combo)
         self.insert(combotool, -1)
         combotool.show()
 
-        self.pitchadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
-        self.pitchadj.connect("value_changed", self.pitch_adjusted_cb, self.pitchadj)
+        self.pitchadj = gtk.Adjustment(speech.PITCH_DEFAULT, speech.PITCH_MIN,
+                speech.PITCH_MAX, 1, 10, 0)
+        self.pitchadj.connect("value_changed", self.pitch_adjusted_cb)
         pitchbar = gtk.HScale(self.pitchadj)
         pitchbar.set_draw_value(False)
         pitchbar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
@@ -288,8 +288,9 @@ class   SpeechToolbar(gtk.Toolbar):
         self.insert(pitchtool, -1)
         pitchbar.show()
 
-        self.rateadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
-        self.rateadj.connect("value_changed", self.rate_adjusted_cb, self.rateadj)
+        self.rateadj = gtk.Adjustment(speech.RATE_DEFAULT, speech.RATE_MIN,
+                speech.RATE_MAX, 1, 10, 0)
+        self.rateadj.connect("value_changed", self.rate_adjusted_cb)
         ratebar = gtk.HScale(self.rateadj)
         ratebar.set_draw_value(False)
         ratebar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
@@ -309,14 +310,16 @@ class   SpeechToolbar(gtk.Toolbar):
             return 1
         
     def voice_changed_cb(self, combo):
-        self.selected_voice = combo.props.value
+        speech.voice = combo.props.value
         if self.activity != None:
-            speech.say(self.selected_voice[0])
+            speech.say(speech.voice[0])
 
-    def pitch_adjusted_cb(self, get, data=None):
+    def pitch_adjusted_cb(self, get):
+        speech.pitch = int(get.value)
         speech.say(_("pitch adjusted"))
 
-    def rate_adjusted_cb(self, get, data=None):
+    def rate_adjusted_cb(self, get):
+        speech.rate = int(get.value)
         speech.say(_("rate adjusted"))
       
     def set_activity(self, activity):
@@ -327,11 +330,8 @@ class   SpeechToolbar(gtk.Toolbar):
 
         if widget.get_active():
             if speech.done:
-                speech.highlight_cb = activity.highlight_next_word
-                speech.reset_cb = activity.reset_play_button
-                speech.voice = self.selected_voice
-                speech.pitch = self.pitchadj.value
-                speech.rate = self.rateadj.value
-                speech.play()
+                speech.play(self.activity.add_word_marks(),
+                        self.activity.highlight_next_word,
+                        self.activity.reset_play_button)
         else:
             speech.done = True

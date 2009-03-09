@@ -14,21 +14,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import logging
+
+logger = logging.getLogger('readetexts')
+
 supported = True
 done = True
-
-highlight_cb = None
-reset_cb = None
-voice = None
-pitch = None
-rate = None
 
 try:
     import gst
     gst.element_factory_make('espeak')
-    from speech-gst import *
+    from speech_gst import *
+    logger.info('use gst-plugins-espeak')
 except:
     try:
-        from speech-dispatcher import *
-    except:
+        from speech_dispatcher import *
+        logger.info('use speech-dispatcher')
+    except Exception, e:
         supported = False
+        logger.info('disable speech: %s' % e)
+
+voice = None
+pitch = PITCH_DEFAULT
+rate = RATE_DEFAULT
+

@@ -24,14 +24,22 @@ import speech
 
 logger = logging.getLogger('readetexts')
 
+RATE_MIN = -100
+RATE_MAX = 100
+RATE_DEFAULT = 0
+
+PITCH_MIN = -100
+PITCH_MAX = 100
+PITCH_DEFAULT = 0
+
 def voices():
     try:
         client = speechd.SSIPClient('readetextstest')
         voices = client.list_synthesis_voices()
         client.close()
         return voices
-    except:
-        logger.warning('speech dispatcher not started')
+    except Exception, e:
+        logger.warning('speech dispatcher not started: %s' % e)
         return []
 
 def say(words):
@@ -39,54 +47,58 @@ def say(words):
         client = speechd.SSIPClient('readetextstest')
         client.set_rate(int(speech.rate))
         client.set_pitch(int(speech.pitch))
-        client.set_language(speech.voice)
+        client.set_language(speech.voice[1])
         client.speak(words)
         client.close()
-    except:
-        logger.warning('speech dispatcher not running')
+    except Exception, e:
+        logger.warning('speech dispatcher not running: %s' % e)
 
-def play();
-    thread = EspeakThread(self._stop_cb)
+def play(words, highlight_cb, reset_cb):
+    global thread
+    thread = EspeakThread(words, highlight_cb, reset_cb)
     thread.start()
 
 class EspeakThread(threading.Thread):
+    def __init__(self, words, highlight_cb, reset_cb):
+        threading.Thread.__init__(self)
+        self.words = words
+        self.highlight_cb = highlight_cb
+        self.reset_cb = reset_cb
+
     def run(self):
         "This is the code that is executed when the start() method is called"
-        global done
         self.client = None
         try:
             self.client = speechd.SSIPClient('readetexts')
             self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
             if speech.voice:
-                self.client.set_language(speech.voice) # XXX [1]
+                self.client.set_language(speech.voice[1])
                 self.client.set_rate(speech.rate)
                 self.client.set_pitch(speech.pitch)
-            self.client.speak(speech.words, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
+            self.client.speak(self.words, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
                         speechd.CallbackType.END))
-            done = False
-            while not done:
+            speech.done = False
+            while not speech.done:
                 time.sleep(0.1)
             self.cancel()
             self.client.close()
-            speech.reset_cb()
-        except:
-            logger.warning('speech-dispatcher client not created')
+        except Exception, e:
+            logger.warning('speech-dispatcher client not created: %s' % e)
     
     def cancel(self):
         if self.client:
             try:
                 self.client.cancel()
-            except:
-                logger.warning('speech dispatcher cancel failed')
+            except Exception, e:
+                logger.warning('speech dispatcher cancel failed: %s' % e)
     
     def next_word_cb(self, type, **kargs):
-        global done
         if type == speechd.CallbackType.INDEX_MARK:
             mark = kargs['index_mark']
             word_count = int(mark)
             gtk.gdk.threads_enter()
-            speech.highlight_cb(word_count)
+            self.highlight_cb(word_count)
             gtk.gdk.threads_leave()
         elif type == speechd.CallbackType.END:
-            speech.reset_cb()
-            done = True
+            self.reset_cb()
+            speech.done = True

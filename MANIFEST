@@ -1,3 +1,5 @@
+speech_gst.py
+speech_dispatcher.py
 ReadEtextsActivity.py
 readtoolbar.py
 setup.py

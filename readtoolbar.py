@@ -32,9 +32,6 @@ from sugar.graphics.toggletoolbutton import ToggleToolButton
 
 import speech
 
-if speech.supported:
-    import speechd
-
 class ReadToolbar(gtk.Toolbar):
     __gtype_name__ = 'ReadToolbar'
 
@@ -242,17 +239,7 @@ class   SpeechToolbar(gtk.Toolbar):
         gtk.Toolbar.__init__(self)
         voicebar = gtk.Toolbar()
         self.activity = None
-        voices = []
-        
-        try:
-            client = speechd.SSIPClient('readetextstest')
-            voices = client.list_synthesis_voices()
-            client.close()
-        except:
-            print 'speech dispatcher not started'
-        self.sorted_voices = []
-        for voice in voices:
-            self.sorted_voices.append(voice)
+        self.sorted_voices = [i for i in speech.voices()]
         self.sorted_voices.sort(self.compare_voices)
         default = 0
         for voice in self.sorted_voices:
@@ -284,13 +271,12 @@ class   SpeechToolbar(gtk.Toolbar):
         for voice in self.sorted_voices:
             self.voice_combo.append_item(voice, voice[0])
         self.voice_combo.set_active(default)
-        self.selected_voice = self.voice_combo.props.value
         combotool = ToolComboBox(self.voice_combo)
         self.insert(combotool, -1)
         combotool.show()
 
         self.pitchadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
-        self.pitchadj.connect("value_changed", self.pitch_adjusted_cb, self.pitchadj)
+        self.pitchadj.connect("value_changed", self.pitch_adjusted_cb)
         pitchbar = gtk.HScale(self.pitchadj)
         pitchbar.set_draw_value(False)
         pitchbar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
@@ -302,7 +288,7 @@ class   SpeechToolbar(gtk.Toolbar):
         pitchbar.show()
 
         self.rateadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
-        self.rateadj.connect("value_changed", self.rate_adjusted_cb, self.rateadj)
+        self.rateadj.connect("value_changed", self.rate_adjusted_cb)
         ratebar = gtk.HScale(self.rateadj)
         ratebar.set_draw_value(False)
         ratebar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
@@ -322,44 +308,26 @@ class   SpeechToolbar(gtk.Toolbar):
             return 1
         
     def voice_changed_cb(self, combo):
-        self.selected_voice = combo.props.value
+        speech.voice = combo.props.value
         if self.activity != None:
-            self.say(self.selected_voice[0])
+            speech.say(speech.voice[0])
 
-    def pitch_adjusted_cb(self, get, data=None):
-        self.say(_("pitch adjusted"))
+    def pitch_adjusted_cb(self, get):
+        speech.pitch = int(get.value)
+        speech.say(_("pitch adjusted"))
 
-    def rate_adjusted_cb(self, get, data=None):
-        self.say(_("rate adjusted"))
+    def rate_adjusted_cb(self, get):
+        speech.rate = int(get.value)
+        speech.say(_("rate adjusted"))
       
     def set_activity(self, activity):
         self.activity = activity
     
-    def say(self,  words):
-        try:
-            client = speechd.SSIPClient('readetextstest')
-            client.set_rate(int(self.rateadj.value))
-            client.set_pitch(int(self.pitchadj.value))
-            client.set_language(self.selected_voice[1])
-            client.speak(words)
-            client.close()
-        except:
-            print 'speech dispatcher not running'
-
     def _play_cb(self, widget, images):
         widget.set_icon_widget(images[int(widget.get_active())])
 
         if widget.get_active():
-            if speech.done:
-                self.et = speech.EspeakThread(self._stop_cb)
-                words_on_page = self.activity.add_word_marks()
-                self.et.set_words_on_page(words_on_page)
-                self.et.set_activity(self.activity)
-                self.et.set_speech_options(self.selected_voice,
-                        int(self.pitchadj.value), int(self.rateadj.value))
-                self.et.start()
+            if speech.is_stopped():
+                speech.play(self.activity.add_word_marks())
         else:
-            speech.done = True
-
-    def _stop_cb(self):
-        self.play_btn.set_active(False)
+            speech.stop()

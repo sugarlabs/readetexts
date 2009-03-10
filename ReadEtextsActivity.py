@@ -63,6 +63,7 @@ class ReadEtextsActivity(activity.Activity):
         "The entry point to the Activity"
         gtk.gdk.threads_init()
         self.current_word = 0
+        self.word_tuples = []
         
         activity.Activity.__init__(self, handle)
         self.connect('delete-event', self.delete_cb)
@@ -155,6 +156,9 @@ class ReadEtextsActivity(activity.Activity):
         elif self._object_id is None:
             # Not joining, not resuming
             self._show_journal_object_picker()
+
+        speech.highlight_cb = self.highlight_next_word
+        speech.reset_cb = self.reset_play_button
  
     def _show_journal_object_picker(self):
         """Show the journal object picker to load a document.
@@ -209,12 +213,13 @@ class ReadEtextsActivity(activity.Activity):
         self.current_word = 0
         
     def reset_play_button(self):
+        self.reset_current_word()
         play = self._speech_toolbar.play_btn
-        play.set_active(int(not play.get_active()))
+        play.set_active(False)
         self.textview.grab_focus()
 
     def delete_cb(self, widget, event):
-        speech.done = True
+        speech.stop()
         return False
 
     def highlight_next_word(self,  word_count):
@@ -259,7 +264,7 @@ class ReadEtextsActivity(activity.Activity):
         if keyname == 'minus':
             self.font_decrease()
             return True
-        if speech.done == False:
+        if speech.is_stopped() == False:
             # If speech is in progress, ignore other keys.
             return True
         if keyname == 'KP_Right':
@@ -444,13 +449,16 @@ class ReadEtextsActivity(activity.Activity):
                 f.write(filebytes)
             finally:
                 f.close
-        else:
+        elif self._tempfile:
             os.link(self._tempfile,  filename)
             
             if self._close_requested:
                 _logger.debug("Removing temp file %s because we will close", self._tempfile)
                 os.unlink(self._tempfile)
                 self._tempfile = None
+        else:
+            # skip saving empty file
+            raise NotImplementedError
 
         self.metadata['current_page']  = str(self.page)
 

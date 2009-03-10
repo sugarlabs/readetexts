@@ -1,6 +1,5 @@
-#! /usr/bin/env python
-
 # Copyright (C) 2008 James D. Simmons
+# Copyright (C) 2009 Aleksey S. Lim
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,73 +15,33 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import gtk
-import time
-import threading
+import logging
+
+_logger = logging.getLogger('read-etexts-activity')
 
 supported = True
 
+import gst
+gst.element_factory_make('espeak')
+from speech_gst import *
+
 try:
-    import speechd
-except:
-    supported = False
+    import gst
+    gst.element_factory_make('espeak')
+    from speech_gst import *
+    _logger.info('use gst-plugins-espeak')
+except Exception, e:
+    _logger.info('disable gst-plugins-espeak: %s' % e)
+    try:
+        from speech_dispatcher import *
+        _logger.info('use speech-dispatcher')
+    except Exception, e:
+        supported = False
+        _logger.info('disable speech: %s' % e)
 
-done = True
+voice = None
+pitch = 0
+rate = 0
 
-class EspeakThread(threading.Thread):
-    def __init__(self, stop_cb):
-        threading.Thread.__init__(self)
-        self.stop_cb = stop_cb
-
-    def run(self):
-        "This is the code that is executed when the start() method is called"
-        global done
-        self.client = None
-        try:
-            self.client = speechd.SSIPClient('readetexts')
-            self.client._conn.send_command('SET', speechd.Scope.SELF, 'SSML_MODE', "ON")
-            if self.speech_voice:
-                self.client.set_language(self.speech_voice[1])
-                self.client.set_rate(self.speech_rate)
-                self.client.set_pitch(self.speech_pitch)
-            self.client.speak(self.words_on_page, self.next_word_cb, (speechd.CallbackType.INDEX_MARK,
-                        speechd.CallbackType.END))
-            done = False
-            while not done:
-                time.sleep(0.1)
-            self.cancel()
-            self.client.close()
-            self.stop_cb()
-        except:
-            print 'speech-dispatcher client not created'
-    
-    def set_words_on_page(self, words):
-        self.words_on_page = words
-        
-    def set_activity(self, activity):
-        self.activity = activity
-
-    def set_speech_options(self,  speech_voice,  speech_pitch,  speech_rate):
-        self.speech_rate = speech_rate
-        self.speech_pitch = speech_pitch
-        self.speech_voice = speech_voice
-
-    def cancel(self):
-        if self.client:
-            try:
-                self.client.cancel()
-            except:
-                print 'speech dispatcher cancel failed'
-    
-    def next_word_cb(self, type, **kargs):
-        global done
-        if type == speechd.CallbackType.INDEX_MARK:
-            mark = kargs['index_mark']
-            word_count = int(mark)
-            gtk.gdk.threads_enter()
-            self.activity.highlight_next_word(word_count)
-            gtk.gdk.threads_leave()
-        elif type == speechd.CallbackType.END:
-            self.activity.reset_current_word()
-            self.activity.reset_play_button()
-            done = True
+highlight_cb = None
+reset_cb = None

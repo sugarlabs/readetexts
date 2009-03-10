@@ -24,7 +24,8 @@ _logger = logging.getLogger('read-etexts-activity')
 def _message_cb(bus, message, pipe):
     if message.type in (gst.MESSAGE_EOS, gst.MESSAGE_ERROR):
         pipe.set_state(gst.STATE_NULL)
-        speech.reset_cb()
+        if pipe is play_speaker[1]:
+            speech.reset_cb()
     elif message.type == gst.MESSAGE_ELEMENT and \
             message.structure.get_name() == 'espeak-mark':
         mark = message.structure['mark']

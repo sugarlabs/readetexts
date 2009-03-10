@@ -661,7 +661,7 @@ class ReadEtextsActivity(activity.Activity):
         self._fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
                 {},
                 telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                 ('127.0.0.1', dbus.UInt16(self.port)),
+                ('127.0.0.1', dbus.UInt16(self.port)),
                 telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST,  0)
 
     def watch_for_tubes(self):

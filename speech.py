@@ -1,4 +1,4 @@
-# Copyright (C) 2008 James D. Simmons
+# Copyright (C) 2008, 2009 James D. Simmons
 # Copyright (C) 2009 Aleksey S. Lim
 #
 # This program is free software; you can redistribute it and/or modify
@@ -20,10 +20,6 @@ import logging
 _logger = logging.getLogger('read-etexts-activity')
 
 supported = True
-
-import gst
-gst.element_factory_make('espeak')
-from speech_gst import *
 
 try:
     import gst

@@ -369,7 +369,7 @@ class ReadEtextsActivity(activity.Activity):
         j = 0
         word_begin = 0
         word_end = 0
-        ignore_chars = [' ',  '\n',  u'\r',  '_',  '[', '{', ']', '}', '|',  '<',  '>' ]
+        ignore_chars = [' ',  '\n',  u'\r',  '_',  '[', '{', ']', '}', '|',  '<',  '>',  '*',  '+',  '/',  '\\' ]
         ignore_set = set(ignore_chars)
         self.word_tuples = []
         while i < len(label_text):

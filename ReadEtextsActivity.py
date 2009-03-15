@@ -493,6 +493,7 @@ class ReadEtextsActivity(activity.Activity):
             finally:
                 f.close
         elif self._tempfile:
+            print 'self._tempfile', self._tempfile, 'filename', filename
             os.link(self._tempfile,  filename)
             
             if self._close_requested:
@@ -594,12 +595,14 @@ class ReadEtextsActivity(activity.Activity):
         file_path = os.path.join(self.get_activity_root(), 'instance',
                                     '%i' % time.time())
         _logger.debug("Saving file %s to datastore...", file_path)
+        print 'Saving file to datastore', file_path
         os.link(tempfile, file_path)
         self._jobject.file_path = file_path
         datastore.write(self._jobject, transfer_ownership=True)
 
         _logger.debug("Got document %s (%s) from tube %u",
                       tempfile, suggested_name, tube_id)
+        print 'Got document', tempfile
         self._load_document(tempfile)
         self.save()
 

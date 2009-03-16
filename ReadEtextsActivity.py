@@ -178,8 +178,8 @@ class ReadEtextsActivity(activity.Activity):
 
         self.is_received_document = False
         
-        if self._shared_activity:
-            # We're joining
+        if self._shared_activity and handle.object_id == None:
+            # We're joining, and we don't already have the document.
             if self.get_shared():
                 # Already joined for some reason, just get the document
                 self._joined_cb(self)

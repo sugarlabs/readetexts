@@ -29,12 +29,14 @@ _logger = logging.getLogger('read-etexts-activity')
 
 # start with sleep off
 sleep_inhibit = True
+service_activated = False
 _idle_timer = 0
 _service = None
 
 def setup_idle_timeout():
     # Set up for idle suspend
     global _service
+    global service_activated
         
     fname = os.path.join('/etc', 'inhibit-ebook-sleep')
     if not os.path.exists(fname):
@@ -43,6 +45,7 @@ def setup_idle_timeout():
             proxy = bus.get_object(_HARDWARE_MANAGER_SERVICE,
                                    _HARDWARE_MANAGER_OBJECT_PATH)
             _service = dbus.Interface(proxy, _HARDWARE_MANAGER_INTERFACE)
+            service_activated = True
             logging.debug('Suspend on idle enabled')
         except dbus.DBusException, e:
             _logger.info('Hardware manager service not found, no idle suspend.')
@@ -50,10 +53,12 @@ def setup_idle_timeout():
         logging.debug('Suspend on idle disabled')
 
 def turn_on_sleep_timer():
+    global sleep_inhibit
     sleep_inhibit = False
     reset_sleep_timer()
 
 def turn_off_sleep_timer():
+    global sleep_inhibit
     sleep_inhibit = True
 
 def reset_sleep_timer():
@@ -67,6 +72,6 @@ def _suspend():
     global _idle_timer
     global _service
     _idle_timer = 0
-    if not sleep_inhibit:
+    if not sleep_inhibit and _service is not None:
         _service.set_kernel_suspend()
 

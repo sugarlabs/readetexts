@@ -158,7 +158,7 @@ class ReadEtextsActivity(activity.Activity):
         self.tag.set_property( 'background', "black")
 
         xopower.setup_idle_timeout()
-        if xopower.sleep_inhibit == True:
+        if xopower.service_activated:
             self.scrolled.props.vadjustment.connect("value-changed", self._user_action_cb)
             self.scrolled.props.hadjustment.connect("value-changed", self._user_action_cb)
             self.connect("focus-in-event", self._focus_in_event_cb)
@@ -261,7 +261,8 @@ class ReadEtextsActivity(activity.Activity):
 
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"
-        xopower.reset_sleep_timer()
+        if xopower.service_activated:
+            xopower.reset_sleep_timer()
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'KP_End' and speech.supported:
             play = self._speech_toolbar.play_btn

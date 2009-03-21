@@ -49,15 +49,9 @@ def setup_idle_timeout():
         logging.debug('Suspend on idle disabled')
 
 def now_active():
-    if props.active:
-        # Now active, start initial suspend timeout
-        if _idle_timer > 0:
-            gobject.source_remove(_idle_timer)
-        _idle_timer = gobject.timeout_add(15000, _suspend_cb)
-        sleep_inhibit = False
-    else:
-        # Now inactive
-        sleep_inhibit = True
+    if _idle_timer > 0:
+         gobject.source_remove(_idle_timer)
+    _idle_timer = gobject.timeout_add(15000, _suspend_cb)
 
 def turn_on_sleep_timer():
     sleep_inhibit = False

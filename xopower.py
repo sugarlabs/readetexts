@@ -16,6 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import os
+import logging
+import dbus
+import gobject
+
 _HARDWARE_MANAGER_INTERFACE = 'org.laptop.HardwareManager'
 _HARDWARE_MANAGER_SERVICE = 'org.laptop.HardwareManager'
 _HARDWARE_MANAGER_OBJECT_PATH = '/org/laptop/HardwareManager'
@@ -43,7 +48,7 @@ def setup_idle_timeout():
     else:
         logging.debug('Suspend on idle disabled')
 
-def _now_active_cb(widget, pspec):
+def now_active():
     if props.active:
         # Now active, start initial suspend timeout
         if _idle_timer > 0:
@@ -66,10 +71,9 @@ def reset_sleep_timer():
         gobject.source_remove(_idle_timer)
     _idle_timer = gobject.timeout_add(5000, _suspend_cb)
 
-def _suspend_cb():
+def _suspend():
     # If the machine has been idle for 5 seconds, suspend
     _idle_timer = 0
     if not sleep_inhibit:
         _service.set_kernel_suspend()
-    return False
 

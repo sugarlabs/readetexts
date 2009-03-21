@@ -766,7 +766,7 @@ class ReadEtextsActivity(activity.Activity):
     def _now_active_cb(self, widget, pspec):
         if self.props.active:
             # Now active, start initial suspend timeout
-            xopower.now_active()
+            xopower.reset_sleep_timer()
             xopower.sleep_inhibit = False
         else:
             # Now inactive

@@ -261,6 +261,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"
+        xopower.reset_sleep_timer()
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'KP_End' and speech.supported:
             play = self._speech_toolbar.play_btn
@@ -597,14 +598,12 @@ class ReadEtextsActivity(activity.Activity):
         file_path = os.path.join(self.get_activity_root(), 'instance',
                                     '%i' % time.time())
         _logger.debug("Saving file %s to datastore...", file_path)
-        print 'Saving file to datastore', file_path
         os.link(tempfile, file_path)
         self._jobject.file_path = file_path
         datastore.write(self._jobject, transfer_ownership=True)
 
         _logger.debug("Got document %s (%s) from tube %u",
                       tempfile, suggested_name, tube_id)
-        print 'Got document', tempfile
         self._load_document(tempfile)
         self.save()
 

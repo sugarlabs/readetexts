@@ -619,7 +619,7 @@ class ReadEtextsActivity(activity.Activity):
         total = self._download_content_length
         self._read_toolbar.set_downloaded_bytes(bytes_downloaded,  total)
         while gtk.events_pending():
-            gtk.mainiteration()
+            gtk.main_iteration()
 
     def _download_error_cb(self, getter, err, tube_id):
         _logger.debug("Error getting document from tube %u: %s",

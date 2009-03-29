@@ -151,6 +151,15 @@ class ReadToolbar(gtk.Toolbar):
 class ViewToolbar(gtk.Toolbar):
     __gtype_name__ = 'ViewToolbar'
 
+    __gsignals__ = {
+        'needs-update-size': (gobject.SIGNAL_RUN_FIRST,
+                              gobject.TYPE_NONE,
+                              ([])),
+        'go-fullscreen': (gobject.SIGNAL_RUN_FIRST,
+                          gobject.TYPE_NONE,
+                          ([]))
+    }
+
     def __init__(self):
         gtk.Toolbar.__init__(self)
         self._zoom_out = ToolButton('zoom-out')
@@ -165,6 +174,17 @@ class ViewToolbar(gtk.Toolbar):
         self.insert(self._zoom_in, -1)
         self._zoom_in.show()
 
+        spacer = gtk.SeparatorToolItem()
+        spacer.props.draw = False
+        self.insert(spacer, -1)
+        spacer.show()
+
+        self._fullscreen = ToolButton('view-fullscreen')
+        self._fullscreen.set_tooltip(_('Fullscreen'))
+        self._fullscreen.connect('clicked', self._fullscreen_cb)
+        self.insert(self._fullscreen, -1)
+        self._fullscreen.show()
+
     def _zoom_in_cb(self, button):
         self.activity.font_increase()
     
@@ -173,6 +193,9 @@ class ViewToolbar(gtk.Toolbar):
 
     def set_activity(self, activity):
         self.activity = activity
+
+    def _fullscreen_cb(self, button):
+        self.emit('go-fullscreen')
 
 class EditToolbar(activity.EditToolbar):
     __gtype_name__ = 'EditToolbar'

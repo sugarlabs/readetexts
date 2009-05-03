@@ -274,7 +274,7 @@ class ReadEtextsActivity(activity.Activity):
         if keyname == 'minus':
             self.font_decrease()
             return True
-        if speech.is_stopped() == False:
+        if speech.supported and speech.is_stopped() == False:
             # If speech is in progress, ignore other keys.
             return True
         if keyname == 'KP_Right':

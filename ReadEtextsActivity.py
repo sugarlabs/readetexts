@@ -121,6 +121,8 @@ class ReadEtextsActivity(activity.Activity):
 
         self._view_toolbar = ViewToolbar()
         toolbox.add_toolbar(_('View'), self._view_toolbar)
+        self._view_toolbar.connect('go-fullscreen',
+                self.__view_toolbar_go_fullscreen_cb)
         self._view_toolbar.set_activity(self)
         self._view_toolbar.show()
 
@@ -258,6 +260,9 @@ class ReadEtextsActivity(activity.Activity):
         begin, end = buffer.get_selection_bounds()
         copy_text = buffer.get_text(begin, end)
         self.clipboard.set_text(copy_text)
+
+    def __view_toolbar_go_fullscreen_cb(self, view_toolbar):
+        self.fullscreen()
 
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"

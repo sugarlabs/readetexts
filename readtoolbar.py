@@ -257,6 +257,45 @@ class EditToolbar(activity.EditToolbar):
         self._prev.props.sensitive = self.activity.can_find_previous()
         self._next.props.sensitive = self.activity.can_find_next()
 
+class BooksToolbar(gtk.Toolbar):
+    __gtype_name__ = 'BooksToolbar'
+
+    def __init__(self):
+        gtk.Toolbar.__init__(self)
+        book_search_item = gtk.ToolItem()
+
+        self._search_entry = gtk.Entry()
+        self._search_entry.connect('activate', self._search_entry_activate_cb)
+
+        width = int(gtk.gdk.screen_width() / 3)
+        self._search_entry.set_size_request(width, -1)
+
+        book_search_item.add(self._search_entry)
+        self._search_entry.show()
+
+        self.insert(book_search_item, -1)
+        book_search_item.show()
+
+        self._download = ToolButton('go-down')
+        self._download.set_tooltip(_('Get Book'))
+        self._download.props.sensitive = False
+        self._download.connect('clicked', self._get_book_cb)
+        self.insert(self._download, -1)
+        self._download.show()
+
+    def set_activity(self, activity):
+        self.activity = activity
+
+    def _search_entry_activate_cb(self, entry):
+        self.activity.find_books(entry.props.text)
+        self._update_button()
+
+    def _get_book_cb(self, button):
+        self.activity.get_book()
+
+    def _update_button(self):
+        self._download.props.sensitive = self.activity.can_download_books()
+
 class   SpeechToolbar(gtk.Toolbar):
     def __init__(self):
         gtk.Toolbar.__init__(self)

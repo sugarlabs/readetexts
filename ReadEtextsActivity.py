@@ -21,6 +21,7 @@ import tempfile
 import time
 import zipfile
 import pygtk
+pygtk.require('2.0')
 import gtk
 import string
 from sugar.activity import activity
@@ -28,7 +29,7 @@ from sugar import network
 from sugar.datastore import datastore
 from sugar.graphics.alert import NotifyAlert
 from sugar.graphics.objectchooser import ObjectChooser
-from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  SpeechToolbar
+from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
 from gettext import gettext as _
 import pango
 import dbus
@@ -40,6 +41,9 @@ import xopower
 
 _PAGE_SIZE = 38
 _TOOLBAR_READ = 2
+COLUMN_TITLE = 0
+COLUMN_AUTHOR = 1
+COLUMN_PATH = 2
 
 _logger = logging.getLogger('read-etexts-activity')
 
@@ -119,6 +123,11 @@ class ReadEtextsActivity(activity.Activity):
         self._read_toolbar.set_activity(self)
         self._read_toolbar.show()
 
+        self._books_toolbar = BooksToolbar()
+        toolbox.add_toolbar(_('Books'), self._books_toolbar)
+        self._books_toolbar.set_activity(self)
+        self._books_toolbar.show()
+
         self._view_toolbar = ViewToolbar()
         toolbox.add_toolbar(_('View'), self._view_toolbar)
         self._view_toolbar.connect('go-fullscreen',
@@ -146,12 +155,47 @@ class ReadEtextsActivity(activity.Activity):
         self.font_desc = pango.FontDescription("sans 12")
         self.scrolled.add(self.textview)
         self.textview.show()
-        self.set_canvas(self.scrolled)
         self.scrolled.show()
         v_adjustment = self.scrolled.get_vadjustment()
         self.clipboard = gtk.Clipboard(display=gtk.gdk.display_get_default(), selection="CLIPBOARD")
         self.page = 0
         self.textview.grab_focus()
+
+        self.ls = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING)
+        tv = gtk.TreeView(self.ls)
+        tv.set_rules_hint(gtk.TRUE)
+        tv.set_search_column(COLUMN_TITLE)
+        selection = tv.get_selection()
+        selection.set_mode(gtk.SELECTION_SINGLE)
+        selection.connect("changed", self.selection_cb)
+        renderer = gtk.CellRendererText()
+        col = gtk.TreeViewColumn('Title', renderer, text=COLUMN_TITLE)
+        col.set_sort_column_id(COLUMN_TITLE)
+        tv.append_column(col)
+    
+        renderer = gtk.CellRendererText()
+        col = gtk.TreeViewColumn('Author', renderer, text=COLUMN_AUTHOR)
+        col.set_sort_column_id(COLUMN_AUTHOR)
+        tv.append_column(col)
+
+        renderer = gtk.CellRendererText()
+        col = gtk.TreeViewColumn('Path', renderer, text=COLUMN_PATH)
+        col.set_sort_column_id(COLUMN_AUTHOR)
+        tv.append_column(col)
+
+        list_scroller = gtk.ScrolledWindow(hadjustment=None, vadjustment=None)
+        list_scroller.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        # list_scroller.set_size_request(0, 50)
+        list_scroller.add(tv)
+        
+        _list_box = gtk.VPaned()
+        _list_box.add1(self.scrolled)
+        _list_box.add2(list_scroller)
+        # _list_box.set_position(200)
+        self.set_canvas(_list_box)
+        tv.show()
+        _list_box.show()
+        list_scroller.show()
 
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
@@ -218,6 +262,19 @@ class ReadEtextsActivity(activity.Activity):
         finally:
             chooser.destroy()
             del chooser
+
+    def list_selections(self, param):
+        print param
+
+    def selection_cb(self, selection):
+        tv = selection.get_tree_view()
+        model = tv.get_model()
+        sel = selection.get_selected()
+        if sel:
+            model, iter = sel
+            title = model.get_value(iter,COLUMN_TITLE)
+            author = model.get_value(iter,COLUMN_AUTHOR)
+            print "Selected   %s by %s" % (title,author)
 
     def reset_current_word(self):
         self.current_word = 0
@@ -517,6 +574,27 @@ class ReadEtextsActivity(activity.Activity):
 
     def can_close(self):
         self._close_requested = True
+        return True
+
+    def find_books(self, search_text):
+        f = open('bookcatalog.txt', 'r')
+        while f:
+            line = f.readline()
+            if not line:
+                break
+            line_lower = line.lower()
+            search_lower = search_text.lower()
+            text_index = line_lower.find(search_lower) 
+            if text_index > -1:
+                iter = self.ls.append()
+                book_tuple = line.split('|')
+                self.ls.set(iter, COLUMN_TITLE, book_tuple[0],  COLUMN_AUTHOR, book_tuple[1],  COLUMN_PATH, book_tuple[2])
+        f.close()
+        
+    def get_book(self):
+        print "get book"
+        
+    def can_download_books(self):
         return True
 
     def find_previous(self):

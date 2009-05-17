@@ -5,6 +5,8 @@ ReadEtextsActivity.py
 readtoolbar.py
 xopower.py
 setup.py
+gutextract.py
+bookcatalog.txt
 NEWS
 activity/read-etexts.svg
 activity/activity.info

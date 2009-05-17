@@ -4,6 +4,6 @@ service_name = org.laptop.sugar.ReadEtextsActivity
 icon = read-etexts
 exec = sugar-activity ReadEtextsActivity.ReadEtextsActivity
 show_launcher = yes
-activity_version = 10
+activity_version = 11
 mime_types = text/plain;application/zip
 license = GPLv2+

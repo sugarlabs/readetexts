@@ -267,7 +267,7 @@ class BooksToolbar(gtk.Toolbar):
         self._search_entry = gtk.Entry()
         self._search_entry.connect('activate', self._search_entry_activate_cb)
 
-        width = int(gtk.gdk.screen_width() / 3)
+        width = int(gtk.gdk.screen_width() / 2)
         self._search_entry.set_size_request(width, -1)
 
         book_search_item.add(self._search_entry)
@@ -278,7 +278,7 @@ class BooksToolbar(gtk.Toolbar):
 
         self._download = ToolButton('go-down')
         self._download.set_tooltip(_('Get Book'))
-        self._download.props.sensitive = False
+        self._download.props.sensitive = True
         self._download.connect('clicked', self._get_book_cb)
         self.insert(self._download, -1)
         self._download.show()
@@ -288,7 +288,6 @@ class BooksToolbar(gtk.Toolbar):
 
     def _search_entry_activate_cb(self, entry):
         self.activity.find_books(entry.props.text)
-        self._update_button()
 
     def _get_book_cb(self, button):
         self.activity.get_book()

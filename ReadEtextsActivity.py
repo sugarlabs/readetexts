@@ -41,6 +41,7 @@ import xopower
 
 _PAGE_SIZE = 38
 _TOOLBAR_READ = 2
+_TOOLBAR_BOOKS = 3
 COLUMN_TITLE = 0
 COLUMN_AUTHOR = 1
 COLUMN_PATH = 2
@@ -102,9 +103,9 @@ class ReadEtextsActivity(activity.Activity):
         self._object_id = handle.object_id
        
         toolbox = activity.ActivityToolbox(self)
-        activity_toolbar = toolbox.get_activity_toolbar()
-        activity_toolbar.remove(activity_toolbar.keep)
-        activity_toolbar.keep = None
+        # activity_toolbar = toolbox.get_activity_toolbar()
+        # activity_toolbar.remove(activity_toolbar.keep)
+        # activity_toolbar.keep = None
         self.set_toolbox(toolbox)
         
         self._edit_toolbar = EditToolbar()
@@ -163,7 +164,7 @@ class ReadEtextsActivity(activity.Activity):
 
         self.ls = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING)
         tv = gtk.TreeView(self.ls)
-        tv.set_rules_hint(gtk.TRUE)
+        tv.set_rules_hint(True)
         tv.set_search_column(COLUMN_TITLE)
         selection = tv.get_selection()
         selection.set_mode(gtk.SELECTION_SINGLE)
@@ -183,19 +184,17 @@ class ReadEtextsActivity(activity.Activity):
         col.set_sort_column_id(COLUMN_AUTHOR)
         tv.append_column(col)
 
-        list_scroller = gtk.ScrolledWindow(hadjustment=None, vadjustment=None)
-        list_scroller.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        # list_scroller.set_size_request(0, 50)
-        list_scroller.add(tv)
+        self.list_scroller = gtk.ScrolledWindow(hadjustment=None, vadjustment=None)
+        self.list_scroller.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.list_scroller.add(tv)
         
-        _list_box = gtk.VPaned()
-        _list_box.add1(self.scrolled)
-        _list_box.add2(list_scroller)
-        # _list_box.set_position(200)
-        self.set_canvas(_list_box)
+        vpaned = gtk.VPaned()
+        vpaned.add1(self.scrolled)
+        vpaned.add2(self.list_scroller)
+        self.set_canvas(vpaned)
         tv.show()
-        _list_box.show()
-        list_scroller.show()
+        vpaned.show()
+        self.list_scroller.hide()
 
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
@@ -236,7 +235,8 @@ class ReadEtextsActivity(activity.Activity):
                 self.connect("joined", self._joined_cb)
         elif self._object_id is None:
             # Not joining, not resuming
-            self._show_journal_object_picker()
+            self.toolbox.set_current_toolbar(_TOOLBAR_BOOKS)
+            # self._show_journal_object_picker()
 
         speech.highlight_cb = self.highlight_next_word
         speech.reset_cb = self.reset_play_button
@@ -262,19 +262,6 @@ class ReadEtextsActivity(activity.Activity):
         finally:
             chooser.destroy()
             del chooser
-
-    def list_selections(self, param):
-        print param
-
-    def selection_cb(self, selection):
-        tv = selection.get_tree_view()
-        model = tv.get_model()
-        sel = selection.get_selected()
-        if sel:
-            model, iter = sel
-            title = model.get_value(iter,COLUMN_TITLE)
-            author = model.get_value(iter,COLUMN_AUTHOR)
-            print "Selected   %s by %s" % (title,author)
 
     def reset_current_word(self):
         self.current_word = 0
@@ -576,10 +563,26 @@ class ReadEtextsActivity(activity.Activity):
         self._close_requested = True
         return True
 
+    def selection_cb(self, selection):
+        tv = selection.get_tree_view()
+        model = tv.get_model()
+        sel = selection.get_selected()
+        if sel:
+            model, iter = sel
+            self.selected_title = model.get_value(iter,COLUMN_TITLE)
+            self.selected_author = model.get_value(iter,COLUMN_AUTHOR)
+            self.selected_path = model.get_value(iter,COLUMN_PATH)
+            self.book_selected = True
+            print "Selected   %s by %s" % (title,author)
+
     def find_books(self, search_text):
+        self.list_scroller.hide()
+        self.list_scroller_visible = False
+        self.book_selected = False
+        self.ls.clear()
         f = open('bookcatalog.txt', 'r')
         while f:
-            line = f.readline()
+            line = unicode(f.readline(), "iso-8859-1")
             if not line:
                 break
             line_lower = line.lower()
@@ -588,14 +591,65 @@ class ReadEtextsActivity(activity.Activity):
             if text_index > -1:
                 iter = self.ls.append()
                 book_tuple = line.split('|')
-                self.ls.set(iter, COLUMN_TITLE, book_tuple[0],  COLUMN_AUTHOR, book_tuple[1],  COLUMN_PATH, book_tuple[2])
+                self.ls.set(iter, COLUMN_TITLE, book_tuple[0],  COLUMN_AUTHOR, book_tuple[1],  COLUMN_PATH, book_tuple[2].rstrip())
         f.close()
+        self.list_scroller.show()
+        self.list_scroller_visible = True
         
     def get_book(self):
-        print "get book"
+        print "get book from",  "http://www.gutenberg.org/dirs" + self.selected_path + ".zip"
+        path = os.path.join(self.get_activity_root(), 'instance',
+                            'tmp%i' % time.time())
+        getter = ReadURLDownloader("http://www.gutenberg.org/dirs" + self.selected_path + ".zip")
+        getter.connect("finished", self._get_book_result_cb)
+        getter.connect("progress", self._get_book_progress_cb)
+        getter.connect("error", self._get_book_error_cb)
+        _logger.debug("Starting download to %s...", path)
+        getter.start(path)
+        self._download_content_length = getter.get_content_length()
+        self._download_content_type = getter.get_content_type()
         
     def can_download_books(self):
-        return True
+        return self.book_selected
+
+    def _get_book_result_cb(self, getter, tempfile, suggested_name):
+        if self._download_content_type == 'text/html':
+            # got an error page instead
+            self._download_error_cb(getter, 'HTTP Error')
+            return
+
+        self._tempfile = tempfile
+        file_path = os.path.join(self.get_activity_root(), 'instance',
+                                    '%i' % time.time())
+        _logger.debug("Saving file %s to datastore...", file_path)
+        os.link(tempfile, file_path)
+        self._jobject.file_path = file_path
+        datastore.write(self._jobject, transfer_ownership=True)
+
+        _logger.debug("Got document %s (%s)", tempfile, suggested_name)
+        journal_title = self.selected_title
+        if self.selected_author != ' ':
+            journal_title = journal_title  + ', by ' + self.selected_author
+        self.metadata['title'] = journal_title
+        self._load_document(tempfile)
+        self.save()
+
+    def _get_book_progress_cb(self, getter, bytes_downloaded):
+        if self._download_content_length > 0:
+            _logger.debug("Downloaded %u of %u bytes...",
+                          bytes_downloaded, self._download_content_length)
+        else:
+            _logger.debug("Downloaded %u bytes...",
+                          bytes_downloaded)
+        total = self._download_content_length
+        self._read_toolbar.set_downloaded_bytes(bytes_downloaded,  total)
+        # gtk.main_iteration()
+
+    def _get_book_error_cb(self, getter, err):
+        _logger.debug("Error getting document: %s", err)
+        self._alert('Failure', 'Error getting document')
+        self._download_content_length = 0
+        self._download_content_type = None
 
     def find_previous(self):
         self.current_found_item = self.current_found_item - 1

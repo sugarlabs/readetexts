@@ -46,7 +46,10 @@ def main(file_path):
                 path = path + '/' + name + '/' + name
                 line = line[0:73]
                 line = line.rstrip()
-                line = line.replace(', by ', '|')
+                if line.find(', by ') > -1:
+                    line = line.replace(', by ', '|')
+                else:
+                    line = line + '| '
                 out.write(line + '|' + path + '\n')
     gut_file.close()
     out.close()

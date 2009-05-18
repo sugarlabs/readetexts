@@ -103,9 +103,6 @@ class ReadEtextsActivity(activity.Activity):
         self._object_id = handle.object_id
        
         toolbox = activity.ActivityToolbox(self)
-        # activity_toolbar = toolbox.get_activity_toolbar()
-        # activity_toolbar.remove(activity_toolbar.keep)
-        # activity_toolbar.keep = None
         self.set_toolbox(toolbox)
         
         self._edit_toolbar = EditToolbar()
@@ -188,9 +185,9 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         self.list_scroller.add(tv)
         
-        vpaned = gtk.VPaned()
-        vpaned.add1(self.scrolled)
-        vpaned.add2(self.list_scroller)
+        vpaned = gtk.VBox()
+        vpaned.add(self.scrolled)
+        vpaned.add(self.list_scroller)
         self.set_canvas(vpaned)
         tv.show()
         vpaned.show()
@@ -573,7 +570,6 @@ class ReadEtextsActivity(activity.Activity):
             self.selected_author = model.get_value(iter,COLUMN_AUTHOR)
             self.selected_path = model.get_value(iter,COLUMN_PATH)
             self.book_selected = True
-            print "Selected   %s by %s" % (title,author)
 
     def find_books(self, search_text):
         self.list_scroller.hide()
@@ -613,9 +609,10 @@ class ReadEtextsActivity(activity.Activity):
         return self.book_selected
 
     def _get_book_result_cb(self, getter, tempfile, suggested_name):
-        if self._download_content_type == 'text/html':
+        print 'content type',  self._download_content_type
+        if self._download_content_type == 'text/html; charset=ISO-8859-1':
             # got an error page instead
-            self._download_error_cb(getter, 'HTTP Error')
+            self._get_book_error_cb(getter, 'HTTP Error')
             return
 
         self._tempfile = tempfile

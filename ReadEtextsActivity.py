@@ -185,12 +185,12 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         self.list_scroller.add(tv)
         
-        vpaned = gtk.VBox()
-        vpaned.add(self.scrolled)
-        vpaned.add(self.list_scroller)
-        self.set_canvas(vpaned)
+        vbox = gtk.VBox()
+        vbox.add(self.scrolled)
+        vbox.add(self.list_scroller)
+        self.set_canvas(vbox)
         tv.show()
-        vpaned.show()
+        vbox.show()
         self.list_scroller.hide()
 
         textbuffer = self.textview.get_buffer()
@@ -582,9 +582,15 @@ class ReadEtextsActivity(activity.Activity):
             if not line:
                 break
             line_lower = line.lower()
-            search_lower = search_text.lower()
-            text_index = line_lower.find(search_lower) 
-            if text_index > -1:
+            search_tuple = search_text.lower().split()
+            i = 0
+            words_found = 0
+            while i < len(search_tuple):
+                text_index = line_lower.find(search_tuple[i]) 
+                if text_index > -1:
+                    words_found = words_found + 1
+                i = i + 1
+            if words_found == len(search_tuple):
                 iter = self.ls.append()
                 book_tuple = line.split('|')
                 self.ls.set(iter, COLUMN_TITLE, book_tuple[0],  COLUMN_AUTHOR, book_tuple[1],  COLUMN_PATH, book_tuple[2].rstrip())
@@ -638,9 +644,6 @@ class ReadEtextsActivity(activity.Activity):
         else:
             _logger.debug("Downloaded %u bytes...",
                           bytes_downloaded)
-        total = self._download_content_length
-        self._read_toolbar.set_downloaded_bytes(bytes_downloaded,  total)
-        # gtk.main_iteration()
 
     def _get_book_error_cb(self, getter, err):
         _logger.debug("Error getting document: %s", err)

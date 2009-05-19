@@ -233,7 +233,19 @@ class ReadEtextsActivity(activity.Activity):
         elif self._object_id is None:
             # Not joining, not resuming
             self.toolbox.set_current_toolbar(_TOOLBAR_BOOKS)
-            # self._show_journal_object_picker()
+            f = open("help.txt","r")
+            line = ''
+            label_text = ''
+            while True:
+                line = f.readline()
+                if not line:
+                    break
+                else:
+                    label_text = label_text + unicode(line,  "iso-8859-1")
+            textbuffer = self.textview.get_buffer()
+            textbuffer.set_text(label_text)
+            f.close()
+           # self._show_journal_object_picker()
 
         speech.highlight_cb = self.highlight_next_word
         speech.reset_cb = self.reset_play_button
@@ -569,9 +581,10 @@ class ReadEtextsActivity(activity.Activity):
             self.selected_title = model.get_value(iter,COLUMN_TITLE)
             self.selected_author = model.get_value(iter,COLUMN_AUTHOR)
             self.selected_path = model.get_value(iter,COLUMN_PATH)
-            self.book_selected = True
+            self._books_toolbar._enable_button(True)
 
     def find_books(self, search_text):
+        self._books_toolbar._enable_button(False)
         self.list_scroller.hide()
         self.list_scroller_visible = False
         self.book_selected = False
@@ -599,6 +612,19 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller_visible = True
         
     def get_book(self):
+        print "get book from",  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip"
+        path = os.path.join(self.get_activity_root(), 'instance',
+                            'tmp%i' % time.time())
+        getter = ReadURLDownloader("http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip")
+        getter.connect("finished", self._get_iso_book_result_cb)
+        getter.connect("progress", self._get_book_progress_cb)
+        getter.connect("error", self._get_book_error_cb)
+        _logger.debug("Starting download to %s...", path)
+        getter.start(path)
+        self._download_content_length = getter.get_content_length()
+        self._download_content_type = getter.get_content_type()
+        
+    def get_plain_book(self):
         print "get book from",  "http://www.gutenberg.org/dirs" + self.selected_path + ".zip"
         path = os.path.join(self.get_activity_root(), 'instance',
                             'tmp%i' % time.time())
@@ -610,9 +636,32 @@ class ReadEtextsActivity(activity.Activity):
         getter.start(path)
         self._download_content_length = getter.get_content_length()
         self._download_content_type = getter.get_content_type()
-        
+
     def can_download_books(self):
         return self.book_selected
+
+    def _get_iso_book_result_cb(self, getter, tempfile, suggested_name):
+        print 'content type',  self._download_content_type
+        if self._download_content_type == 'text/html; charset=ISO-8859-1':
+            # got an error page instead
+            self.get_plain_book()
+            return
+
+        self._tempfile = tempfile
+        file_path = os.path.join(self.get_activity_root(), 'instance',
+                                    '%i' % time.time())
+        _logger.debug("Saving file %s to datastore...", file_path)
+        os.link(tempfile, file_path)
+        self._jobject.file_path = file_path
+        datastore.write(self._jobject, transfer_ownership=True)
+
+        _logger.debug("Got document %s (%s)", tempfile, suggested_name)
+        journal_title = self.selected_title
+        if self.selected_author != ' ':
+            journal_title = journal_title  + ', by ' + self.selected_author
+        self.metadata['title'] = journal_title
+        self._load_document(tempfile)
+        self.save()
 
     def _get_book_result_cb(self, getter, tempfile, suggested_name):
         print 'content type',  self._download_content_type

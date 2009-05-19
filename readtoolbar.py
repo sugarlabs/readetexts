@@ -278,7 +278,7 @@ class BooksToolbar(gtk.Toolbar):
 
         self._download = ToolButton('go-down')
         self._download.set_tooltip(_('Get Book'))
-        self._download.props.sensitive = True
+        self._download.props.sensitive = False
         self._download.connect('clicked', self._get_book_cb)
         self.insert(self._download, -1)
         self._download.show()
@@ -292,8 +292,8 @@ class BooksToolbar(gtk.Toolbar):
     def _get_book_cb(self, button):
         self.activity.get_book()
 
-    def _update_button(self):
-        self._download.props.sensitive = self.activity.can_download_books()
+    def _enable_button(self,  state):
+        self._download.props.sensitive = state
 
 class   SpeechToolbar(gtk.Toolbar):
     def __init__(self):

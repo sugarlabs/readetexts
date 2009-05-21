@@ -317,6 +317,12 @@ class ReadEtextsActivity(activity.Activity):
     def __view_toolbar_go_fullscreen_cb(self, view_toolbar):
         self.fullscreen()
 
+    def hide_table_keypress_cb(self, widget, event):
+        if keyname == 'Escape':
+            self.list_scroller.hide()
+            return True
+        return False
+
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"
         if xopower.service_activated:
@@ -331,6 +337,9 @@ class ReadEtextsActivity(activity.Activity):
             return True
         if keyname == 'minus':
             self.font_decrease()
+            return True
+        if keyname == 'Escape':
+            self.list_scroller.hide()
             return True
         if speech.supported and speech.is_stopped() == False:
             # If speech is in progress, ignore other keys.
@@ -610,8 +619,12 @@ class ReadEtextsActivity(activity.Activity):
         f.close()
         self.list_scroller.show()
         self.list_scroller_visible = True
-        
+     
     def get_book(self):
+        self._books_toolbar._enable_button(False)
+        gobject.idle_add(self.get_iso_book)
+        
+    def get_iso_book(self):
         print "get book from",  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip"
         path = os.path.join(self.get_activity_root(), 'instance',
                             'tmp%i' % time.time())

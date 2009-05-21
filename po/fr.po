@@ -50,7 +50,7 @@ msgstr "Avancer"
 
 #: readtoolbar.py:159
 msgid "Zoom out"
-msgstr "Dézoomer"
+msgstr "Dezoomer"
 
 #: readtoolbar.py:165
 msgid "Zoom in"
@@ -66,8 +66,8 @@ msgstr "Suivant"
 
 #: readtoolbar.py:312
 msgid "pitch adjusted"
-msgstr "hauteur ajustée"
+msgstr "hauteur ajustee"
 
 #: readtoolbar.py:316
 msgid "rate adjusted"
-msgstr "taux ajusté"
+msgstr "taux ajuste"

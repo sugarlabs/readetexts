@@ -622,82 +622,44 @@ class ReadEtextsActivity(activity.Activity):
      
     def get_book(self):
         self._books_toolbar._enable_button(False)
-        gobject.idle_add(self.get_iso_book)
+        if self.selected_path.startswith('/etext'):
+            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  self._get_old_book_result_cb)
+        else:
+            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  self._get_iso_book_result_cb)
         
-    def get_iso_book(self):
-        print "get book from",  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip"
+    def download_book(self,  url,  result_cb):
+        print "get book from",  url
         path = os.path.join(self.get_activity_root(), 'instance',
                             'tmp%i' % time.time())
-        getter = ReadURLDownloader("http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip")
-        getter.connect("finished", self._get_iso_book_result_cb)
+        getter = ReadURLDownloader(url)
+        getter.connect("finished", result_cb)
         getter.connect("progress", self._get_book_progress_cb)
         getter.connect("error", self._get_book_error_cb)
         _logger.debug("Starting download to %s...", path)
         getter.start(path)
         self._download_content_length = getter.get_content_length()
         self._download_content_type = getter.get_content_type()
-        
-    def get_plain_book(self):
-        print "get book from",  "http://www.gutenberg.org/dirs" + self.selected_path + ".zip"
-        path = os.path.join(self.get_activity_root(), 'instance',
-                            'tmp%i' % time.time())
-        getter = ReadURLDownloader("http://www.gutenberg.org/dirs" + self.selected_path + ".zip")
-        getter.connect("finished", self._get_book_result_cb)
-        getter.connect("progress", self._get_book_progress_cb)
-        getter.connect("error", self._get_book_error_cb)
-        _logger.debug("Starting download to %s...", path)
-        getter.start(path)
-        self._download_content_length = getter.get_content_length()
-        self._download_content_type = getter.get_content_type()
-
-    def can_download_books(self):
-        return self.book_selected
-
+ 
     def _get_iso_book_result_cb(self, getter, tempfile, suggested_name):
-        print 'content type',  self._download_content_type
         if self._download_content_type == 'text/html; charset=ISO-8859-1':
             # got an error page instead
-            self.get_plain_book()
+            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + ".zip",  self._get_book_result_cb)
             return
+        self.process_downloaded_book(tempfile,  suggested_name)
 
-        self._tempfile = tempfile
-        file_path = os.path.join(self.get_activity_root(), 'instance',
-                                    '%i' % time.time())
-        _logger.debug("Saving file %s to datastore...", file_path)
-        os.link(tempfile, file_path)
-        self._jobject.file_path = file_path
-        datastore.write(self._jobject, transfer_ownership=True)
-
-        _logger.debug("Got document %s (%s)", tempfile, suggested_name)
-        journal_title = self.selected_title
-        if self.selected_author != ' ':
-            journal_title = journal_title  + ', by ' + self.selected_author
-        self.metadata['title'] = journal_title
-        self._load_document(tempfile)
-        self.save()
+    def _get_old_book_result_cb(self, getter, tempfile, suggested_name):
+        if self._download_content_type == 'text/html; charset=ISO-8859-1':
+            # got an error page instead
+            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + "10.zip",  self._get_book_result_cb)
+            return
+        self.process_downloaded_book(tempfile,  suggested_name)
 
     def _get_book_result_cb(self, getter, tempfile, suggested_name):
-        print 'content type',  self._download_content_type
         if self._download_content_type == 'text/html; charset=ISO-8859-1':
             # got an error page instead
             self._get_book_error_cb(getter, 'HTTP Error')
             return
-
-        self._tempfile = tempfile
-        file_path = os.path.join(self.get_activity_root(), 'instance',
-                                    '%i' % time.time())
-        _logger.debug("Saving file %s to datastore...", file_path)
-        os.link(tempfile, file_path)
-        self._jobject.file_path = file_path
-        datastore.write(self._jobject, transfer_ownership=True)
-
-        _logger.debug("Got document %s (%s)", tempfile, suggested_name)
-        journal_title = self.selected_title
-        if self.selected_author != ' ':
-            journal_title = journal_title  + ', by ' + self.selected_author
-        self.metadata['title'] = journal_title
-        self._load_document(tempfile)
-        self.save()
+        self.process_downloaded_book(tempfile,  suggested_name)
 
     def _get_book_progress_cb(self, getter, bytes_downloaded):
         if self._download_content_length > 0:
@@ -709,9 +671,26 @@ class ReadEtextsActivity(activity.Activity):
 
     def _get_book_error_cb(self, getter, err):
         _logger.debug("Error getting document: %s", err)
-        self._alert('Failure', 'Error getting document')
+        self._alert('Error', 'Could not download ' + self.selected_title)
         self._download_content_length = 0
         self._download_content_type = None
+
+    def process_downloaded_book(self,  tempfile,  suggested_name):
+        self._tempfile = tempfile
+        file_path = os.path.join(self.get_activity_root(), 'instance',
+                                    '%i' % time.time())
+        _logger.debug("Saving file %s to datastore...", file_path)
+        os.link(tempfile, file_path)
+        self._jobject.file_path = file_path
+        datastore.write(self._jobject, transfer_ownership=True)
+
+        _logger.debug("Got document %s (%s)", tempfile, suggested_name)
+        journal_title = self.selected_title
+        if self.selected_author != ' ':
+            journal_title = journal_title  + ', by ' + self.selected_author
+        self.metadata['title'] = journal_title
+        self._load_document(tempfile)
+        self.save()
 
     def find_previous(self):
         self.current_found_item = self.current_found_item - 1

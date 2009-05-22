@@ -6,7 +6,8 @@ The Books tab above will let you search through the offline catalog of Project G
 free etexts featuring books in many languages.  For technical reasons some of the books available through the
 Project Gutenberg website are not in the catalog used by this Activity, but most of the books are here.
 
-The catalog used contains 20,443 titles, all out of copyright in the United States.
+The catalog used contains 26,869 titles, all out of copyright in the United States.  The catalog is current as of
+January 29, 2009.  For titles published after that date you should visit http://www.gutenberg.org.
 
 To find a book, type one or more words that would be in the author's name or the title, then press Enter.  The list will only
 include books that match all the words, so use fewer words to make the list longer and more words to shorten the list. 

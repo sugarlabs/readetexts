@@ -51,6 +51,16 @@ def main(file_path):
                 else:
                     line = line + '| '
                 out.write(line + '|' + path + '\n')
+            elif line[77].isdigit() and line.find("Audio:") < 0 and line[59] == '[':
+                path = '/etext' + line[6:8] + '/' + line[60:65]
+                path = path.replace('?', '8')
+                line = line[9:59]
+                line = line.rstrip()
+                if line.find(', by ') > -1:
+                    line = line.replace(', by ', '|')
+                else:
+                    line = line + '| '
+                out.write(line + '|' + path + '\n')
     gut_file.close()
     out.close()
     print "All done!"

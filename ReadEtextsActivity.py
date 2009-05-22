@@ -245,33 +245,10 @@ class ReadEtextsActivity(activity.Activity):
             textbuffer = self.textview.get_buffer()
             textbuffer.set_text(label_text)
             f.close()
-           # self._show_journal_object_picker()
 
         speech.highlight_cb = self.highlight_next_word
         speech.reset_cb = self.reset_play_button
  
-    def _show_journal_object_picker(self):
-        """Show the journal object picker to load a document.
-        This is for if Read Etexts is launched without a document.
-        """
-        if not self._want_document:
-            return
-        chooser = ObjectChooser(_('Choose document'), self, 
-                                gtk.DIALOG_MODAL | 
-                                gtk.DIALOG_DESTROY_WITH_PARENT)
-        try:
-            result = chooser.run()
-            if result == gtk.RESPONSE_ACCEPT:
-                logging.debug('ObjectChooser: %r' % 
-                              chooser.get_selected_object())
-                jobject = chooser.get_selected_object()
-                if jobject and jobject.file_path:
-                    self.metadata['title'] = jobject.metadata['title']
-                    self.read_file(jobject.file_path)
-        finally:
-            chooser.destroy()
-            del chooser
-
     def reset_current_word(self):
         self.current_word = 0
         
@@ -499,7 +476,10 @@ class ReadEtextsActivity(activity.Activity):
     def save_extracted_file(self, zipfile, filename):
         "Extract the file to a temp directory for viewing"
         filebytes = zipfile.read(filename)
-        f = open("/tmp/" + filename, 'w')
+        outfn = self.make_new_filename(filename)
+        if (outfn == ''):
+            return False
+        f = open("/tmp/" + outfn, 'w')
         try:
             f.write(filebytes)
         finally:
@@ -513,13 +493,17 @@ class ReadEtextsActivity(activity.Activity):
         self._tempfile = tempfile
         self._load_document(self._tempfile)
 
+    def make_new_filename(self, filename):
+        partition_tuple = filename.rpartition('/')
+        return partition_tuple[2]
+
     def _load_document(self, filename):
         "Read the Etext file"
         if zipfile.is_zipfile(filename):
             self.zf = zipfile.ZipFile(filename, 'r')
             self.book_files = self.zf.namelist()
             self.save_extracted_file(self.zf, self.book_files[0])
-            current_file_name = "/tmp/" + self.book_files[0]
+            current_file_name = "/tmp/" + self.make_new_filename(self.book_files[0])
         else:
             current_file_name = filename
             
@@ -641,21 +625,22 @@ class ReadEtextsActivity(activity.Activity):
         self._download_content_type = getter.get_content_type()
  
     def _get_iso_book_result_cb(self, getter, tempfile, suggested_name):
-        if self._download_content_type == 'text/html; charset=ISO-8859-1':
+        if self._download_content_type.startswith('text/html'):
             # got an error page instead
             self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + ".zip",  self._get_book_result_cb)
             return
         self.process_downloaded_book(tempfile,  suggested_name)
 
     def _get_old_book_result_cb(self, getter, tempfile, suggested_name):
-        if self._download_content_type == 'text/html; charset=ISO-8859-1':
+        if self._download_content_type.startswith('text/html'):
             # got an error page instead
             self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + "10.zip",  self._get_book_result_cb)
             return
         self.process_downloaded_book(tempfile,  suggested_name)
 
     def _get_book_result_cb(self, getter, tempfile, suggested_name):
-        if self._download_content_type == 'text/html; charset=ISO-8859-1':
+        print 'Content type:',  self._download_content_type
+        if self._download_content_type.startswith('text/html'):
             # got an error page instead
             self._get_book_error_cb(getter, 'HTTP Error')
             return
@@ -671,7 +656,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def _get_book_error_cb(self, getter, err):
         _logger.debug("Error getting document: %s", err)
-        self._alert('Error', 'Could not download ' + self.selected_title)
+        self._alert('Error', 'Could not download ' + self.selected_title + ' path in catalog may be incorrect.')
         self._download_content_length = 0
         self._download_content_type = None
 
@@ -766,7 +751,7 @@ class ReadEtextsActivity(activity.Activity):
 
     # The code from here on down is for sharing.
     def _download_result_cb(self, getter, tempfile, suggested_name, tube_id):
-        if self._download_content_type == 'text/html':
+        if self._download_content_type.startswith('text/html'):
             # got an error page instead
             self._download_error_cb(getter, 'HTTP Error', tube_id)
             return
@@ -931,7 +916,7 @@ class ReadEtextsActivity(activity.Activity):
         self._share_document()
 
     def _alert(self, title, text=None):
-        alert = NotifyAlert(timeout=5)
+        alert = NotifyAlert(timeout=50)
         alert.props.title = title
         alert.props.msg = text
         self.add_alert(alert)

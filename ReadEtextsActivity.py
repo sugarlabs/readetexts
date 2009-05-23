@@ -582,13 +582,17 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller_visible = False
         self.book_selected = False
         self.ls.clear()
+        search_tuple = search_text.lower().split()
+        if len(search_tuple) == 0:
+            self._alert('Error', 'You must enter at least one search word.')
+            self._books_toolbar._search_entry.grab_focus()
+            return
         f = open('bookcatalog.txt', 'r')
         while f:
             line = unicode(f.readline(), "iso-8859-1")
             if not line:
                 break
             line_lower = line.lower()
-            search_tuple = search_text.lower().split()
             i = 0
             words_found = 0
             while i < len(search_tuple):
@@ -623,7 +627,8 @@ class ReadEtextsActivity(activity.Activity):
         getter.start(path)
         self._download_content_length = getter.get_content_length()
         self._download_content_type = getter.get_content_type()
- 
+        self.textview.grab_focus()
+
     def _get_iso_book_result_cb(self, getter, tempfile, suggested_name):
         if self._download_content_type.startswith('text/html'):
             # got an error page instead

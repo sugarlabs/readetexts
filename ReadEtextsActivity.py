@@ -121,10 +121,11 @@ class ReadEtextsActivity(activity.Activity):
         self._read_toolbar.set_activity(self)
         self._read_toolbar.show()
 
-        self._books_toolbar = BooksToolbar()
-        toolbox.add_toolbar(_('Books'), self._books_toolbar)
-        self._books_toolbar.set_activity(self)
-        self._books_toolbar.show()
+        if not self._shared_activity and self._object_id is None:
+            self._books_toolbar = BooksToolbar()
+            toolbox.add_toolbar(_('Books'), self._books_toolbar)
+            self._books_toolbar.set_activity(self)
+            self._books_toolbar.show()
 
         self._view_toolbar = ViewToolbar()
         toolbox.add_toolbar(_('View'), self._view_toolbar)
@@ -497,6 +498,38 @@ class ReadEtextsActivity(activity.Activity):
         partition_tuple = filename.rpartition('/')
         return partition_tuple[2]
 
+    def get_saved_page_number(self):
+        title = self.metadata.get('title', '')
+        if not title[len(title)- 1].isdigit():
+            self.page = 0
+        else:
+            i = len(title) - 1
+            page = ''
+            while (title[i].isdigit() and i > 0):
+                page = title[i] + page
+                i = i - 1
+            if title[i] == 'P':
+                print page
+                self.page = int(page) - 1
+            else:
+                # not a page number; maybe a volume number.
+                self.page = 0
+        
+    def save_page_number(self):
+        title = self.metadata.get('title', '')
+        if not title[len(title)- 1].isdigit():
+            title = title + ' P' +  str(self.page + 1)
+        else:
+            i = len(title) - 1
+            while (title[i].isdigit() and i > 0):
+                i = i - 1
+            if title[i] == 'P':
+                title = title[0:i] + 'P' + str(self.page + 1)
+            else:
+                title = title + ' P' + str(self.page + 1)
+            print title
+        self.metadata['title'] = title
+
     def _load_document(self, filename):
         "Read the Etext file"
         if zipfile.is_zipfile(filename):
@@ -522,7 +555,7 @@ class ReadEtextsActivity(activity.Activity):
                 self.page_index.append(position)
                 linecount = 0
                 pagecount = pagecount + 1
-        self.page = int(self.metadata.get('current_page', '0'))
+        self.get_saved_page_number()
         self.show_page(self.page)
         self._read_toolbar.set_total_pages(pagecount + 1)
         self._read_toolbar.set_current_page(self.page)
@@ -559,7 +592,7 @@ class ReadEtextsActivity(activity.Activity):
             # skip saving empty file
             raise NotImplementedError
 
-        self.metadata['current_page']  = str(self.page)
+        self.save_page_number()
 
     def can_close(self):
         self._close_requested = True
@@ -661,7 +694,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def _get_book_error_cb(self, getter, err):
         _logger.debug("Error getting document: %s", err)
-        self._alert('Error', 'Could not download ' + self.selected_title + ' path in catalog may be incorrect.')
+        self._alert(_('Error'), _('Could not download ') + self.selected_title + _(' path in catalog may be incorrect.'))
         self._download_content_length = 0
         self._download_content_type = None
 
@@ -678,6 +711,7 @@ class ReadEtextsActivity(activity.Activity):
         journal_title = self.selected_title
         if self.selected_author != ' ':
             journal_title = journal_title  + ', by ' + self.selected_author
+        
         self.metadata['title'] = journal_title
         self._load_document(tempfile)
         self.save()
@@ -791,7 +825,7 @@ class ReadEtextsActivity(activity.Activity):
     def _download_error_cb(self, getter, err, tube_id):
         _logger.debug("Error getting document from tube %u: %s",
                       tube_id, err)
-        self._alert('Failure', 'Error getting document from tube')
+        self._alert(_('Failure'), _('Error getting document from tube'))
         self._want_document = True
         self._download_content_length = 0
         self._download_content_type = None

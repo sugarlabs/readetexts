@@ -3,9 +3,9 @@
 "Outside of a dog, a book is man's best friend.  Inside of a dog it's too dark to read." -- Groucho Marx
 
 The Books tab above will let you search through the offline catalog of Project Gutenberg, an Internet repository of
-free etexts featuring books in many languages.  The catalog used contains 26,869 titles, all out of copyright in 
-the United States.  The catalog is current as of January 29, 2009.  For titles added after that date you should 
-visit http://www.gutenberg.org.
+free etexts featuring books in many languages.  The catalog used contains 28,595 titles from Project 
+Gutenberg and Project Gutenberg Australia.  The catalog is current as of January 29, 2009.  For titles added 
+after that date you should visit http://www.gutenberg.org.
 
 To find a book, type one or more words that would be in the author's name or the title, then press Enter.  The list will only
 include books that match all the words, so use fewer words to make the list longer and more words to shorten the list. 
@@ -15,4 +15,4 @@ get titles both by and about him.
 
 To download the book select it in the list and press the download button next to the search box.
 
-Press the Escape key to hide the search results table and start reading.
+Press the Escape key or click the 'X' button to hide the search results table and start reading.

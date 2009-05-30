@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-# Copyright (C) 2008 James D. Simmons
+# Copyright (C) 2008, 2009 James D. Simmons
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ from sugar.activity import activity
 from sugar import network
 from sugar.datastore import datastore
 from sugar.graphics.alert import NotifyAlert
-from sugar.graphics.objectchooser import ObjectChooser
 from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
 from gettext import gettext as _
 import pango

@@ -982,6 +982,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def _alert_cancel_cb(self, alert, response_id):
         self.remove_alert(alert)
+        self.textview.grab_focus()
 
     # From here down is power management stuff.
 

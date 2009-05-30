@@ -6,6 +6,7 @@ readtoolbar.py
 xopower.py
 setup.py
 gutextract.py
+ausextract.py
 bookcatalog.txt
 help.txt
 NEWS

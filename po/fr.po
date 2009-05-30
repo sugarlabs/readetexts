@@ -2,27 +2,28 @@
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # James Simmons <ja.simmons@sbcglobal.net>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-19 18:25-0600\n"
-"PO-Revision-Date: 2009-03-15 19:44+0100\n"
-"Last-Translator: Bastien Guerry <bzg@laptop.org>\n"
+"PO-Revision-Date: 2009-05-30 02:19-0400\n"
+"Last-Translator: samy boutayeb <s.boutayeb@free.fr>\n"
 "Language-Team: French\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 1.2.1\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr "Lecture"
+msgstr "Lecture ETexts"
 
 #: ReadEtextsActivity.py:147
 msgid "Edit"
-msgstr "Editer"
+msgstr "Éditer"
 
 #: ReadEtextsActivity.py:152
 msgid "Read"
@@ -50,24 +51,4 @@ msgstr "Avancer"
 
 #: readtoolbar.py:159
 msgid "Zoom out"
-msgstr "Dezoomer"
-
-#: readtoolbar.py:165
-msgid "Zoom in"
-msgstr "Zoomer"
-
-#: readtoolbar.py:205
-msgid "Previous"
-msgstr "Précédent"
-
-#: readtoolbar.py:212
-msgid "Next"
-msgstr "Suivant"
-
-#: readtoolbar.py:312
-msgid "pitch adjusted"
-msgstr "hauteur ajustee"
-
-#: readtoolbar.py:316
-msgid "rate adjusted"
-msgstr "taux ajuste"
+msgstr "Zoom arrière"

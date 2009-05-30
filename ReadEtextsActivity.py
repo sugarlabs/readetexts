@@ -24,6 +24,7 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import string
+from sugar import profile
 from sugar.activity import activity
 from sugar import network
 from sugar.datastore import datastore
@@ -103,6 +104,9 @@ class ReadEtextsActivity(activity.Activity):
         self._object_id = handle.object_id
        
         toolbox = activity.ActivityToolbox(self)
+        activity_toolbar = toolbox.get_activity_toolbar()
+        activity_toolbar.remove(activity_toolbar.keep)
+        activity_toolbar.keep = None
         self.set_toolbox(toolbox)
         
         self._edit_toolbar = EditToolbar()
@@ -151,7 +155,8 @@ class ReadEtextsActivity(activity.Activity):
         self.textview.connect("key_press_event", self.keypress_cb)
         buffer = self.textview.get_buffer()
         buffer.connect("mark-set", self.mark_set_cb)
-        self.font_desc = pango.FontDescription("sans 12")
+        self.font_desc = pango.FontDescription("sans 11")
+        self.textview.modify_font(self.font_desc)
         self.scrolled.add(self.textview)
         self.textview.show()
         self.scrolled.show()
@@ -174,11 +179,6 @@ class ReadEtextsActivity(activity.Activity):
     
         renderer = gtk.CellRendererText()
         col = gtk.TreeViewColumn('Author', renderer, text=COLUMN_AUTHOR)
-        col.set_sort_column_id(COLUMN_AUTHOR)
-        tv.append_column(col)
-
-        renderer = gtk.CellRendererText()
-        col = gtk.TreeViewColumn('Path', renderer, text=COLUMN_PATH)
         col.set_sort_column_id(COLUMN_AUTHOR)
         tv.append_column(col)
 
@@ -509,7 +509,6 @@ class ReadEtextsActivity(activity.Activity):
                 page = title[i] + page
                 i = i - 1
             if title[i] == 'P':
-                print page
                 self.page = int(page) - 1
             else:
                 # not a page number; maybe a volume number.
@@ -527,7 +526,6 @@ class ReadEtextsActivity(activity.Activity):
                 title = title[0:i] + 'P' + str(self.page + 1)
             else:
                 title = title + ' P' + str(self.page + 1)
-            print title
         self.metadata['title'] = title
 
     def _load_document(self, filename):
@@ -617,7 +615,7 @@ class ReadEtextsActivity(activity.Activity):
         self.ls.clear()
         search_tuple = search_text.lower().split()
         if len(search_tuple) == 0:
-            self._alert('Error', 'You must enter at least one search word.')
+            self._alert(_('Error'), _('You must enter at least one search word.'))
             self._books_toolbar._search_entry.grab_focus()
             return
         f = open('bookcatalog.txt', 'r')
@@ -657,7 +655,11 @@ class ReadEtextsActivity(activity.Activity):
         getter.connect("progress", self._get_book_progress_cb)
         getter.connect("error", self._get_book_error_cb)
         _logger.debug("Starting download to %s...", path)
-        getter.start(path)
+        try:
+            getter.start(path)
+        except:
+            self._alert(_('Error'), _('Connection timed out for ') + self.selected_title)
+           
         self._download_content_length = getter.get_content_length()
         self._download_content_type = getter.get_content_type()
         self.textview.grab_focus()
@@ -702,19 +704,31 @@ class ReadEtextsActivity(activity.Activity):
         self._tempfile = tempfile
         file_path = os.path.join(self.get_activity_root(), 'instance',
                                     '%i' % time.time())
-        _logger.debug("Saving file %s to datastore...", file_path)
         os.link(tempfile, file_path)
-        self._jobject.file_path = file_path
-        datastore.write(self._jobject, transfer_ownership=True)
-
         _logger.debug("Got document %s (%s)", tempfile, suggested_name)
+        self.create_journal_entry(tempfile)
+        self._load_document(tempfile)
+
+    def create_journal_entry(self,  tempfile):
+        journal_entry = datastore.create()
         journal_title = self.selected_title
         if self.selected_author != ' ':
             journal_title = journal_title  + ', by ' + self.selected_author
-        
-        self.metadata['title'] = journal_title
-        self._load_document(tempfile)
-        self.save()
+        journal_entry.metadata['title'] = journal_title
+        journal_entry.metadata['title_set_by_user'] = '1'
+        journal_entry.metadata['activity'] = self.get_bundle_id() # get_service_name()
+        journal_entry.metadata['activity_id'] = self.get_id()
+        journal_entry.metadata['keep'] = '0'
+        journal_entry.metadata['mime_type'] = 'application/zip'
+        journal_entry.metadata['buddies'] = ''
+        journal_entry.metadata['preview'] = ''
+        journal_entry.metadata['icon-color'] = profile.get_color().to_string()
+        journal_entry.metadata['tags'] = self.selected_author
+        journal_entry.file_path = tempfile
+        datastore.write(journal_entry)
+        journal_entry.destroy()
+        self._alert(_('Success'), self.selected_title + _(' added to Journal.'))
+ 
 
     def find_previous(self):
         self.current_found_item = self.current_found_item - 1
@@ -820,7 +834,6 @@ class ReadEtextsActivity(activity.Activity):
                           bytes_downloaded, tube_id)
         total = self._download_content_length
         self._read_toolbar.set_downloaded_bytes(bytes_downloaded,  total)
-        # gtk.main_iteration()
 
     def _download_error_cb(self, getter, err, tube_id):
         _logger.debug("Error getting document from tube %u: %s",
@@ -955,7 +968,7 @@ class ReadEtextsActivity(activity.Activity):
         self._share_document()
 
     def _alert(self, title, text=None):
-        alert = NotifyAlert(timeout=50)
+        alert = NotifyAlert(timeout=20)
         alert.props.title = title
         alert.props.msg = text
         self.add_alert(alert)

@@ -285,22 +285,35 @@ class BooksToolbar(gtk.Toolbar):
         self.insert(self._download, -1)
         self._download.show()
 
+        self._hide_results = ToolButton('dialog-cancel')
+        self._hide_results.set_tooltip(_('Remove Results List'))
+        self._hide_results.props.sensitive = False
+        self._hide_results.connect('clicked', self._hide_results_cb)
+        self.insert(self._hide_results, -1)
+        self._hide_results.show()
+
     def set_activity(self, activity):
         self.activity = activity
 
     def _search_entry_activate_cb(self, entry):
         self.activity.find_books(entry.props.text)
+        self._hide_results.props.sensitive = True
 
     def _get_book_cb(self, button):
         self.activity.get_book()
-
+ 
     def _enable_button(self,  state):
         self._download.props.sensitive = state
-
+ 
+    def _hide_results_cb(self,  button):
+        self.activity.list_scroller.hide()
+        self._hide_results.props.sensitive = False
+    
     def keypress_cb(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Escape':
             self.activity.list_scroller.hide()
+            self._hide_results.props.sensitive = False
             return True
 
 class   SpeechToolbar(gtk.Toolbar):

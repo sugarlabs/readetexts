@@ -102,6 +102,7 @@ class ReadEtextsActivity(activity.Activity):
         
         self._fileserver = None
         self._object_id = handle.object_id
+        self.extra_journal_entry = None
        
         toolbox = activity.ActivityToolbox(self)
         activity_toolbar = toolbox.get_activity_toolbar()
@@ -589,6 +590,9 @@ class ReadEtextsActivity(activity.Activity):
         else:
             # skip saving empty file
             raise NotImplementedError
+        # The last book we downloaded has 2 journal entries.  Delete the other one.
+        if self.extra_journal_entry != None and self._close_requested:
+            datastore.delete(self.extra_journal_entry.object_id)
 
         self.save_page_number()
 
@@ -715,9 +719,9 @@ class ReadEtextsActivity(activity.Activity):
         if self.selected_author != ' ':
             journal_title = journal_title  + ', by ' + self.selected_author
         journal_entry.metadata['title'] = journal_title
+        self.metadata['title'] = journal_title
         journal_entry.metadata['title_set_by_user'] = '1'
-        journal_entry.metadata['activity'] = self.get_bundle_id() # get_service_name()
-        journal_entry.metadata['activity_id'] = self.get_id()
+        journal_entry.metadata['activity'] = self.get_bundle_id()
         journal_entry.metadata['keep'] = '0'
         journal_entry.metadata['mime_type'] = 'application/zip'
         journal_entry.metadata['buddies'] = ''
@@ -726,7 +730,7 @@ class ReadEtextsActivity(activity.Activity):
         journal_entry.metadata['tags'] = self.selected_author
         journal_entry.file_path = tempfile
         datastore.write(journal_entry)
-        journal_entry.destroy()
+        self.extra_journal_entry = journal_entry
         self._alert(_('Success'), self.selected_title + _(' added to Journal.'))
  
 

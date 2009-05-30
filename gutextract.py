@@ -49,7 +49,11 @@ def main(file_path):
                 if line.find(', by ') > -1:
                     line = line.replace(', by ', '|')
                 else:
-                    line = line + '| '
+                    comma_pos = line.rfind(',')
+                    if comma_pos > -1:
+                        line = line[0:comma_pos] + '|' + line[comma_pos+1:len(line)].lstrip()
+                    else:
+                        line = line + '| '
                 out.write(line + '|' + path + '\n')
             elif line[77].isdigit() and line.find("Audio:") < 0 and line[59] == '[':
                 path = '/etext' + line[6:8] + '/' + line[60:65]
@@ -59,7 +63,12 @@ def main(file_path):
                 if line.find(', by ') > -1:
                     line = line.replace(', by ', '|')
                 else:
-                    line = line + '| '
+                    comma_pos = line.rfind(',')
+                    if comma_pos > -1:
+                        line = line[0:comma_pos] + '|' + line[comma_pos+1:len(line)].lstrip()
+                        print line
+                    else:
+                        line = line + '| '
                 out.write(line + '|' + path + '\n')
     gut_file.close()
     out.close()

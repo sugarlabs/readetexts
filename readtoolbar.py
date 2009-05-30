@@ -266,12 +266,14 @@ class BooksToolbar(gtk.Toolbar):
 
         self._search_entry = gtk.Entry()
         self._search_entry.connect('activate', self._search_entry_activate_cb)
+        self._search_entry.connect("key_press_event", self.keypress_cb)
 
         width = int(gtk.gdk.screen_width() / 2)
         self._search_entry.set_size_request(width, -1)
 
         book_search_item.add(self._search_entry)
         self._search_entry.show()
+        self._search_entry.grab_focus()
 
         self.insert(book_search_item, -1)
         book_search_item.show()
@@ -294,6 +296,12 @@ class BooksToolbar(gtk.Toolbar):
 
     def _enable_button(self,  state):
         self._download.props.sensitive = state
+
+    def keypress_cb(self, widget, event):
+        keyname = gtk.gdk.keyval_name(event.keyval)
+        if keyname == 'Escape':
+            self.activity.list_scroller.hide()
+            return True
 
 class   SpeechToolbar(gtk.Toolbar):
     def __init__(self):

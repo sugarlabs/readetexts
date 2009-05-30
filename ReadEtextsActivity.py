@@ -121,10 +121,11 @@ class ReadEtextsActivity(activity.Activity):
         self._read_toolbar.set_activity(self)
         self._read_toolbar.show()
 
-        self._books_toolbar = BooksToolbar()
-        toolbox.add_toolbar(_('Books'), self._books_toolbar)
-        self._books_toolbar.set_activity(self)
-        self._books_toolbar.show()
+        if not self._shared_activity and self._object_id is None:
+            self._books_toolbar = BooksToolbar()
+            toolbox.add_toolbar(_('Books'), self._books_toolbar)
+            self._books_toolbar.set_activity(self)
+            self._books_toolbar.show()
 
         self._view_toolbar = ViewToolbar()
         toolbox.add_toolbar(_('View'), self._view_toolbar)
@@ -245,33 +246,10 @@ class ReadEtextsActivity(activity.Activity):
             textbuffer = self.textview.get_buffer()
             textbuffer.set_text(label_text)
             f.close()
-           # self._show_journal_object_picker()
 
         speech.highlight_cb = self.highlight_next_word
         speech.reset_cb = self.reset_play_button
  
-    def _show_journal_object_picker(self):
-        """Show the journal object picker to load a document.
-        This is for if Read Etexts is launched without a document.
-        """
-        if not self._want_document:
-            return
-        chooser = ObjectChooser(_('Choose document'), self, 
-                                gtk.DIALOG_MODAL | 
-                                gtk.DIALOG_DESTROY_WITH_PARENT)
-        try:
-            result = chooser.run()
-            if result == gtk.RESPONSE_ACCEPT:
-                logging.debug('ObjectChooser: %r' % 
-                              chooser.get_selected_object())
-                jobject = chooser.get_selected_object()
-                if jobject and jobject.file_path:
-                    self.metadata['title'] = jobject.metadata['title']
-                    self.read_file(jobject.file_path)
-        finally:
-            chooser.destroy()
-            del chooser
-
     def reset_current_word(self):
         self.current_word = 0
         
@@ -317,6 +295,12 @@ class ReadEtextsActivity(activity.Activity):
     def __view_toolbar_go_fullscreen_cb(self, view_toolbar):
         self.fullscreen()
 
+    def hide_table_keypress_cb(self, widget, event):
+        if keyname == 'Escape':
+            self.list_scroller.hide()
+            return True
+        return False
+
     def keypress_cb(self, widget, event):
         "Respond when the user presses one of the arrow keys"
         if xopower.service_activated:
@@ -331,6 +315,9 @@ class ReadEtextsActivity(activity.Activity):
             return True
         if keyname == 'minus':
             self.font_decrease()
+            return True
+        if keyname == 'Escape':
+            self.list_scroller.hide()
             return True
         if speech.supported and speech.is_stopped() == False:
             # If speech is in progress, ignore other keys.
@@ -490,7 +477,10 @@ class ReadEtextsActivity(activity.Activity):
     def save_extracted_file(self, zipfile, filename):
         "Extract the file to a temp directory for viewing"
         filebytes = zipfile.read(filename)
-        f = open("/tmp/" + filename, 'w')
+        outfn = self.make_new_filename(filename)
+        if (outfn == ''):
+            return False
+        f = open("/tmp/" + outfn, 'w')
         try:
             f.write(filebytes)
         finally:
@@ -504,13 +494,49 @@ class ReadEtextsActivity(activity.Activity):
         self._tempfile = tempfile
         self._load_document(self._tempfile)
 
+    def make_new_filename(self, filename):
+        partition_tuple = filename.rpartition('/')
+        return partition_tuple[2]
+
+    def get_saved_page_number(self):
+        title = self.metadata.get('title', '')
+        if not title[len(title)- 1].isdigit():
+            self.page = 0
+        else:
+            i = len(title) - 1
+            page = ''
+            while (title[i].isdigit() and i > 0):
+                page = title[i] + page
+                i = i - 1
+            if title[i] == 'P':
+                print page
+                self.page = int(page) - 1
+            else:
+                # not a page number; maybe a volume number.
+                self.page = 0
+        
+    def save_page_number(self):
+        title = self.metadata.get('title', '')
+        if not title[len(title)- 1].isdigit():
+            title = title + ' P' +  str(self.page + 1)
+        else:
+            i = len(title) - 1
+            while (title[i].isdigit() and i > 0):
+                i = i - 1
+            if title[i] == 'P':
+                title = title[0:i] + 'P' + str(self.page + 1)
+            else:
+                title = title + ' P' + str(self.page + 1)
+            print title
+        self.metadata['title'] = title
+
     def _load_document(self, filename):
         "Read the Etext file"
         if zipfile.is_zipfile(filename):
             self.zf = zipfile.ZipFile(filename, 'r')
             self.book_files = self.zf.namelist()
             self.save_extracted_file(self.zf, self.book_files[0])
-            current_file_name = "/tmp/" + self.book_files[0]
+            current_file_name = "/tmp/" + self.make_new_filename(self.book_files[0])
         else:
             current_file_name = filename
             
@@ -529,7 +555,7 @@ class ReadEtextsActivity(activity.Activity):
                 self.page_index.append(position)
                 linecount = 0
                 pagecount = pagecount + 1
-        self.page = int(self.metadata.get('current_page', '0'))
+        self.get_saved_page_number()
         self.show_page(self.page)
         self._read_toolbar.set_total_pages(pagecount + 1)
         self._read_toolbar.set_current_page(self.page)
@@ -566,7 +592,7 @@ class ReadEtextsActivity(activity.Activity):
             # skip saving empty file
             raise NotImplementedError
 
-        self.metadata['current_page']  = str(self.page)
+        self.save_page_number()
 
     def can_close(self):
         self._close_requested = True
@@ -589,13 +615,17 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller_visible = False
         self.book_selected = False
         self.ls.clear()
+        search_tuple = search_text.lower().split()
+        if len(search_tuple) == 0:
+            self._alert('Error', 'You must enter at least one search word.')
+            self._books_toolbar._search_entry.grab_focus()
+            return
         f = open('bookcatalog.txt', 'r')
         while f:
             line = unicode(f.readline(), "iso-8859-1")
             if not line:
                 break
             line_lower = line.lower()
-            search_tuple = search_text.lower().split()
             i = 0
             words_found = 0
             while i < len(search_tuple):
@@ -610,81 +640,49 @@ class ReadEtextsActivity(activity.Activity):
         f.close()
         self.list_scroller.show()
         self.list_scroller_visible = True
-        
+     
     def get_book(self):
-        print "get book from",  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip"
-        path = os.path.join(self.get_activity_root(), 'instance',
-                            'tmp%i' % time.time())
-        getter = ReadURLDownloader("http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip")
-        getter.connect("finished", self._get_iso_book_result_cb)
-        getter.connect("progress", self._get_book_progress_cb)
-        getter.connect("error", self._get_book_error_cb)
-        _logger.debug("Starting download to %s...", path)
-        getter.start(path)
-        self._download_content_length = getter.get_content_length()
-        self._download_content_type = getter.get_content_type()
+        self._books_toolbar._enable_button(False)
+        if self.selected_path.startswith('/etext'):
+            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  self._get_old_book_result_cb)
+        else:
+            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  self._get_iso_book_result_cb)
         
-    def get_plain_book(self):
-        print "get book from",  "http://www.gutenberg.org/dirs" + self.selected_path + ".zip"
+    def download_book(self,  url,  result_cb):
+        print "get book from",  url
         path = os.path.join(self.get_activity_root(), 'instance',
                             'tmp%i' % time.time())
-        getter = ReadURLDownloader("http://www.gutenberg.org/dirs" + self.selected_path + ".zip")
-        getter.connect("finished", self._get_book_result_cb)
+        getter = ReadURLDownloader(url)
+        getter.connect("finished", result_cb)
         getter.connect("progress", self._get_book_progress_cb)
         getter.connect("error", self._get_book_error_cb)
         _logger.debug("Starting download to %s...", path)
         getter.start(path)
         self._download_content_length = getter.get_content_length()
         self._download_content_type = getter.get_content_type()
-
-    def can_download_books(self):
-        return self.book_selected
+        self.textview.grab_focus()
 
     def _get_iso_book_result_cb(self, getter, tempfile, suggested_name):
-        print 'content type',  self._download_content_type
-        if self._download_content_type == 'text/html; charset=ISO-8859-1':
+        if self._download_content_type.startswith('text/html'):
             # got an error page instead
-            self.get_plain_book()
+            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + ".zip",  self._get_book_result_cb)
             return
+        self.process_downloaded_book(tempfile,  suggested_name)
 
-        self._tempfile = tempfile
-        file_path = os.path.join(self.get_activity_root(), 'instance',
-                                    '%i' % time.time())
-        _logger.debug("Saving file %s to datastore...", file_path)
-        os.link(tempfile, file_path)
-        self._jobject.file_path = file_path
-        datastore.write(self._jobject, transfer_ownership=True)
-
-        _logger.debug("Got document %s (%s)", tempfile, suggested_name)
-        journal_title = self.selected_title
-        if self.selected_author != ' ':
-            journal_title = journal_title  + ', by ' + self.selected_author
-        self.metadata['title'] = journal_title
-        self._load_document(tempfile)
-        self.save()
+    def _get_old_book_result_cb(self, getter, tempfile, suggested_name):
+        if self._download_content_type.startswith('text/html'):
+            # got an error page instead
+            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + "10.zip",  self._get_book_result_cb)
+            return
+        self.process_downloaded_book(tempfile,  suggested_name)
 
     def _get_book_result_cb(self, getter, tempfile, suggested_name):
-        print 'content type',  self._download_content_type
-        if self._download_content_type == 'text/html; charset=ISO-8859-1':
+        print 'Content type:',  self._download_content_type
+        if self._download_content_type.startswith('text/html'):
             # got an error page instead
             self._get_book_error_cb(getter, 'HTTP Error')
             return
-
-        self._tempfile = tempfile
-        file_path = os.path.join(self.get_activity_root(), 'instance',
-                                    '%i' % time.time())
-        _logger.debug("Saving file %s to datastore...", file_path)
-        os.link(tempfile, file_path)
-        self._jobject.file_path = file_path
-        datastore.write(self._jobject, transfer_ownership=True)
-
-        _logger.debug("Got document %s (%s)", tempfile, suggested_name)
-        journal_title = self.selected_title
-        if self.selected_author != ' ':
-            journal_title = journal_title  + ', by ' + self.selected_author
-        self.metadata['title'] = journal_title
-        self._load_document(tempfile)
-        self.save()
+        self.process_downloaded_book(tempfile,  suggested_name)
 
     def _get_book_progress_cb(self, getter, bytes_downloaded):
         if self._download_content_length > 0:
@@ -696,9 +694,27 @@ class ReadEtextsActivity(activity.Activity):
 
     def _get_book_error_cb(self, getter, err):
         _logger.debug("Error getting document: %s", err)
-        self._alert('Failure', 'Error getting document')
+        self._alert(_('Error'), _('Could not download ') + self.selected_title + _(' path in catalog may be incorrect.'))
         self._download_content_length = 0
         self._download_content_type = None
+
+    def process_downloaded_book(self,  tempfile,  suggested_name):
+        self._tempfile = tempfile
+        file_path = os.path.join(self.get_activity_root(), 'instance',
+                                    '%i' % time.time())
+        _logger.debug("Saving file %s to datastore...", file_path)
+        os.link(tempfile, file_path)
+        self._jobject.file_path = file_path
+        datastore.write(self._jobject, transfer_ownership=True)
+
+        _logger.debug("Got document %s (%s)", tempfile, suggested_name)
+        journal_title = self.selected_title
+        if self.selected_author != ' ':
+            journal_title = journal_title  + ', by ' + self.selected_author
+        
+        self.metadata['title'] = journal_title
+        self._load_document(tempfile)
+        self.save()
 
     def find_previous(self):
         self.current_found_item = self.current_found_item - 1
@@ -774,7 +790,7 @@ class ReadEtextsActivity(activity.Activity):
 
     # The code from here on down is for sharing.
     def _download_result_cb(self, getter, tempfile, suggested_name, tube_id):
-        if self._download_content_type == 'text/html':
+        if self._download_content_type.startswith('text/html'):
             # got an error page instead
             self._download_error_cb(getter, 'HTTP Error', tube_id)
             return
@@ -809,7 +825,7 @@ class ReadEtextsActivity(activity.Activity):
     def _download_error_cb(self, getter, err, tube_id):
         _logger.debug("Error getting document from tube %u: %s",
                       tube_id, err)
-        self._alert('Failure', 'Error getting document from tube')
+        self._alert(_('Failure'), _('Error getting document from tube'))
         self._want_document = True
         self._download_content_length = 0
         self._download_content_type = None
@@ -939,7 +955,7 @@ class ReadEtextsActivity(activity.Activity):
         self._share_document()
 
     def _alert(self, title, text=None):
-        alert = NotifyAlert(timeout=5)
+        alert = NotifyAlert(timeout=50)
         alert.props.title = title
         alert.props.msg = text
         self.add_alert(alert)

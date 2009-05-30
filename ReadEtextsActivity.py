@@ -645,7 +645,9 @@ class ReadEtextsActivity(activity.Activity):
      
     def get_book(self):
         self._books_toolbar._enable_button(False)
-        if self.selected_path.startswith('/etext'):
+        if self.selected_path.startswith('PGA'):
+            gobject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  self._get_book_result_cb)
+        elif self.selected_path.startswith('/etext'):
             gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  self._get_old_book_result_cb)
         else:
             gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  self._get_iso_book_result_cb)

@@ -24,6 +24,7 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import string
+from sugar.graphics import style
 from sugar import profile
 from sugar.activity import activity
 from sugar import network
@@ -155,7 +156,7 @@ class ReadEtextsActivity(activity.Activity):
         self.textview.connect("key_press_event", self.keypress_cb)
         buffer = self.textview.get_buffer()
         buffer.connect("mark-set", self.mark_set_cb)
-        self.font_desc = pango.FontDescription("sans 11")
+        self.font_desc = pango.FontDescription("sans %d" % style.zoom(11))
         self.textview.modify_font(self.font_desc)
         self.scrolled.add(self.textview)
         self.textview.show()

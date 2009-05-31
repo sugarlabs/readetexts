@@ -156,7 +156,7 @@ class ReadEtextsActivity(activity.Activity):
         self.textview.connect("key_press_event", self.keypress_cb)
         buffer = self.textview.get_buffer()
         buffer.connect("mark-set", self.mark_set_cb)
-        self.font_desc = pango.FontDescription("sans %d" % style.zoom(11))
+        self.font_desc = pango.FontDescription("sans %d" % style.zoom(10))
         self.textview.modify_font(self.font_desc)
         self.scrolled.add(self.textview)
         self.textview.show()

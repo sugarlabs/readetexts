@@ -1,0 +1,126 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-31 00:32-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
+
+#: activity/activity.info:2
+msgid "Read ETexts"
+msgstr ""
+
+#: ReadEtextsActivity.py:119
+msgid "Edit"
+msgstr ""
+
+#: ReadEtextsActivity.py:124
+msgid "Read"
+msgstr ""
+
+#: ReadEtextsActivity.py:130
+msgid "Books"
+msgstr ""
+
+#: ReadEtextsActivity.py:135
+msgid "View"
+msgstr ""
+
+#: ReadEtextsActivity.py:143
+msgid "Speech"
+msgstr ""
+
+#: ReadEtextsActivity.py:621 ReadEtextsActivity.py:666
+#: ReadEtextsActivity.py:704
+msgid "Error"
+msgstr ""
+
+#: ReadEtextsActivity.py:621
+msgid "You must enter at least one search word."
+msgstr ""
+
+#: ReadEtextsActivity.py:666
+msgid "Connection timed out for "
+msgstr ""
+
+#: ReadEtextsActivity.py:704
+msgid "Could not download "
+msgstr ""
+
+#: ReadEtextsActivity.py:704
+msgid " path in catalog may be incorrect."
+msgstr ""
+
+#: ReadEtextsActivity.py:735
+msgid "Success"
+msgstr ""
+
+#: ReadEtextsActivity.py:735
+msgid " added to Journal."
+msgstr ""
+
+#: ReadEtextsActivity.py:846
+msgid "Failure"
+msgstr ""
+
+#: ReadEtextsActivity.py:846
+msgid "Error getting document from tube"
+msgstr ""
+
+#: readtoolbar.py:41
+msgid "Back"
+msgstr ""
+
+#: readtoolbar.py:48
+msgid "Forward"
+msgstr ""
+
+#: readtoolbar.py:166
+msgid "Zoom out"
+msgstr ""
+
+#: readtoolbar.py:172
+msgid "Zoom in"
+msgstr ""
+
+#: readtoolbar.py:183
+msgid "Fullscreen"
+msgstr ""
+
+#: readtoolbar.py:226
+msgid "Previous"
+msgstr ""
+
+#: readtoolbar.py:233
+msgid "Next"
+msgstr ""
+
+#: readtoolbar.py:282
+msgid "Get Book"
+msgstr ""
+
+#: readtoolbar.py:289
+msgid "Remove Results List"
+msgstr ""
+
+#: readtoolbar.py:349
+msgid "Play / Pause"
+msgstr ""
+
+#: readtoolbar.py:399
+msgid "pitch adjusted"
+msgstr ""
+
+#: readtoolbar.py:403
+msgid "rate adjusted"
+msgstr ""

@@ -187,9 +187,14 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         self.list_scroller.add(tv)
         
+        self.progressbar = gtk.ProgressBar()
+        self.progressbar.set_orientation(gtk.PROGRESS_LEFT_TO_RIGHT)
+        self.progressbar.set_fraction(0.0)
+        
         vbox = gtk.VBox()
-        vbox.add(self.scrolled)
-        vbox.add(self.list_scroller)
+        vbox.pack_start(self.progressbar,  False,  False,  10)
+        vbox.pack_start(self.scrolled)
+        vbox.pack_end(self.list_scroller)
         self.set_canvas(vbox)
         tv.show()
         vbox.show()
@@ -638,22 +643,26 @@ class ReadEtextsActivity(activity.Activity):
             if words_found == len(search_tuple):
                 iter = self.ls.append()
                 book_tuple = line.split('|')
-                self.ls.set(iter, COLUMN_TITLE, book_tuple[0],  COLUMN_AUTHOR, book_tuple[1],  COLUMN_PATH, book_tuple[2].rstrip())
+                self.ls.set(iter, COLUMN_TITLE, book_tuple[0],  COLUMN_AUTHOR, book_tuple[1],  COLUMN_PATH, \
+                            book_tuple[2].rstrip())
         f.close()
         self.list_scroller.show()
         self.list_scroller_visible = True
      
     def get_book(self):
         self._books_toolbar._enable_button(False)
+        self.progressbar.show()
         if self.selected_path.startswith('PGA'):
-            gobject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  self._get_book_result_cb)
+            gobject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  \
+                             self._get_book_result_cb)
         elif self.selected_path.startswith('/etext'):
-            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  self._get_old_book_result_cb)
+            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  \
+                             self._get_old_book_result_cb)
         else:
-            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  self._get_iso_book_result_cb)
+            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  \
+                             self._get_iso_book_result_cb)
         
     def download_book(self,  url,  result_cb):
-        print "get book from",  url
         path = os.path.join(self.get_activity_root(), 'instance',
                             'tmp%i' % time.time())
         getter = ReadURLDownloader(url)
@@ -685,7 +694,6 @@ class ReadEtextsActivity(activity.Activity):
         self.process_downloaded_book(tempfile,  suggested_name)
 
     def _get_book_result_cb(self, getter, tempfile, suggested_name):
-        print 'Content type:',  self._download_content_type
         if self._download_content_type.startswith('text/html'):
             # got an error page instead
             self._get_book_error_cb(getter, 'HTTP Error')
@@ -699,8 +707,21 @@ class ReadEtextsActivity(activity.Activity):
         else:
             _logger.debug("Downloaded %u bytes...",
                           bytes_downloaded)
+        total = self._download_content_length
+        self.set_downloaded_bytes(bytes_downloaded,  total)
+        if not speech.supported:
+            while gtk.events_pending():
+                gtk.main_iteration()
+
+    def set_downloaded_bytes(self, bytes,  total):
+        fraction = float(bytes) / float(total)
+        self.progressbar.set_fraction(fraction)
+        
+    def clear_downloaded_bytes(self):
+        self.progressbar.set_fraction(0.0)
 
     def _get_book_error_cb(self, getter, err):
+        self.progressbar.hide()
         _logger.debug("Error getting document: %s", err)
         self._alert(_('Error'), _('Could not download ') + self.selected_title + _(' path in catalog may be incorrect.'))
         self._download_content_length = 0
@@ -716,6 +737,7 @@ class ReadEtextsActivity(activity.Activity):
         self._load_document(tempfile)
 
     def create_journal_entry(self,  tempfile):
+        self.progressbar.hide()
         journal_entry = datastore.create()
         journal_title = self.selected_title
         if self.selected_author != ' ':
@@ -734,7 +756,6 @@ class ReadEtextsActivity(activity.Activity):
         datastore.write(journal_entry)
         self.extra_journal_entry = journal_entry
         self._alert(_('Success'), self.selected_title + _(' added to Journal.'))
- 
 
     def find_previous(self):
         self.current_found_item = self.current_found_item - 1

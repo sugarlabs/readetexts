@@ -230,3 +230,6 @@ locale/hi/activity.linfo
 locale/hi/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 locale/he/activity.linfo
 locale/he/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
+locale/sq/activity.linfo
+locale/sq/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
+po/sq.po

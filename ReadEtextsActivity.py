@@ -599,6 +599,7 @@ class ReadEtextsActivity(activity.Activity):
         if self.extra_journal_entry != None and self._close_requested:
             datastore.delete(self.extra_journal_entry.object_id)
 
+        self.metadata['activity'] = self.get_bundle_id()
         self.save_page_number()
 
     def can_close(self):
@@ -606,6 +607,7 @@ class ReadEtextsActivity(activity.Activity):
         return True
 
     def selection_cb(self, selection):
+        self.clear_downloaded_bytes()
         tv = selection.get_tree_view()
         model = tv.get_model()
         sel = selection.get_selected()
@@ -617,6 +619,7 @@ class ReadEtextsActivity(activity.Activity):
             self._books_toolbar._enable_button(True)
 
     def find_books(self, search_text):
+        self.clear_downloaded_bytes()
         self._books_toolbar._enable_button(False)
         self.list_scroller.hide()
         self.list_scroller_visible = False
@@ -709,9 +712,10 @@ class ReadEtextsActivity(activity.Activity):
                           bytes_downloaded)
         total = self._download_content_length
         self.set_downloaded_bytes(bytes_downloaded,  total)
-        if not speech.supported:
-            while gtk.events_pending():
-                gtk.main_iteration()
+        gtk.gdk.threads_enter()
+        while gtk.events_pending():
+            gtk.main_iteration()
+        gtk.gdk.threads_leave()
 
     def set_downloaded_bytes(self, bytes,  total):
         fraction = float(bytes) / float(total)
@@ -850,6 +854,7 @@ class ReadEtextsActivity(activity.Activity):
                       tempfile, suggested_name, tube_id)
         self._load_document(tempfile)
         self.save()
+        self.progressbar.hide()
 
     def _download_progress_cb(self, getter, bytes_downloaded, tube_id):
         if self._download_content_length > 0:
@@ -860,7 +865,11 @@ class ReadEtextsActivity(activity.Activity):
             _logger.debug("Downloaded %u bytes from tube %u...",
                           bytes_downloaded, tube_id)
         total = self._download_content_length
-        self._read_toolbar.set_downloaded_bytes(bytes_downloaded,  total)
+        self.set_downloaded_bytes(bytes_downloaded,  total)
+        gtk.gdk.threads_enter()
+        while gtk.events_pending():
+            gtk.main_iteration()
+        gtk.gdk.threads_leave()
 
     def _download_error_cb(self, getter, err, tube_id):
         _logger.debug("Error getting document from tube %u: %s",
@@ -921,6 +930,7 @@ class ReadEtextsActivity(activity.Activity):
 
         # Avoid trying to download the document multiple times at once
         self._want_document = False
+        self.progressbar.show()
         gobject.idle_add(self._download_document, tube_id, path)
         return False
 

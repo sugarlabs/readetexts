@@ -875,6 +875,7 @@ class ReadEtextsActivity(activity.Activity):
         gtk.gdk.threads_leave()
 
     def _download_error_cb(self, getter, err, tube_id):
+        self.progressbar.hide()
         _logger.debug("Error getting document from tube %u: %s",
                       tube_id, err)
         self._alert(_('Failure'), _('Error getting document from tube'))

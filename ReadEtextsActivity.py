@@ -653,8 +653,9 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller_visible = True
      
     def get_book(self):
-        self._books_toolbar._enable_button(False)
         self.progressbar.show()
+        self._books_toolbar._enable_button(False)
+        self.list_scroller.props.sensitive = False
         if self.selected_path.startswith('PGA'):
             gobject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  \
                              self._get_book_result_cb)
@@ -725,6 +726,7 @@ class ReadEtextsActivity(activity.Activity):
         self.progressbar.set_fraction(0.0)
 
     def _get_book_error_cb(self, getter, err):
+        self.list_scroller.props.sensitive = True
         self.progressbar.hide()
         _logger.debug("Error getting document: %s", err)
         self._alert(_('Error'), _('Could not download ') + self.selected_title + _(' path in catalog may be incorrect.'))
@@ -732,6 +734,7 @@ class ReadEtextsActivity(activity.Activity):
         self._download_content_type = None
 
     def process_downloaded_book(self,  tempfile,  suggested_name):
+        self.list_scroller.props.sensitive = True
         self._tempfile = tempfile
         file_path = os.path.join(self.get_activity_root(), 'instance',
                                     '%i' % time.time())

@@ -902,6 +902,7 @@ class ReadEtextsActivity(activity.Activity):
         assert addr[1] > 0 and addr[1] < 65536
         port = int(addr[1])
 
+        self.progressbar.show()
         getter = ReadURLDownloader("http://%s:%d/document"
                                            % (addr[0], port))
         getter.connect("finished", self._download_result_cb, tube_id)
@@ -934,7 +935,6 @@ class ReadEtextsActivity(activity.Activity):
 
         # Avoid trying to download the document multiple times at once
         self._want_document = False
-        self.progressbar.show()
         gobject.idle_add(self._download_document, tube_id, path)
         return False
 

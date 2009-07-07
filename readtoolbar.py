@@ -111,8 +111,8 @@ class ReadToolbar(gtk.Toolbar):
         bookmarkitem = gtk.ToolItem()
         self._bookmarker = ToggleToolButton('emblem-favorite')
         self._bookmarker.set_tooltip(_('Toggle Bookmark'))
-        self._bookmarker_toggle_handler_id = self._bookmarker.connect('toggled',
-                                      self._bookmarker_toggled_cb)
+        self._bookmarker_toggle_handler_id = self._bookmarker.connect('clicked',
+                                      self._bookmarker_clicked_cb)
   
         bookmarkitem.add(self._bookmarker)
 
@@ -174,8 +174,8 @@ class ReadToolbar(gtk.Toolbar):
     def _next_bookmark_activate_cb(self, menuitem):
         self.activity.next_bookmark()
         
-    def _bookmarker_toggled_cb(self, button):
-        self.activity.toggle_bookmark(button)
+    def _bookmarker_clicked_cb(self, button):
+        self.activity.bookmarker_clicked(button)
 
 class ViewToolbar(gtk.Toolbar):
     __gtype_name__ = 'ViewToolbar'

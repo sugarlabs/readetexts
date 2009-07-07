@@ -375,17 +375,30 @@ class ReadEtextsActivity(activity.Activity):
             return True
         return False
         
-    def toggle_bookmark(self,  button):
-        page = self.page
+    def bookmarker_clicked(self,  button):
+        if button.get_active() == True:
+            self.annotations.bookmarks[self.page] = 'B'
+            print 'set bookmark on page',  self.page
+        else:
+            try:
+                del self.annotations.bookmarks[self.page]
+                print 'set bookmark off page',  self.page
+            except KeyError:
+                print 'error deleting bookmark on page',  self.page
+        self.show_bookmark_state()
+
+    def show_bookmark_state(self):
         try:
-            bookmark = self.annotations.bookmarks[page]
-            if bookmark == 'B' and button.get_state() == False:
-                del self.annotations.bookmarks[page]
-                self._sidebar.show_bookmark_icon(False)
-        except KeyError:
-            if button.get_state() == True:
-                self.annotations.bookmarks[page] = 'B'
+            bookmark = self.annotations.bookmarks[self.page]
+            print 'page',  self.page, 'is bookmarked'
+            if bookmark == 'B':
                 self._sidebar.show_bookmark_icon(True)
+                self._read_toolbar._bookmarker .set_active(True)
+        except KeyError:
+            print 'page',  self.page, 'is not bookmarked'
+            self._sidebar.show_bookmark_icon(False)
+            self._read_toolbar._bookmarker .set_active(False)
+            return
 
     def prev_bookmark():
         page = self.page
@@ -394,28 +407,24 @@ class ReadEtextsActivity(activity.Activity):
         page = self.page
 
     def page_next(self):
-        page = self.page
         textbuffer = self.annotation_textview.get_buffer()
-        self.annotations.notes[page] = textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter())
-        page = page + 1
-        if page >= len(self.page_index): page=len(self.page_index) - 1
-        self.show_page(page)
+        self.annotations.notes[self.page] = textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter())
+        self.page = self.page + 1
+        if self.page >= len(self.page_index): self.page=len(self.page_index) - 1
+        self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
         v_adjustment.value = v_adjustment.lower
-        self._read_toolbar.set_current_page(page)
-        self.page = page
+        self._read_toolbar.set_current_page(self.page)
 
     def page_previous(self):
-        page = self.page
         textbuffer = self.annotation_textview.get_buffer()
-        self.annotations.notes[page] = textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter())
-        page=page-1
-        if page < 0: page=0
-        self.show_page(page)
+        self.annotations.notes[self.page] = textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter())
+        self.page=self.page-1
+        if self.page < 0: self.page=0
+        self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
         v_adjustment.value = v_adjustment.upper - v_adjustment.page_size
-        self._read_toolbar.set_current_page(page)
-        self.page = page
+        self._read_toolbar.set_current_page(self.page)
 
     def font_decrease(self):
         font_size = self.font_desc.get_size() / 1024
@@ -459,14 +468,7 @@ class ReadEtextsActivity(activity.Activity):
         self.page = page
 
     def show_page(self, page_number):
-        try:
-            bookmark = self.annotations.bookmarks[page_number]
-            if bookmark == 'B':
-                self._sidebar.show_bookmark_icon(True)
-                self._read_toolbar._bookmarker .set_active(True)
-        except KeyError:
-            self._sidebar.show_bookmark_icon(False)
-            self._read_toolbar._bookmarker .set_active(False)
+        self.show_bookmark_state()
         position = self.page_index[page_number]
         self.reset_current_word()
         self.etext_file.seek(position)
@@ -521,6 +523,7 @@ class ReadEtextsActivity(activity.Activity):
         return marked_up_text + '</speak>'
 
     def show_found_page(self, page_tuple):
+        self.show_bookmark_state()
         position = self.page_index[page_tuple[0]]
         self.etext_file.seek(position)
         linecount = 0

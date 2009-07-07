@@ -3,6 +3,7 @@ speech_dispatcher.py
 speech.py
 ReadEtextsActivity.py
 readtoolbar.py
+readsidebar.py
 xopower.py
 setup.py
 gutextract.py

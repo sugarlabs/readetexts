@@ -31,6 +31,7 @@ from sugar import network
 from sugar.datastore import datastore
 from sugar.graphics.alert import NotifyAlert
 from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
+from readsidebar import Sidebar
 from gettext import gettext as _
 import pango
 import dbus
@@ -52,7 +53,7 @@ _logger = logging.getLogger('read-etexts-activity')
 class Annotations():
     title = ''
     notes = {0:''}
-    bookmarks = []
+    bookmarks = {0:''}
     highlights = {0:  [] }
 
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
@@ -210,11 +211,19 @@ class ReadEtextsActivity(activity.Activity):
         vbox.pack_start(self.scrolled)
         vbox.pack_end(self.list_scroller)
         vbox.pack_end(self.annotation_textview,  False,  False,  10)
-        self.set_canvas(vbox)
         tv.show()
         vbox.show()
         self.list_scroller.hide()
         self.annotation_textview.show()
+
+        self._sidebar = Sidebar()
+        self._sidebar.show()
+
+        sidebar_hbox = gtk.HBox()
+        sidebar_hbox.pack_start(self._sidebar, expand=False, fill=False)
+        sidebar_hbox.pack_start(vbox,  expand=True, fill=True)
+        self.set_canvas(sidebar_hbox)
+        sidebar_hbox.show()
 
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
@@ -366,6 +375,24 @@ class ReadEtextsActivity(activity.Activity):
             return True
         return False
         
+    def toggle_bookmark(self,  button):
+        page = self.page
+        try:
+            bookmark = self.annotations.bookmarks[page]
+            if bookmark == 'B' and button.get_state() == False:
+                del self.annotations.bookmarks[page]
+                self._sidebar.show_bookmark_icon(False)
+        except KeyError:
+            if button.get_state() == True:
+                self.annotations.bookmarks[page] = 'B'
+                self._sidebar.show_bookmark_icon(True)
+
+    def prev_bookmark():
+        page = self.page
+
+    def next_bookmark():
+        page = self.page
+
     def page_next(self):
         page = self.page
         textbuffer = self.annotation_textview.get_buffer()
@@ -432,6 +459,14 @@ class ReadEtextsActivity(activity.Activity):
         self.page = page
 
     def show_page(self, page_number):
+        try:
+            bookmark = self.annotations.bookmarks[page_number]
+            if bookmark == 'B':
+                self._sidebar.show_bookmark_icon(True)
+                self._read_toolbar._bookmarker .set_active(True)
+        except KeyError:
+            self._sidebar.show_bookmark_icon(False)
+            self._read_toolbar._bookmarker .set_active(False)
         position = self.page_index[page_number]
         self.reset_current_word()
         self.etext_file.seek(position)

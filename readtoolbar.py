@@ -50,7 +50,7 @@ class ReadToolbar(gtk.Toolbar):
         self._prev_bookmark.show_all()
         self._back.connect('clicked', self._go_back_cb)
         self._prev_page.connect('activate', self._go_back_cb)
-        # self._prev_bookmark.connect('activate', self._prev_bookmark_activate_cb)
+        self._prev_bookmark.connect('activate', self._prev_bookmark_activate_cb)
         self.insert(self._back, -1)
         self._back.show()
 
@@ -66,7 +66,7 @@ class ReadToolbar(gtk.Toolbar):
         self._next_bookmark.show_all()
         self._forward.connect('clicked', self._go_forward_cb)
         self._next_page.connect('activate', self._go_forward_cb)
-        # self._next_bookmark.connect('activate', self._next_bookmark_activate_cb)
+        self._next_bookmark.connect('activate', self._next_bookmark_activate_cb)
         self.insert(self._forward, -1)
         self._forward.show()
 
@@ -103,6 +103,21 @@ class ReadToolbar(gtk.Toolbar):
 
         self.insert(total_page_item, -1)
         total_page_item.show()
+
+        spacer = gtk.SeparatorToolItem()
+        self.insert(spacer, -1)
+        spacer.show()
+  
+        bookmarkitem = gtk.ToolItem()
+        self._bookmarker = ToggleToolButton('emblem-favorite')
+        self._bookmarker.set_tooltip(_('Toggle Bookmark'))
+        self._bookmarker_toggle_handler_id = self._bookmarker.connect('toggled',
+                                      self._bookmarker_toggled_cb)
+  
+        bookmarkitem.add(self._bookmarker)
+
+        self.insert(bookmarkitem, -1)
+        bookmarkitem.show_all()
 
     def _num_page_entry_insert_text_cb(self, entry, text, length, position):
         if not re.match('[0-9]', text):
@@ -152,6 +167,15 @@ class ReadToolbar(gtk.Toolbar):
         
     def set_activity(self, activity):
         self.activity = activity
+
+    def _prev_bookmark_activate_cb(self, menuitem):
+        self.activity.prev_bookmark()
+ 
+    def _next_bookmark_activate_cb(self, menuitem):
+        self.activity.next_bookmark()
+        
+    def _bookmarker_toggled_cb(self, button):
+        self.activity.toggle_bookmark(button)
 
 class ViewToolbar(gtk.Toolbar):
     __gtype_name__ = 'ViewToolbar'

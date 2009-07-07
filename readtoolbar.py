@@ -37,17 +37,36 @@ class ReadToolbar(gtk.Toolbar):
 
     def __init__(self):
         gtk.Toolbar.__init__(self)
+
         self._back = ToolButton('go-previous')
         self._back.set_tooltip(_('Back'))
         self._back.props.sensitive = False
+        palette = self._back.get_palette()
+        self._prev_page = MenuItem(text_label= _("Previous page"))
+        palette.menu.append(self._prev_page) 
+        self._prev_page.show_all()        
+        self._prev_bookmark = MenuItem(text_label= _("Previous bookmark"))
+        palette.menu.append(self._prev_bookmark) 
+        self._prev_bookmark.show_all()
         self._back.connect('clicked', self._go_back_cb)
+        self._prev_page.connect('activate', self._go_back_cb)
+        # self._prev_bookmark.connect('activate', self._prev_bookmark_activate_cb)
         self.insert(self._back, -1)
         self._back.show()
 
         self._forward = ToolButton('go-next')
         self._forward.set_tooltip(_('Forward'))
         self._forward.props.sensitive = False
+        palette = self._forward.get_palette()
+        self._next_page = MenuItem(text_label= _("Next page"))
+        palette.menu.append(self._next_page) 
+        self._next_page.show_all()        
+        self._next_bookmark = MenuItem(text_label= _("Next bookmark"))
+        palette.menu.append(self._next_bookmark) 
+        self._next_bookmark.show_all()
         self._forward.connect('clicked', self._go_forward_cb)
+        self._next_page.connect('activate', self._go_forward_cb)
+        # self._next_bookmark.connect('activate', self._next_bookmark_activate_cb)
         self.insert(self._forward, -1)
         self._forward.show()
 

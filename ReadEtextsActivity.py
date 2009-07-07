@@ -49,6 +49,12 @@ COLUMN_PATH = 2
 
 _logger = logging.getLogger('read-etexts-activity')
 
+class Annotations():
+    title = ''
+    notes = {0:''}
+    bookmarks = []
+    highlights = {0:  [] }
+
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
     """HTTP Request Handler for transferring document while collaborating.
 
@@ -149,15 +155,23 @@ class ReadEtextsActivity(activity.Activity):
         self.scrolled = gtk.ScrolledWindow()
         self.scrolled.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         self.scrolled.props.shadow_type = gtk.SHADOW_NONE
+
         self.textview = gtk.TextView()
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
         self.textview.set_left_margin(50)
         self.textview.connect("key_press_event", self.keypress_cb)
+
+        self.annotation_textview = gtk.TextView()
+        self.annotation_textview.set_left_margin(50)
+        self.annotation_textview.set_right_margin(50)
+        self.annotation_textview.set_wrap_mode(gtk.WRAP_WORD)
+
         buffer = self.textview.get_buffer()
         buffer.connect("mark-set", self.mark_set_cb)
         self.font_desc = pango.FontDescription("sans %d" % style.zoom(10))
         self.textview.modify_font(self.font_desc)
+        self.annotation_textview.modify_font(self.font_desc)
         self.scrolled.add(self.textview)
         self.textview.show()
         self.scrolled.show()
@@ -195,16 +209,20 @@ class ReadEtextsActivity(activity.Activity):
         vbox.pack_start(self.progressbar,  False,  False,  10)
         vbox.pack_start(self.scrolled)
         vbox.pack_end(self.list_scroller)
+        vbox.pack_end(self.annotation_textview,  False,  False,  10)
         self.set_canvas(vbox)
         tv.show()
         vbox.show()
         self.list_scroller.hide()
+        self.annotation_textview.show()
 
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
         self.tag.set_property('weight', pango.WEIGHT_BOLD)
         self.tag.set_property( 'foreground', "white")
         self.tag.set_property( 'background', "black")
+
+        self.annotations = Annotations()
 
         xopower.setup_idle_timeout()
         if xopower.service_activated:
@@ -350,6 +368,8 @@ class ReadEtextsActivity(activity.Activity):
         
     def page_next(self):
         page = self.page
+        textbuffer = self.annotation_textview.get_buffer()
+        self.annotations.notes[page] = textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter())
         page = page + 1
         if page >= len(self.page_index): page=len(self.page_index) - 1
         self.show_page(page)
@@ -360,6 +380,8 @@ class ReadEtextsActivity(activity.Activity):
 
     def page_previous(self):
         page = self.page
+        textbuffer = self.annotation_textview.get_buffer()
+        self.annotations.notes[page] = textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter())
         page=page-1
         if page < 0: page=0
         self.show_page(page)
@@ -375,12 +397,14 @@ class ReadEtextsActivity(activity.Activity):
             font_size = 1
         self.font_desc.set_size(font_size * 1024)
         self.textview.modify_font(self.font_desc)
+        self.annotation_textview.modify_font(self.font_desc)
 
     def font_increase(self):
         font_size = self.font_desc.get_size() / 1024
         font_size = font_size + 1
         self.font_desc.set_size(font_size * 1024)
         self.textview.modify_font(self.font_desc)
+        self.annotation_textview.modify_font(self.font_desc)
 
     def scroll_down(self):
         v_adjustment = self.scrolled.get_vadjustment()
@@ -423,6 +447,11 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer = self.textview.get_buffer()
         label_text = label_text + '\n\n\n'
         textbuffer.set_text(label_text)
+        annotation_textbuffer = self.annotation_textview.get_buffer()
+        try:
+            annotation_textbuffer.set_text(self.annotations.notes[page_number])
+        except KeyError:
+            annotation_textbuffer.set_text('')
         self.prepare_highlighting(label_text)
 
     def prepare_highlighting(self, label_text):

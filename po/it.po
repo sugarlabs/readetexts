@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 18:25-0600\n"
-"PO-Revision-Date: 2009-05-08 05:58-0400\n"
+"POT-Creation-Date: 2009-05-31 00:32-0400\n"
+"PO-Revision-Date: 2009-07-07 12:37-0400\n"
 "Last-Translator: Carlo Falciola <cfalciola@yahoo.it>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: it\n"
@@ -21,54 +21,110 @@ msgstr ""
 msgid "Read ETexts"
 msgstr "Lettore Testi"
 
-#: ReadEtextsActivity.py:147
+#: ReadEtextsActivity.py:119
 msgid "Edit"
 msgstr "Modifica"
 
-#: ReadEtextsActivity.py:152
+#: ReadEtextsActivity.py:124
 msgid "Read"
 msgstr "Leggi"
 
-#: ReadEtextsActivity.py:157
+#: ReadEtextsActivity.py:130
+msgid "Books"
+msgstr "Libri"
+
+#: ReadEtextsActivity.py:135
 msgid "View"
 msgstr "Vista"
 
-#: ReadEtextsActivity.py:163
+#: ReadEtextsActivity.py:143
 msgid "Speech"
 msgstr "Parla"
 
-#: ReadEtextsActivity.py:228
-msgid "Choose document"
-msgstr "Scegli documento"
+#: ReadEtextsActivity.py:621 ReadEtextsActivity.py:666
+#: ReadEtextsActivity.py:704
+msgid "Error"
+msgstr "Errore"
 
-#: readtoolbar.py:43
+#: ReadEtextsActivity.py:621
+msgid "You must enter at least one search word."
+msgstr "Devi inserire almeno una parola da ricercare"
+
+#: ReadEtextsActivity.py:666
+msgid "Connection timed out for "
+msgstr "Connessione non disponibile (time out) per "
+
+#: ReadEtextsActivity.py:704
+msgid "Could not download "
+msgstr "Non posso scaricare "
+
+#: ReadEtextsActivity.py:704
+msgid " path in catalog may be incorrect."
+msgstr " il percorso nel catalogo potrebbe essere sbagliato."
+
+#: ReadEtextsActivity.py:735
+msgid "Success"
+msgstr "Successo"
+
+#: ReadEtextsActivity.py:735
+msgid " added to Journal."
+msgstr " aggiunto nel Diario."
+
+#: ReadEtextsActivity.py:846
+msgid "Failure"
+msgstr "Fallito"
+
+#: ReadEtextsActivity.py:846
+msgid "Error getting document from tube"
+msgstr "Errore nel reperire il documento dalla rete"
+
+#: readtoolbar.py:41
 msgid "Back"
 msgstr "Indietro"
 
-#: readtoolbar.py:50
+#: readtoolbar.py:48
 msgid "Forward"
 msgstr "Avanti"
 
-#: readtoolbar.py:159
+#: readtoolbar.py:166
 msgid "Zoom out"
 msgstr "Zoom indietro"
 
-#: readtoolbar.py:165
+#: readtoolbar.py:172
 msgid "Zoom in"
 msgstr "Zoom avanti"
 
-#: readtoolbar.py:205
+#: readtoolbar.py:183
+msgid "Fullscreen"
+msgstr "Schermo intero"
+
+#: readtoolbar.py:226
 msgid "Previous"
 msgstr "Precedente"
 
-#: readtoolbar.py:212
+#: readtoolbar.py:233
 msgid "Next"
 msgstr "Prossimo"
 
-#: readtoolbar.py:312
+#: readtoolbar.py:282
+msgid "Get Book"
+msgstr "Prendi il libro"
+
+#: readtoolbar.py:289
+msgid "Remove Results List"
+msgstr "Vuota la Lista di risultati"
+
+#: readtoolbar.py:349
+msgid "Play / Pause"
+msgstr "Esegui/Pausa"
+
+#: readtoolbar.py:399
 msgid "pitch adjusted"
 msgstr "Correggi intonazione"
 
-#: readtoolbar.py:316
+#: readtoolbar.py:403
 msgid "rate adjusted"
 msgstr "Correggi frequenza"
+
+#~ msgid "Choose document"
+#~ msgstr "Scegli documento"

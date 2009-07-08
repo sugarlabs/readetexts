@@ -37,6 +37,7 @@ import pango
 import dbus
 import gobject
 import telepathy
+import cPickle as pickle
 
 import speech
 import xopower
@@ -51,10 +52,69 @@ COLUMN_PATH = 2
 _logger = logging.getLogger('read-etexts-activity')
 
 class Annotations():
-    title = ''
-    notes = {0:''}
-    bookmarks = []
-    highlights = {0:  [] }
+    
+    def __init__(self):
+        self.title = ''
+        self.notes = {0:''}
+        self.bookmarks = []
+        self.highlights = {0:  [] }
+
+    def get_title(self):
+        return self.title
+        
+    def set_title(self,  title):
+        self.title = title
+    
+    def get_notes(self):
+        return self.notes
+        
+    def get_note(self,  page):
+        try:
+            return self.notes[page]
+        except KeyError:
+            return ''
+        
+    def add_note(self,  page,  text):
+        self.notes[page] = text
+        if text == '':
+            del self.notes[page]
+
+    def is_bookmarked(self,  page):
+        bookmark = self.bookmarks.count(page)
+        if bookmark > 0:
+            return True
+        else:
+            return False
+
+    def add_bookmark(self,  page):
+        self.bookmarks.append(page)
+        
+    def remove_bookmark(self,  page):
+        try:
+            self.bookmarks.remove(page)
+        except ValueError:
+            print 'page already not bookmarked',  page
+
+    def get_bookmarks(self):
+        self.bookmarks.sort()
+        return self.bookmarks
+        
+    def restore(self):
+        if os.path.exists('/tmp/annotations.pkl'):
+            pickle_input = open('/tmp/annotations.pkl',  'rb')
+            self.title = pickle.load(pickle_input)
+            self.bookmarks = pickle.load(pickle_input)
+            self.notes = pickle.load(pickle_input)
+            self.highlights = pickle.load(pickle_input)
+            pickle_input.close()
+
+    def save(self):
+        pickle_output = open('/tmp/annotations.pkl',  'wb')
+        pickle.dump(self.title,  pickle_output)
+        pickle.dump(self.bookmarks,  pickle_output)
+        pickle.dump(self.notes,  pickle_output)
+        pickle.dump(self.highlights,  pickle_output)
+        pickle_output.close()
 
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
     """HTTP Request Handler for transferring document while collaborating.
@@ -377,17 +437,14 @@ class ReadEtextsActivity(activity.Activity):
         
     def bookmarker_clicked(self,  button):
         if button.get_active() == True:
-            self.annotations.bookmarks.append(self.page)
+            self.annotations.add_bookmark(self.page)
         else:
-            try:
-                self.annotations.bookmarks.remove(self.page)
-            except ValueError:
-                print 'page already not boookmarked',  self.page
+            self.annotations.remove_bookmark(self.page)
         self.show_bookmark_state()
 
     def show_bookmark_state(self):
-        bookmark = self.annotations.bookmarks.count(self.page)
-        if bookmark > 0:
+        bookmark = self.annotations.is_bookmarked(self.page)
+        if bookmark == True:
             self._sidebar.show_bookmark_icon(True)
             self._read_toolbar._bookmarker .set_active(True)
         else:
@@ -395,22 +452,22 @@ class ReadEtextsActivity(activity.Activity):
             self._read_toolbar._bookmarker .set_active(False)
 
     def prev_bookmark(self):
-        self.annotations.bookmarks.sort()
-        count = len(self.annotations.bookmarks) - 1
+        bookmarks = self.annotations.get_bookmarks()
+        count = len(bookmarks) - 1
         while count >= 0:
-            if self.annotations.bookmarks[count] < self.page:
-                self.page = self.annotations.bookmarks[count]
+            if bookmarks[count] < self.page:
+                self.page = bookmarks[count]
                 self.show_page(self.page)
                 self._read_toolbar.set_current_page(self.page)
                 break
             count = count - 1
 
     def next_bookmark(self):
-        self.annotations.bookmarks.sort()
+        bookmarks = self.annotations.get_bookmarks()
         count = 0
-        while count < len(self.annotations.bookmarks):
-            if self.annotations.bookmarks[count] > self.page:
-                self.page = self.annotations.bookmarks[count]
+        while count < len(bookmarks):
+            if bookmarks[count] > self.page:
+                self.page = bookmarks[count]
                 self.show_page(self.page)
                 self._read_toolbar.set_current_page(self.page)
                 break
@@ -418,7 +475,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def page_next(self):
         textbuffer = self.annotation_textview.get_buffer()
-        self.annotations.notes[self.page] = textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter())
+        self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter()))
         self.page = self.page + 1
         if self.page >= len(self.page_index): self.page=len(self.page_index) - 1
         self.show_page(self.page)
@@ -428,7 +485,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def page_previous(self):
         textbuffer = self.annotation_textview.get_buffer()
-        self.annotations.notes[self.page] = textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter())
+        self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter()))
         self.page=self.page-1
         if self.page < 0: self.page=0
         self.show_page(self.page)
@@ -495,10 +552,7 @@ class ReadEtextsActivity(activity.Activity):
         label_text = label_text + '\n\n\n'
         textbuffer.set_text(label_text)
         annotation_textbuffer = self.annotation_textview.get_buffer()
-        try:
-            annotation_textbuffer.set_text(self.annotations.notes[page_number])
-        except KeyError:
-            annotation_textbuffer.set_text('')
+        annotation_textbuffer.set_text(self.annotations.get_note(page_number))
         self.prepare_highlighting(label_text)
 
     def prepare_highlighting(self, label_text):
@@ -636,13 +690,16 @@ class ReadEtextsActivity(activity.Activity):
                 self.page_index.append(position)
                 linecount = 0
                 pagecount = pagecount + 1
+
+        self.annotations.restore()
+
         self.get_saved_page_number()
         self.show_page(self.page)
         self._read_toolbar.set_total_pages(pagecount + 1)
         self._read_toolbar.set_current_page(self.page)
         if filename.endswith(".zip"):
             os.remove(current_file_name)
-
+            
         # We've got the document, so if we're a shared activity, offer it
         if self.get_shared():
             self.watch_for_tubes()
@@ -664,6 +721,12 @@ class ReadEtextsActivity(activity.Activity):
         elif self._tempfile:
             print 'self._tempfile', self._tempfile, 'filename', filename
             os.link(self._tempfile,  filename)
+            
+            textbuffer = self.annotation_textview.get_buffer()
+            self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter()))
+            title = self.metadata.get('title', '')
+            self.annotations.set_title(str(title))
+            self.annotations.save()
             
             if self._close_requested:
                 _logger.debug("Removing temp file %s because we will close", self._tempfile)

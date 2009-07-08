@@ -53,7 +53,7 @@ _logger = logging.getLogger('read-etexts-activity')
 class Annotations():
     title = ''
     notes = {0:''}
-    bookmarks = {0:''}
+    bookmarks = []
     highlights = {0:  [] }
 
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
@@ -377,34 +377,44 @@ class ReadEtextsActivity(activity.Activity):
         
     def bookmarker_clicked(self,  button):
         if button.get_active() == True:
-            self.annotations.bookmarks[self.page] = 'B'
-            print 'set bookmark on page',  self.page
+            self.annotations.bookmarks.append(self.page)
         else:
             try:
-                del self.annotations.bookmarks[self.page]
-                print 'set bookmark off page',  self.page
-            except KeyError:
-                print 'error deleting bookmark on page',  self.page
+                self.annotations.bookmarks.remove(self.page)
+            except ValueError:
+                print 'page already not boookmarked',  self.page
         self.show_bookmark_state()
 
     def show_bookmark_state(self):
-        try:
-            bookmark = self.annotations.bookmarks[self.page]
-            print 'page',  self.page, 'is bookmarked'
-            if bookmark == 'B':
-                self._sidebar.show_bookmark_icon(True)
-                self._read_toolbar._bookmarker .set_active(True)
-        except KeyError:
-            print 'page',  self.page, 'is not bookmarked'
+        bookmark = self.annotations.bookmarks.count(self.page)
+        if bookmark > 0:
+            self._sidebar.show_bookmark_icon(True)
+            self._read_toolbar._bookmarker .set_active(True)
+        else:
             self._sidebar.show_bookmark_icon(False)
             self._read_toolbar._bookmarker .set_active(False)
-            return
 
-    def prev_bookmark():
-        page = self.page
+    def prev_bookmark(self):
+        self.annotations.bookmarks.sort()
+        count = len(self.annotations.bookmarks) - 1
+        while count >= 0:
+            if self.annotations.bookmarks[count] < self.page:
+                self.page = self.annotations.bookmarks[count]
+                self.show_page(self.page)
+                self._read_toolbar.set_current_page(self.page)
+                break
+            count = count - 1
 
-    def next_bookmark():
-        page = self.page
+    def next_bookmark(self):
+        self.annotations.bookmarks.sort()
+        count = 0
+        while count < len(self.annotations.bookmarks):
+            if self.annotations.bookmarks[count] > self.page:
+                self.page = self.annotations.bookmarks[count]
+                self.show_page(self.page)
+                self._read_toolbar.set_current_page(self.page)
+                break
+            count = count + 1
 
     def page_next(self):
         textbuffer = self.annotation_textview.get_buffer()

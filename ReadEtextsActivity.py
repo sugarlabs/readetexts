@@ -681,7 +681,6 @@ class ReadEtextsActivity(activity.Activity):
         if zipfile.is_zipfile(filename):
             self.zf = zipfile.ZipFile(filename, 'r')
             self.book_files = self.zf.namelist()
-            print 'zip contents',  self.book_files
             i = 0
             current_file_name = 'no file'
             while (i < len(self.book_files)):
@@ -726,28 +725,41 @@ class ReadEtextsActivity(activity.Activity):
             self._share_document()
 
     def rewrite_zip(self):
-        new_zipfile = os.path.join(self.get_activity_root(), 'instance',
-                'rewrite%i' % time.time())
-        print self._tempfile,  new_zipfile
-        zf_new = zipfile.ZipFile(new_zipfile, 'w')
-        zf_old = zipfile.ZipFile(self._tempfile, 'r')
-        book_files = self.zf.namelist()
-        i = 0
-        while (i < len(book_files)):
-            if (book_files[i] != 'annotations.pkl'):
-                self.save_extracted_file(zf_old, book_files[i])
-                outfn = self.make_new_filename(book_files[i])
-                fname = os.path.join(self.get_activity_root(), 'instance',  outfn)
-                zf_new.write(fname.encode( "utf-8" ),  outfn.encode( "utf-8" ))
-                print 'rewriting',  outfn
-                os.remove(fname)
-            i = i + 1
-        zf_new.write(self.pickle_file_temp,  'annotations.pkl')
+        if zipfile.is_zipfile(self._tempfile):
+            new_zipfile = os.path.join(self.get_activity_root(), 'instance',
+                    'rewrite%i' % time.time())
+            print self._tempfile,  new_zipfile
+            zf_new = zipfile.ZipFile(new_zipfile, 'w')
+            zf_old = zipfile.ZipFile(self._tempfile, 'r')
+            book_files = self.zf.namelist()
+            i = 0
+            while (i < len(book_files)):
+                if (book_files[i] != 'annotations.pkl'):
+                    self.save_extracted_file(zf_old, book_files[i])
+                    outfn = self.make_new_filename(book_files[i])
+                    fname = os.path.join(self.get_activity_root(), 'instance',  outfn)
+                    zf_new.write(fname.encode( "utf-8" ),  outfn.encode( "utf-8" ))
+                    print 'rewriting',  outfn
+                    os.remove(fname)
+                i = i + 1
+            zf_new.write(self.pickle_file_temp,  'annotations.pkl')
         
-        zf_old.close()
-        zf_new.close()
-        os.remove(self._tempfile)
-        self._tempfile = new_zipfile
+            zf_old.close()
+            zf_new.close()
+            os.remove(self._tempfile)
+            self._tempfile = new_zipfile
+        else:
+            new_zipfile = os.path.join(self.get_activity_root(), 'instance',
+                    'rewrite%i' % time.time())
+            print self._tempfile,  new_zipfile
+            zf_new = zipfile.ZipFile(new_zipfile, 'w')
+            outfn = self.make_new_filename(self._tempfile)
+            zf_new.write(self._tempfile,  outfn)
+            print 'adding',  outfn
+            zf_new.write(self.pickle_file_temp,  'annotations.pkl')
+            zf_new.close()
+            os.remove(self._tempfile)
+            self._tempfile = new_zipfile
 
     def write_file(self, filename):
         "Save meta data for the file."
@@ -757,7 +769,7 @@ class ReadEtextsActivity(activity.Activity):
             self.etext_file.seek(0)
             filebytes = self.etext_file.read()
             print 'saving shared document'
-            f = open(filename, 'w')
+            f = open(filename, 'wb')
             try:
                 f.write(filebytes)
             finally:
@@ -784,6 +796,7 @@ class ReadEtextsActivity(activity.Activity):
             datastore.delete(self.extra_journal_entry.object_id)
 
         self.metadata['activity'] = self.get_bundle_id()
+        self.metadata['mime_type'] = 'application/zip'
         self.save_page_number()
 
     def can_close(self):

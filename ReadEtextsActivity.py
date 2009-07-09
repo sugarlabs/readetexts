@@ -694,7 +694,6 @@ class ReadEtextsActivity(activity.Activity):
             i = 0
             current_file_name = 'no file'
             while (i < len(self.book_files)):
-                print '>>',  self.book_files[i],  str(i)
                 if (self.book_files[i] != 'annotations.pkl'):
                     self.save_extracted_file(self.zf, self.book_files[i]) 
                     current_file_name = os.path.join(self.get_activity_root(), 'instance',  self.make_new_filename(self.book_files[i]))
@@ -721,7 +720,9 @@ class ReadEtextsActivity(activity.Activity):
                 pagecount = pagecount + 1
 
         self.annotations.restore()
-
+        if self.is_received_document == True:
+            self.metadata['title'] = self.annotations.get_title()
+            
         self.get_saved_page_number()
         self.show_page(self.page)
         self._read_toolbar.set_total_pages(pagecount + 1)

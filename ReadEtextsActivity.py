@@ -720,8 +720,6 @@ class ReadEtextsActivity(activity.Activity):
                 pagecount = pagecount + 1
 
         self.annotations.restore()
-        if self.is_received_document == True:
-            self.metadata['title'] = self.annotations.get_title()
             
         self.get_saved_page_number()
         self.show_page(self.page)
@@ -785,6 +783,7 @@ class ReadEtextsActivity(activity.Activity):
                 f.write(filebytes)
             finally:
                 f.close
+            self.metadata['title'] = self.annotations.get_title()
         elif self._tempfile:
             if self._close_requested:
                 textbuffer = self.annotation_textview.get_buffer()

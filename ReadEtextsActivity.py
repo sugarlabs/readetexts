@@ -53,11 +53,12 @@ _logger = logging.getLogger('read-etexts-activity')
 
 class Annotations():
     
-    def __init__(self):
+    def __init__(self,  pickle_file_name):
         self.title = ''
         self.notes = {0:''}
         self.bookmarks = []
         self.highlights = {0:  [] }
+        self.pickle_file_name = pickle_file_name
 
     def get_title(self):
         return self.title
@@ -100,8 +101,8 @@ class Annotations():
         return self.bookmarks
         
     def restore(self):
-        if os.path.exists('/tmp/annotations.pkl'):
-            pickle_input = open('/tmp/annotations.pkl',  'rb')
+        if os.path.exists(self.pickle_file_name):
+            pickle_input = open(self.pickle_file_name,  'rb')
             self.title = pickle.load(pickle_input)
             self.bookmarks = pickle.load(pickle_input)
             self.notes = pickle.load(pickle_input)
@@ -109,7 +110,7 @@ class Annotations():
             pickle_input.close()
 
     def save(self):
-        pickle_output = open('/tmp/annotations.pkl',  'wb')
+        pickle_output = open(self.pickle_file_name,  'wb')
         pickle.dump(self.title,  pickle_output)
         pickle.dump(self.bookmarks,  pickle_output)
         pickle.dump(self.notes,  pickle_output)
@@ -291,7 +292,7 @@ class ReadEtextsActivity(activity.Activity):
         self.tag.set_property( 'foreground', "white")
         self.tag.set_property( 'background', "black")
 
-        self.annotations = Annotations()
+        self.annotations = Annotations(os.path.join(self.get_activity_root(), 'instance',  'annotations.pkl'))
 
         xopower.setup_idle_timeout()
         if xopower.service_activated:
@@ -617,7 +618,7 @@ class ReadEtextsActivity(activity.Activity):
         outfn = self.make_new_filename(filename)
         if (outfn == ''):
             return False
-        f = open("/tmp/" + outfn, 'w')
+        f = open(os.path.join(self.get_activity_root(), 'instance',  outfn),  'w')
         try:
             f.write(filebytes)
         finally:
@@ -670,8 +671,15 @@ class ReadEtextsActivity(activity.Activity):
         if zipfile.is_zipfile(filename):
             self.zf = zipfile.ZipFile(filename, 'r')
             self.book_files = self.zf.namelist()
-            self.save_extracted_file(self.zf, self.book_files[0])
-            current_file_name = "/tmp/" + self.make_new_filename(self.book_files[0])
+            print 'zip contents',  self.book_files
+            i = 0
+            current_file_name = 'no file'
+            while (i < len(self.book_files)):
+                print '>>',  self.book_files[i],  str(i)
+                if (self.book_files[i] != 'annotations.pkl'):
+                    self.save_extracted_file(self.zf, self.book_files[i]) 
+                    current_file_name = os.path.join(self.get_activity_root(), 'instance',  self.make_new_filename(self.book_files[i]))
+                i = i + 1
         else:
             current_file_name = filename
             
@@ -705,6 +713,31 @@ class ReadEtextsActivity(activity.Activity):
             self.watch_for_tubes()
             self._share_document()
 
+    def rewrite_zip(self):
+        new_zipfile = os.path.join(self.get_activity_root(), 'instance',
+                'rewrite%i' % time.time())
+        print self._tempfile,  new_zipfile
+        zf_new = zipfile.ZipFile(new_zipfile, 'w')
+        zf_old = zipfile.ZipFile(self._tempfile, 'r')
+        book_files = self.zf.namelist()
+        i = 0
+        while (i < len(book_files)):
+            if (book_files[i] != 'annotations.pkl'):
+                self.save_extracted_file(zf_old, book_files[i])
+                outfn = self.make_new_filename(book_files[i])
+                fname = os.path.join(self.get_activity_root(), 'instance',  outfn)
+                zf_new.write(fname.encode( "utf-8" ),  outfn.encode( "utf-8" ))
+                print 'rewriting',  outfn
+                os.remove(fname)
+            i = i + 1
+        pklname = os.path.join(self.get_activity_root(), 'instance',  'annotations.pkl')
+        zf_new.write(pklname.encode( "utf-8" ),  'annotations.pkl')
+        
+        zf_old.close()
+        zf_new.close()
+        os.remove(self._tempfile)
+        self._tempfile = new_zipfile
+
     def write_file(self, filename):
         "Save meta data for the file."
         if self.is_received_document == True:
@@ -719,18 +752,17 @@ class ReadEtextsActivity(activity.Activity):
             finally:
                 f.close
         elif self._tempfile:
-            print 'self._tempfile', self._tempfile, 'filename', filename
-            os.link(self._tempfile,  filename)
-            
-            textbuffer = self.annotation_textview.get_buffer()
-            self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter()))
-            title = self.metadata.get('title', '')
-            self.annotations.set_title(str(title))
-            self.annotations.save()
-            
             if self._close_requested:
+                textbuffer = self.annotation_textview.get_buffer()
+                self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter()))
+                title = self.metadata.get('title', '')
+                self.annotations.set_title(str(title))
+                self.annotations.save()
+                self.rewrite_zip()
+                os.link(self._tempfile,  filename)
                 _logger.debug("Removing temp file %s because we will close", self._tempfile)
                 os.unlink(self._tempfile)
+                # os.remove(os.path.join(self.get_activity_root(), 'instance',  'annotations.pkl'))
                 self._tempfile = None
         else:
             # skip saving empty file

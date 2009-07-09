@@ -783,6 +783,7 @@ class ReadEtextsActivity(activity.Activity):
                 f.write(filebytes)
             finally:
                 f.close
+            self.annotations.restore()
             self.metadata['title'] = self.annotations.get_title()
         elif self._tempfile:
             if self._close_requested:

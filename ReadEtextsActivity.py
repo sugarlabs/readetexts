@@ -461,8 +461,13 @@ class ReadEtextsActivity(activity.Activity):
                 self.page = bookmarks[count]
                 self.show_page(self.page)
                 self._read_toolbar.set_current_page(self.page)
-                break
+                return
             count = count - 1
+        # if we're before the first bookmark wrap to the last.
+        if len(bookmarks) > 0:
+            self.page = bookmarks[len(bookmarks) - 1]
+            self.show_page(self.page)
+            self._read_toolbar.set_current_page(self.page)
 
     def next_bookmark(self):
         bookmarks = self.annotations.get_bookmarks()
@@ -472,8 +477,13 @@ class ReadEtextsActivity(activity.Activity):
                 self.page = bookmarks[count]
                 self.show_page(self.page)
                 self._read_toolbar.set_current_page(self.page)
-                break
+                return
             count = count + 1
+        # if we're after the last bookmark wrap to the first.
+        if len(bookmarks) > 0:
+            self.page = bookmarks[0]
+            self.show_page(self.page)
+            self._read_toolbar.set_current_page(self.page)
 
     def page_next(self):
         textbuffer = self.annotation_textview.get_buffer()

@@ -292,7 +292,8 @@ class ReadEtextsActivity(activity.Activity):
         self.tag.set_property( 'foreground', "white")
         self.tag.set_property( 'background', "black")
 
-        self.annotations = Annotations(os.path.join(self.get_activity_root(), 'instance',  'annotations.pkl'))
+        self.pickle_file_temp = os.path.join(self.get_activity_root(),  'instance', 'pkl%i' % time.time())
+        self.annotations = Annotations(self.pickle_file_temp)
 
         xopower.setup_idle_timeout()
         if xopower.service_activated:
@@ -624,6 +625,15 @@ class ReadEtextsActivity(activity.Activity):
         finally:
             f.close
 
+    def extract_pickle_file(self):
+        "Extract the pickle file to an instance directory for viewing"
+        filebytes = self.zf.read('annotations.pkl')
+        f = open(self.pickle_file_temp,  'wb')
+        try:
+            f.write(filebytes)
+        finally:
+            f.close
+
     def read_file(self, file_path):
         """Load a file from the datastore on activity start"""
         _logger.debug('ReadEtextsActivity.read_file: %s', file_path)
@@ -679,6 +689,8 @@ class ReadEtextsActivity(activity.Activity):
                 if (self.book_files[i] != 'annotations.pkl'):
                     self.save_extracted_file(self.zf, self.book_files[i]) 
                     current_file_name = os.path.join(self.get_activity_root(), 'instance',  self.make_new_filename(self.book_files[i]))
+                else:
+                    self.extract_pickle_file()
                 i = i + 1
         else:
             current_file_name = filename
@@ -730,8 +742,7 @@ class ReadEtextsActivity(activity.Activity):
                 print 'rewriting',  outfn
                 os.remove(fname)
             i = i + 1
-        pklname = os.path.join(self.get_activity_root(), 'instance',  'annotations.pkl')
-        zf_new.write(pklname.encode( "utf-8" ),  'annotations.pkl')
+        zf_new.write(self.pickle_file_temp,  'annotations.pkl')
         
         zf_old.close()
         zf_new.close()
@@ -762,8 +773,9 @@ class ReadEtextsActivity(activity.Activity):
                 os.link(self._tempfile,  filename)
                 _logger.debug("Removing temp file %s because we will close", self._tempfile)
                 os.unlink(self._tempfile)
-                # os.remove(os.path.join(self.get_activity_root(), 'instance',  'annotations.pkl'))
+                os.remove(self.pickle_file_temp)
                 self._tempfile = None
+                self.pickle_file_temp = None
         else:
             # skip saving empty file
             raise NotImplementedError

@@ -638,7 +638,7 @@ class ReadEtextsActivity(activity.Activity):
     def extract_pickle_file(self):
         "Extract the pickle file to an instance directory for viewing"
         try:
-            self.zf.getinfo('annotations.pk1')
+            self.zf.getinfo('annotations.pkl')
             filebytes = self.zf.read('annotations.pkl')
             f = open(self.pickle_file_temp,  'wb')
             try:
@@ -663,7 +663,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def get_saved_page_number(self):
         title = self.metadata.get('title', '')
-        if not title[len(title)- 1].isdigit():
+        if title == ''  or not title[len(title)- 1].isdigit():
             self.page = 0
         else:
             i = len(title) - 1
@@ -679,7 +679,7 @@ class ReadEtextsActivity(activity.Activity):
         
     def save_page_number(self):
         title = self.metadata.get('title', '')
-        if not title[len(title)- 1].isdigit():
+        if title == ''  or not title[len(title)- 1].isdigit():
             title = title + ' P' +  str(self.page + 1)
         else:
             i = len(title) - 1
@@ -725,9 +725,10 @@ class ReadEtextsActivity(activity.Activity):
                 pagecount = pagecount + 1
 
         self.annotations.restore()
-        self.metadata['title'] = self.annotations.get_title()
-        self.metadata['title_set_by_user'] = '1'
-        print self.annotations.get_title()
+        if self.is_received_document == True:
+            self.metadata['title'] = self.annotations.get_title()
+            self.metadata['title_set_by_user'] = '1'
+            print self.annotations.get_title()
             
         self.get_saved_page_number()
         self.show_page(self.page)

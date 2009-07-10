@@ -637,12 +637,17 @@ class ReadEtextsActivity(activity.Activity):
 
     def extract_pickle_file(self):
         "Extract the pickle file to an instance directory for viewing"
-        filebytes = self.zf.read('annotations.pkl')
-        f = open(self.pickle_file_temp,  'wb')
         try:
-            f.write(filebytes)
-        finally:
-            f.close
+            self.zf.getinfo('annotations.pk1')
+            filebytes = self.zf.read('annotations.pkl')
+            f = open(self.pickle_file_temp,  'wb')
+            try:
+                f.write(filebytes)
+            finally:
+                f.close
+            return True
+        except KeyError:
+            return False
 
     def read_file(self, file_path):
         """Load a file from the datastore on activity start"""

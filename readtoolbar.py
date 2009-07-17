@@ -119,6 +119,14 @@ class ReadToolbar(gtk.Toolbar):
         self.insert(bookmarkitem, -1)
         bookmarkitem.show_all()
 
+        underline_item = gtk.ToolItem()
+        self._underline = ToggleToolButton('format-text-underline')
+        self._underline.set_tooltip(_('Underline'))
+        self._underline_id = self._underline.connect('clicked', self._underline_cb)
+        underline_item.add(self._underline)
+        self.insert(underline_item, -1)
+        underline_item.show_all()
+
     def _num_page_entry_insert_text_cb(self, entry, text, length, position):
         if not re.match('[0-9]', text):
             entry.emit_stop_by_name('insert-text')
@@ -176,6 +184,14 @@ class ReadToolbar(gtk.Toolbar):
         
     def _bookmarker_clicked_cb(self, button):
         self.activity.bookmarker_clicked(button)
+
+    def _underline_cb(self, button):
+        self.activity.underline_clicked()
+
+    def setToggleButtonState(self,button,b,id):
+        button.handler_block(id)
+        button.set_active(b)
+        button.handler_unblock(id)
 
 class ViewToolbar(gtk.Toolbar):
     __gtype_name__ = 'ViewToolbar'

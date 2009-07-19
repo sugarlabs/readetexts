@@ -93,6 +93,7 @@ class Annotations():
     def remove_bookmark(self,  page):
         try:
             self.bookmarks.remove(page)
+            # print 'bookmarks=',  self.bookmarks
         except ValueError:
             print 'page already not bookmarked',  page
 
@@ -292,6 +293,9 @@ class ReadEtextsActivity(activity.Activity):
         self.tag.set_property( 'foreground', "white")
         self.tag.set_property( 'background', "black")
 
+        self.highlight_tag = textbuffer.create_tag()
+        self.highlight_tag.set_property('underline', 'single')
+
         self.pickle_file_temp = os.path.join(self.get_activity_root(),  'instance', 'pkl%i' % time.time())
         self.annotations = Annotations(self.pickle_file_temp)
 
@@ -378,8 +382,10 @@ class ReadEtextsActivity(activity.Activity):
     def mark_set_cb(self, textbuffer, iter, textmark):
         if textbuffer.get_has_selection():
             self._edit_toolbar.copy.set_sensitive(True)
+            self._read_toolbar._underline.props.sensitive = True
         else:
             self._edit_toolbar.copy.set_sensitive(False)
+            self._read_toolbar._underline.props.sensitive = False
 
     def edit_toolbar_copy_cb(self, button):
         buffer = self.textview.get_buffer()
@@ -448,10 +454,10 @@ class ReadEtextsActivity(activity.Activity):
         bookmark = self.annotations.is_bookmarked(self.page)
         if bookmark == True:
             self._sidebar.show_bookmark_icon(True)
-            self._read_toolbar._bookmarker .set_active(True)
+            self._read_toolbar.update_bookmark_button(True)
         else:
             self._sidebar.show_bookmark_icon(False)
-            self._read_toolbar._bookmarker .set_active(False)
+            self._read_toolbar.update_bookmark_button(False)
 
     def prev_bookmark(self):
         bookmarks = self.annotations.get_bookmarks()

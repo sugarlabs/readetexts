@@ -111,7 +111,7 @@ class ReadToolbar(gtk.Toolbar):
         bookmarkitem = gtk.ToolItem()
         self._bookmarker = ToggleToolButton('emblem-favorite')
         self._bookmarker.set_tooltip(_('Toggle Bookmark'))
-        self._bookmarker_toggle_handler_id = self._bookmarker.connect('clicked',
+        self._bookmarker_handler_id = self._bookmarker.connect('clicked',
                                       self._bookmarker_clicked_cb)
   
         bookmarkitem.add(self._bookmarker)
@@ -122,6 +122,7 @@ class ReadToolbar(gtk.Toolbar):
         underline_item = gtk.ToolItem()
         self._underline = ToggleToolButton('format-text-underline')
         self._underline.set_tooltip(_('Underline'))
+        self._underline.props.sensitive = False
         self._underline_id = self._underline.connect('clicked', self._underline_cb)
         underline_item.add(self._underline)
         self.insert(underline_item, -1)
@@ -192,6 +193,12 @@ class ReadToolbar(gtk.Toolbar):
         button.handler_block(id)
         button.set_active(b)
         button.handler_unblock(id)
+        
+    def update_underline_button(self,  state):
+        self.setToggleButtonState(self._bookmarker,  state,  self._bookmarker_handler_id)
+
+    def update_bookmark_button(self,  state):
+        self.setToggleButtonState(self._underline,  state,  self._underline_id)
 
 class ViewToolbar(gtk.Toolbar):
     __gtype_name__ = 'ViewToolbar'

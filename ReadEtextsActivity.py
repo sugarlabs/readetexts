@@ -393,6 +393,17 @@ class ReadEtextsActivity(activity.Activity):
         return True
 
     def mark_set_cb(self, textbuffer, iter, textmark):
+        buffer = self.textview.get_buffer()
+        begin, end = buffer.get_selection_bounds()
+        underline_tuple = [begin.get_offset(),  end.get_offset()]
+        tuples_list =  self.annotations.get_highlights(self.page)
+
+        count = 0
+        while count < len(tuples_list) :
+            underline_tuple = tuples_list[count]
+            
+            count = count + 1
+
         if textbuffer.get_has_selection():
             self.edit_toolbar.copy.set_sensitive(True)
             self.read_toolbar.underline.props.sensitive = True

@@ -38,68 +38,68 @@ class ReadToolbar(gtk.Toolbar):
     def __init__(self):
         gtk.Toolbar.__init__(self)
 
-        self._back = ToolButton('go-previous')
-        self._back.set_tooltip(_('Back'))
-        self._back.props.sensitive = False
-        palette = self._back.get_palette()
-        self._prev_page = MenuItem(text_label= _("Previous page"))
-        palette.menu.append(self._prev_page) 
-        self._prev_page.show_all()        
-        self._prev_bookmark = MenuItem(text_label= _("Previous bookmark"))
-        palette.menu.append(self._prev_bookmark) 
-        self._prev_bookmark.show_all()
-        self._back.connect('clicked', self._go_back_cb)
-        self._prev_page.connect('activate', self._go_back_cb)
-        self._prev_bookmark.connect('activate', self._prev_bookmark_activate_cb)
-        self.insert(self._back, -1)
-        self._back.show()
+        self.back = ToolButton('go-previous')
+        self.back.set_tooltip(_('Back'))
+        self.back.props.sensitive = False
+        palette = self.back.get_palette()
+        self.prev_page = MenuItem(text_label= _("Previous page"))
+        palette.menu.append(self.prev_page) 
+        self.prev_page.show_all()        
+        self.prev_bookmark = MenuItem(text_label= _("Previous bookmark"))
+        palette.menu.append(self.prev_bookmark) 
+        self.prev_bookmark.show_all()
+        self.back.connect('clicked', self.go_back_cb)
+        self.prev_page.connect('activate', self.go_back_cb)
+        self.prev_bookmark.connect('activate', self.prev_bookmark_activate_cb)
+        self.insert(self.back, -1)
+        self.back.show()
 
-        self._forward = ToolButton('go-next')
-        self._forward.set_tooltip(_('Forward'))
-        self._forward.props.sensitive = False
-        palette = self._forward.get_palette()
-        self._next_page = MenuItem(text_label= _("Next page"))
-        palette.menu.append(self._next_page) 
-        self._next_page.show_all()        
-        self._next_bookmark = MenuItem(text_label= _("Next bookmark"))
-        palette.menu.append(self._next_bookmark) 
-        self._next_bookmark.show_all()
-        self._forward.connect('clicked', self._go_forward_cb)
-        self._next_page.connect('activate', self._go_forward_cb)
-        self._next_bookmark.connect('activate', self._next_bookmark_activate_cb)
-        self.insert(self._forward, -1)
-        self._forward.show()
+        self.forward = ToolButton('go-next')
+        self.forward.set_tooltip(_('Forward'))
+        self.forward.props.sensitive = False
+        palette = self.forward.get_palette()
+        self.next_page = MenuItem(text_label= _("Next page"))
+        palette.menu.append(self.next_page) 
+        self.next_page.show_all()        
+        self.next_bookmark = MenuItem(text_label= _("Next bookmark"))
+        palette.menu.append(self.next_bookmark) 
+        self.next_bookmark.show_all()
+        self.forward.connect('clicked', self.go_forward_cb)
+        self.next_page.connect('activate', self.go_forward_cb)
+        self.next_bookmark.connect('activate', self.next_bookmark_activate_cb)
+        self.insert(self.forward, -1)
+        self.forward.show()
 
         num_page_item = gtk.ToolItem()
 
-        self._num_page_entry = gtk.Entry()
-        self._num_page_entry.set_text('0')
-        self._num_page_entry.set_alignment(1)
-        self._num_page_entry.connect('insert-text',
-                                     self._num_page_entry_insert_text_cb)
-        self._num_page_entry.connect('activate',
-                                     self._num_page_entry_activate_cb)
+        self.num_page_entry = gtk.Entry()
+        self.num_page_entry.set_text('0')
+        self.num_page_entry.set_alignment(1)
+        self.num_page_entry.connect('insert-text',
+                                     self.num_page_entry_insert_text_cb)
+        self.num_page_entry.connect('activate',
+                                     self.num_page_entry_activate_cb)
 
-        self._num_page_entry.set_width_chars(4)
+        self.num_page_entry.set_width_chars(4)
 
-        num_page_item.add(self._num_page_entry)
-        self._num_page_entry.show()
+        num_page_item.add(self.num_page_entry)
+        self.num_page_entry.show()
 
         self.insert(num_page_item, -1)
         num_page_item.show()
 
         total_page_item = gtk.ToolItem()
 
-        self._total_page_label = gtk.Label()
+        self.total_page_label = gtk.Label()
 
         label_attributes = pango.AttrList()
         label_attributes.insert(pango.AttrSize(14000, 0, -1))
         label_attributes.insert(pango.AttrForeground(65535, 65535, 65535, 0, -1))
-        self._total_page_label.set_attributes(label_attributes)
+        self.total_page_label.set_attributes(label_attributes)
 
-        self._total_page_label.set_text(' / 0')
-        total_page_item.add(self._total_page_label)
-        self._total_page_label.show()
+        self.total_page_label.set_text(' / 0')
+        total_page_item.add(self.total_page_label)
+        self.total_page_label.show()
 
         self.insert(total_page_item, -1)
         total_page_item.show()
@@ -109,32 +109,32 @@ class ReadToolbar(gtk.Toolbar):
         spacer.show()
   
         bookmarkitem = gtk.ToolItem()
-        self._bookmarker = ToggleToolButton('emblem-favorite')
-        self._bookmarker.set_tooltip(_('Toggle Bookmark'))
-        self._bookmarker_handler_id = self._bookmarker.connect('clicked',
-                                      self._bookmarker_clicked_cb)
+        self.bookmarker = ToggleToolButton('emblem-favorite')
+        self.bookmarker.set_tooltip(_('Toggle Bookmark'))
+        self.bookmarker_handler_id = self.bookmarker.connect('clicked',
+                                      self.bookmarker_clicked_cb)
   
-        bookmarkitem.add(self._bookmarker)
+        bookmarkitem.add(self.bookmarker)
 
         self.insert(bookmarkitem, -1)
         bookmarkitem.show_all()
 
         underline_item = gtk.ToolItem()
-        self._underline = ToggleToolButton('format-text-underline')
-        self._underline.set_tooltip(_('Underline'))
-        self._underline.props.sensitive = False
-        self._underline_id = self._underline.connect('clicked', self._underline_cb)
-        underline_item.add(self._underline)
+        self.underline = ToggleToolButton('format-text-underline')
+        self.underline.set_tooltip(_('Underline'))
+        self.underline.props.sensitive = False
+        self.underline_id = self.underline.connect('clicked', self.underline_cb)
+        underline_item.add(self.underline)
         self.insert(underline_item, -1)
         underline_item.show_all()
 
-    def _num_page_entry_insert_text_cb(self, entry, text, length, position):
+    def num_page_entry_insert_text_cb(self, entry, text, length, position):
         if not re.match('[0-9]', text):
             entry.emit_stop_by_name('insert-text')
             return True
         return False
 
-    def _num_page_entry_activate_cb(self, entry):
+    def num_page_entry_activate_cb(self, entry):
         if entry.props.text:
             page = int(entry.props.text) - 1
         else:
@@ -149,22 +149,22 @@ class ReadToolbar(gtk.Toolbar):
         self.activity.set_current_page(page)
         self.activity.show_page(page)
         entry.props.text = str(page + 1)
-        self._update_nav_buttons()
+        self.update_nav_buttons()
         
-    def _go_back_cb(self, button):
+    def go_back_cb(self, button):
         self.activity.page_previous()
     
-    def _go_forward_cb(self, button):
+    def go_forward_cb(self, button):
         self.activity.page_next()
     
-    def _update_nav_buttons(self):
+    def update_nav_buttons(self):
         current_page = self.current_page
-        self._back.props.sensitive = current_page > 0
-        self._forward.props.sensitive = \
+        self.back.props.sensitive = current_page > 0
+        self.forward.props.sensitive = \
             current_page < self.total_pages - 1
         
-        self._num_page_entry.props.text = str(current_page + 1)
-        self._total_page_label.props.label = \
+        self.num_page_entry.props.text = str(current_page + 1)
+        self.total_page_label.props.label = \
             ' / ' + str(self.total_pages)
 
     def set_total_pages(self, pages):
@@ -172,22 +172,22 @@ class ReadToolbar(gtk.Toolbar):
         
     def set_current_page(self, page):
         self.current_page = page
-        self._update_nav_buttons()
+        self.update_nav_buttons()
         
     def set_activity(self, activity):
         self.activity = activity
 
-    def _prev_bookmark_activate_cb(self, menuitem):
+    def prev_bookmark_activate_cb(self, menuitem):
         self.activity.prev_bookmark()
  
-    def _next_bookmark_activate_cb(self, menuitem):
+    def next_bookmark_activate_cb(self, menuitem):
         self.activity.next_bookmark()
         
-    def _bookmarker_clicked_cb(self, button):
+    def bookmarker_clicked_cb(self, button):
         self.activity.bookmarker_clicked(button)
 
-    def _underline_cb(self, button):
-        self.activity.underline_clicked()
+    def underline_cb(self, button):
+        self.activity.underline_clicked(button)
 
     def setToggleButtonState(self,button,b,id):
         button.handler_block(id)
@@ -195,10 +195,10 @@ class ReadToolbar(gtk.Toolbar):
         button.handler_unblock(id)
         
     def update_underline_button(self,  state):
-        self.setToggleButtonState(self._bookmarker,  state,  self._bookmarker_handler_id)
+        self.setToggleButtonState(self.bookmarker,  state,  self.bookmarker_handler_id)
 
     def update_bookmark_button(self,  state):
-        self.setToggleButtonState(self._underline,  state,  self._underline_id)
+        self.setToggleButtonState(self.underline,  state,  self.underline_id)
 
 class ViewToolbar(gtk.Toolbar):
     __gtype_name__ = 'ViewToolbar'
@@ -214,39 +214,39 @@ class ViewToolbar(gtk.Toolbar):
 
     def __init__(self):
         gtk.Toolbar.__init__(self)
-        self._zoom_out = ToolButton('zoom-out')
-        self._zoom_out.set_tooltip(_('Zoom out'))
-        self._zoom_out.connect('clicked', self._zoom_out_cb)
-        self.insert(self._zoom_out, -1)
-        self._zoom_out.show()
+        self.zoom_out = ToolButton('zoom-out')
+        self.zoom_out.set_tooltip(_('Zoom out'))
+        self.zoom_out.connect('clicked', self.zoom_out_cb)
+        self.insert(self.zoom_out, -1)
+        self.zoom_out.show()
 
-        self._zoom_in = ToolButton('zoom-in')
-        self._zoom_in.set_tooltip(_('Zoom in'))
-        self._zoom_in.connect('clicked', self._zoom_in_cb)
-        self.insert(self._zoom_in, -1)
-        self._zoom_in.show()
+        self.zoom_in = ToolButton('zoom-in')
+        self.zoom_in.set_tooltip(_('Zoom in'))
+        self.zoom_in.connect('clicked', self.zoom_in_cb)
+        self.insert(self.zoom_in, -1)
+        self.zoom_in.show()
 
         spacer = gtk.SeparatorToolItem()
         spacer.props.draw = False
         self.insert(spacer, -1)
         spacer.show()
 
-        self._fullscreen = ToolButton('view-fullscreen')
-        self._fullscreen.set_tooltip(_('Fullscreen'))
-        self._fullscreen.connect('clicked', self._fullscreen_cb)
-        self.insert(self._fullscreen, -1)
-        self._fullscreen.show()
+        self.fullscreen = ToolButton('view-fullscreen')
+        self.fullscreen.set_tooltip(_('Fullscreen'))
+        self.fullscreen.connect('clicked', self.fullscreen_cb)
+        self.insert(self.fullscreen, -1)
+        self.fullscreen.show()
 
-    def _zoom_in_cb(self, button):
+    def zoom_in_cb(self, button):
         self.activity.font_increase()
     
-    def _zoom_out_cb(self, button):
+    def zoom_out_cb(self, button):
         self.activity.font_decrease()
 
     def set_activity(self, activity):
         self.activity = activity
 
-    def _fullscreen_cb(self, button):
+    def fullscreen_cb(self, button):
         self.emit('go-fullscreen')
 
 class EditToolbar(activity.EditToolbar):
@@ -262,52 +262,52 @@ class EditToolbar(activity.EditToolbar):
 
         search_item = gtk.ToolItem()
 
-        self._search_entry = gtk.Entry()
-        self._search_entry.connect('activate', self._search_entry_activate_cb)
+        self.search_entry = gtk.Entry()
+        self.search_entry.connect('activate', self.search_entry_activate_cb)
 
         width = int(gtk.gdk.screen_width() / 3)
-        self._search_entry.set_size_request(width, -1)
+        self.search_entry.set_size_request(width, -1)
 
-        search_item.add(self._search_entry)
-        self._search_entry.show()
+        search_item.add(self.search_entry)
+        self.search_entry.show()
 
         self.insert(search_item, -1)
         search_item.show()
 
-        self._prev = ToolButton('go-previous-paired')
-        self._prev.set_tooltip(_('Previous'))
-        self._prev.props.sensitive = False
-        self._prev.connect('clicked', self._find_prev_cb)
-        self.insert(self._prev, -1)
-        self._prev.show()
+        self.prev = ToolButton('go-previous-paired')
+        self.prev.set_tooltip(_('Previous'))
+        self.prev.props.sensitive = False
+        self.prev.connect('clicked', self.find_prev_cb)
+        self.insert(self.prev, -1)
+        self.prev.show()
 
-        self._next = ToolButton('go-next-paired')
-        self._next.set_tooltip(_('Next'))
-        self._next.props.sensitive = False
-        self._next.connect('clicked', self._find_next_cb)
-        self.insert(self._next, -1)
-        self._next.show()
+        self.next = ToolButton('go-next-paired')
+        self.next.set_tooltip(_('Next'))
+        self.next.props.sensitive = False
+        self.next.connect('clicked', self.find_next_cb)
+        self.insert(self.next, -1)
+        self.next.show()
 
     def set_activity(self, activity):
         self.activity = activity
 
-    def _search_entry_activate_cb(self, entry):
+    def search_entry_activate_cb(self, entry):
         current_page = self.activity.get_current_page()
         self.activity.find_begin(entry.props.text)
-        self._update_find_buttons()
+        self.update_find_buttons()
 
-    def _find_changed_cb(self, page, spec):
-        self._update_find_buttons()
+    def find_changed_cb(self, page, spec):
+        self.update_find_buttons()
         
-    def _find_prev_cb(self, button):
+    def find_prev_cb(self, button):
         self.activity.find_previous()
     
-    def _find_next_cb(self, button):
+    def find_next_cb(self, button):
         self.activity.find_next()
 
-    def _update_find_buttons(self):
-        self._prev.props.sensitive = self.activity.can_find_previous()
-        self._next.props.sensitive = self.activity.can_find_next()
+    def update_find_buttons(self):
+        self.prev.props.sensitive = self.activity.can_find_previous()
+        self.next.props.sensitive = self.activity.can_find_next()
 
 class BooksToolbar(gtk.Toolbar):
     __gtype_name__ = 'BooksToolbar'
@@ -316,56 +316,56 @@ class BooksToolbar(gtk.Toolbar):
         gtk.Toolbar.__init__(self)
         book_search_item = gtk.ToolItem()
 
-        self._search_entry = gtk.Entry()
-        self._search_entry.connect('activate', self._search_entry_activate_cb)
-        self._search_entry.connect("key_press_event", self.keypress_cb)
+        self.search_entry = gtk.Entry()
+        self.search_entry.connect('activate', self.search_entry_activate_cb)
+        self.search_entry.connect("key_press_event", self.keypress_cb)
 
         width = int(gtk.gdk.screen_width() / 2)
-        self._search_entry.set_size_request(width, -1)
+        self.search_entry.set_size_request(width, -1)
 
-        book_search_item.add(self._search_entry)
-        self._search_entry.show()
-        self._search_entry.grab_focus()
+        book_search_item.add(self.search_entry)
+        self.search_entry.show()
+        self.search_entry.grab_focus()
 
         self.insert(book_search_item, -1)
         book_search_item.show()
 
-        self._download = ToolButton('go-down')
-        self._download.set_tooltip(_('Get Book'))
-        self._download.props.sensitive = False
-        self._download.connect('clicked', self._get_book_cb)
-        self.insert(self._download, -1)
-        self._download.show()
+        self.download = ToolButton('go-down')
+        self.download.set_tooltip(_('Get Book'))
+        self.download.props.sensitive = False
+        self.download.connect('clicked', self.get_book_cb)
+        self.insert(self.download, -1)
+        self.download.show()
 
-        self._hide_results = ToolButton('dialog-cancel')
-        self._hide_results.set_tooltip(_('Remove Results List'))
-        self._hide_results.props.sensitive = False
-        self._hide_results.connect('clicked', self._hide_results_cb)
-        self.insert(self._hide_results, -1)
-        self._hide_results.show()
+        self.hide_results = ToolButton('dialog-cancel')
+        self.hide_results.set_tooltip(_('Remove Results List'))
+        self.hide_results.props.sensitive = False
+        self.hide_results.connect('clicked', self.hide_results_cb)
+        self.insert(self.hide_results, -1)
+        self.hide_results.show()
 
     def set_activity(self, activity):
         self.activity = activity
 
-    def _search_entry_activate_cb(self, entry):
+    def search_entry_activate_cb(self, entry):
         self.activity.find_books(entry.props.text)
-        self._hide_results.props.sensitive = True
+        self.hide_results.props.sensitive = True
 
-    def _get_book_cb(self, button):
+    def get_book_cb(self, button):
         self.activity.get_book()
  
-    def _enable_button(self,  state):
-        self._download.props.sensitive = state
+    def enable_button(self,  state):
+        self.download.props.sensitive = state
  
-    def _hide_results_cb(self,  button):
+    def hide_results_cb(self,  button):
         self.activity.list_scroller.hide()
-        self._hide_results.props.sensitive = False
+        self.hide_results.props.sensitive = False
     
     def keypress_cb(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Escape':
             self.activity.list_scroller.hide()
-            self._hide_results.props.sensitive = False
+            self.hide_results.props.sensitive = False
             return True
 
 class   SpeechToolbar(gtk.Toolbar):
@@ -396,7 +396,7 @@ class   SpeechToolbar(gtk.Toolbar):
         # Play button
         self.play_btn = ToggleToolButton('media-playback-start')
         self.play_btn.show()
-        self.play_btn.connect('toggled', self._play_cb, [play_img, pause_img])
+        self.play_btn.connect('toggled', self.play_cb, [play_img, pause_img])
         self.insert(self.play_btn, -1)
         self.play_btn.set_tooltip(_('Play / Pause'))
 
@@ -457,7 +457,7 @@ class   SpeechToolbar(gtk.Toolbar):
     def set_activity(self, activity):
         self.activity = activity
     
-    def _play_cb(self, widget, images):
+    def play_cb(self, widget, images):
         widget.set_icon_widget(images[int(widget.get_active())])
 
         if widget.get_active():

@@ -42,14 +42,14 @@ import cPickle as pickle
 import speech
 import xopower
 
-_PAGE_SIZE = 38
-_TOOLBAR_READ = 2
-_TOOLBAR_BOOKS = 3
+PAGE_SIZE = 38
+TOOLBAR_READ = 2
+TOOLBAR_BOOKS = 3
 COLUMN_TITLE = 0
 COLUMN_AUTHOR = 1
 COLUMN_PATH = 2
 
-_logger = logging.getLogger('read-etexts-activity')
+logger = logging.getLogger('read-etexts-activity')
 
 class Annotations():
     
@@ -100,6 +100,17 @@ class Annotations():
     def get_bookmarks(self):
         self.bookmarks.sort()
         return self.bookmarks
+        
+    def get_highlights(self,  page):
+        try:
+            return self.highlights[page]
+        except KeyError:
+            return []
+            
+    def set_highlights(self,  page,  tuples_list):
+        self.highlights[page] = tuples_list
+        if tuples_list == []:
+            del self.highlights[page]
         
     def restore(self):
         if os.path.exists(self.pickle_file_name):
@@ -169,8 +180,8 @@ class ReadEtextsActivity(activity.Activity):
         activity.Activity.__init__(self, handle)
         self.connect('delete-event', self.delete_cb)
         
-        self._fileserver = None
-        self._object_id = handle.object_id
+        self.fileserver = None
+        self.object_id = handle.object_id
         self.extra_journal_entry = None
        
         toolbox = activity.ActivityToolbox(self)
@@ -179,40 +190,40 @@ class ReadEtextsActivity(activity.Activity):
         activity_toolbar.keep = None
         self.set_toolbox(toolbox)
         
-        self._edit_toolbar = EditToolbar()
-        self._edit_toolbar.undo.props.visible = False
-        self._edit_toolbar.redo.props.visible = False
-        self._edit_toolbar.separator.props.visible = False
-        self._edit_toolbar.copy.set_sensitive(False)
-        self._edit_toolbar.copy.connect('clicked', self.edit_toolbar_copy_cb)
-        self._edit_toolbar.paste.props.visible = False
-        toolbox.add_toolbar(_('Edit'), self._edit_toolbar)
-        self._edit_toolbar.set_activity(self)
-        self._edit_toolbar.show()
+        self.edit_toolbar = EditToolbar()
+        self.edit_toolbar.undo.props.visible = False
+        self.edit_toolbar.redo.props.visible = False
+        self.edit_toolbar.separator.props.visible = False
+        self.edit_toolbar.copy.set_sensitive(False)
+        self.edit_toolbar.copy.connect('clicked', self.edit_toolbar_copy_cb)
+        self.edit_toolbar.paste.props.visible = False
+        toolbox.add_toolbar(_('Edit'), self.edit_toolbar)
+        self.edit_toolbar.set_activity(self)
+        self.edit_toolbar.show()
         
-        self._read_toolbar = ReadToolbar()
-        toolbox.add_toolbar(_('Read'), self._read_toolbar)
-        self._read_toolbar.set_activity(self)
-        self._read_toolbar.show()
+        self.read_toolbar = ReadToolbar()
+        toolbox.add_toolbar(_('Read'), self.read_toolbar)
+        self.read_toolbar.set_activity(self)
+        self.read_toolbar.show()
 
-        if not self._shared_activity and self._object_id is None:
-            self._books_toolbar = BooksToolbar()
-            toolbox.add_toolbar(_('Books'), self._books_toolbar)
-            self._books_toolbar.set_activity(self)
-            self._books_toolbar.show()
+        if not self.shared_activity and self.object_id is None:
+            self.books_toolbar = BooksToolbar()
+            toolbox.add_toolbar(_('Books'), self.books_toolbar)
+            self.books_toolbar.set_activity(self)
+            self.books_toolbar.show()
 
-        self._view_toolbar = ViewToolbar()
-        toolbox.add_toolbar(_('View'), self._view_toolbar)
-        self._view_toolbar.connect('go-fullscreen',
-                self.__view_toolbar_go_fullscreen_cb)
-        self._view_toolbar.set_activity(self)
-        self._view_toolbar.show()
+        self.view_toolbar = ViewToolbar()
+        toolbox.add_toolbar(_('View'), self.view_toolbar)
+        self.view_toolbar.connect('go-fullscreen',
+                self.view_toolbar_go_fullscreen_cb)
+        self.view_toolbar.set_activity(self)
+        self.view_toolbar.show()
 
         if speech.supported:
-            self._speech_toolbar = SpeechToolbar()
-            toolbox.add_toolbar(_('Speech'), self._speech_toolbar)
-            self._speech_toolbar.set_activity(self)
-            self._speech_toolbar.show()
+            self.speech_toolbar = SpeechToolbar()
+            toolbox.add_toolbar(_('Speech'), self.speech_toolbar)
+            self.speech_toolbar.set_activity(self)
+            self.speech_toolbar.show()
 
         toolbox.show()
         self.scrolled = gtk.ScrolledWindow()
@@ -278,11 +289,11 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller.hide()
         self.annotation_textview.show()
 
-        self._sidebar = Sidebar()
-        self._sidebar.show()
+        self.sidebar = Sidebar()
+        self.sidebar.show()
 
         sidebar_hbox = gtk.HBox()
-        sidebar_hbox.pack_start(self._sidebar, expand=False, fill=False)
+        sidebar_hbox.pack_start(self.sidebar, expand=False, fill=False)
         sidebar_hbox.pack_start(vbox,  expand=True, fill=True)
         self.set_canvas(sidebar_hbox)
         sidebar_hbox.show()
@@ -293,46 +304,48 @@ class ReadEtextsActivity(activity.Activity):
         self.tag.set_property( 'foreground', "white")
         self.tag.set_property( 'background', "black")
 
-        self.highlight_tag = textbuffer.create_tag()
-        self.highlight_tag.set_property('underline', 'single')
+        self.underline_tag = textbuffer.create_tag()
+        self.underline_tag.set_property('underline', 'single')
+        self.underline_tag.set_property( 'foreground', 'black')
+        self.underline_tag.set_property( 'background', 'yellow')
 
         self.pickle_file_temp = os.path.join(self.get_activity_root(),  'instance', 'pkl%i' % time.time())
         self.annotations = Annotations(self.pickle_file_temp)
 
         xopower.setup_idle_timeout()
         if xopower.service_activated:
-            self.scrolled.props.vadjustment.connect("value-changed", self._user_action_cb)
-            self.scrolled.props.hadjustment.connect("value-changed", self._user_action_cb)
-            self.connect("focus-in-event", self._focus_in_event_cb)
-            self.connect("focus-out-event", self._focus_out_event_cb)
-            self.connect("notify::active", self._now_active_cb)
+            self.scrolled.props.vadjustment.connect("value-changed", self.user_action_cb)
+            self.scrolled.props.hadjustment.connect("value-changed", self.user_action_cb)
+            self.connect("focus-in-event", self.focus_in_event_cb)
+            self.connect("focus-out-event", self.focus_out_event_cb)
+            self.connect("notify::active", self.now_active_cb)
     
         # start on the read toolbar
-        self.toolbox.set_current_toolbar(_TOOLBAR_READ)
+        self.toolbox.set_current_toolbar(TOOLBAR_READ)
         self.unused_download_tubes = set()
-        self._want_document = True
-        self._download_content_length = 0
-        self._download_content_type = None
+        self.want_document = True
+        self.download_content_length = 0
+        self.download_content_type = None
         # Status of temp file used for write_file:
-        self._tempfile = None
-        self._close_requested = False
-        self.connect("shared", self._shared_cb)
+        self.tempfile = None
+        self.close_requested = False
+        self.connect("shared", self.shared_cb)
         h = hash(self._activity_id)
         self.port = 1024 + (h % 64511)
 
         self.is_received_document = False
         
-        if self._shared_activity and handle.object_id == None:
+        if self.shared_activity and handle.object_id == None:
             # We're joining, and we don't already have the document.
             if self.get_shared():
                 # Already joined for some reason, just get the document
-                self._joined_cb(self)
+                self.joined_cb(self)
             else:
                 # Wait for a successful join before trying to get the document
-                self.connect("joined", self._joined_cb)
-        elif self._object_id is None:
+                self.connect("joined", self.joined_cb)
+        elif self.object_id is None:
             # Not joining, not resuming
-            self.toolbox.set_current_toolbar(_TOOLBAR_BOOKS)
+            self.toolbox.set_current_toolbar(TOOLBAR_BOOKS)
             f = open("help.txt","r")
             line = ''
             label_text = ''
@@ -354,7 +367,7 @@ class ReadEtextsActivity(activity.Activity):
         
     def reset_play_button(self):
         self.reset_current_word()
-        play = self._speech_toolbar.play_btn
+        play = self.speech_toolbar.play_btn
         play.set_active(False)
         self.textview.grab_focus()
 
@@ -381,19 +394,17 @@ class ReadEtextsActivity(activity.Activity):
 
     def mark_set_cb(self, textbuffer, iter, textmark):
         if textbuffer.get_has_selection():
-            self._edit_toolbar.copy.set_sensitive(True)
-            self._read_toolbar._underline.props.sensitive = True
+            self.edit_toolbar.copy.set_sensitive(True)
+            self.read_toolbar.underline.props.sensitive = True
         else:
-            self._edit_toolbar.copy.set_sensitive(False)
-            self._read_toolbar._underline.props.sensitive = False
+            self.edit_toolbar.copy.set_sensitive(False)
+            self.read_toolbar.underline.props.sensitive = False
 
     def edit_toolbar_copy_cb(self, button):
-        buffer = self.textview.get_buffer()
-        begin, end = buffer.get_selection_bounds()
         copy_text = buffer.get_text(begin, end)
         self.clipboard.set_text(copy_text)
 
-    def __view_toolbar_go_fullscreen_cb(self, view_toolbar):
+    def view_toolbar_go_fullscreen_cb(self, view_toolbar):
         self.fullscreen()
 
     def hide_table_keypress_cb(self, widget, event):
@@ -408,7 +419,7 @@ class ReadEtextsActivity(activity.Activity):
             xopower.reset_sleep_timer()
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'KP_End' and speech.supported:
-            play = self._speech_toolbar.play_btn
+            play = self.speech_toolbar.play_btn
             play.set_active(int(not play.get_active()))
             return True
         if keyname == 'plus':
@@ -453,11 +464,37 @@ class ReadEtextsActivity(activity.Activity):
     def show_bookmark_state(self):
         bookmark = self.annotations.is_bookmarked(self.page)
         if bookmark == True:
-            self._sidebar.show_bookmark_icon(True)
-            self._read_toolbar.update_bookmark_button(True)
+            self.sidebar.show_bookmark_icon(True)
+            self.read_toolbar.update_bookmark_button(True)
         else:
-            self._sidebar.show_bookmark_icon(False)
-            self._read_toolbar.update_bookmark_button(False)
+            self.sidebar.show_bookmark_icon(False)
+            self.read_toolbar.update_bookmark_button(False)
+
+    def underline_clicked(self,  button):
+        tuples_list =  self.annotations.get_highlights(self.page)
+        buffer = self.textview.get_buffer()
+        begin, end = buffer.get_selection_bounds()
+        underline_tuple = [begin.get_offset(),  end.get_offset()]
+
+        if button.get_active() == True:
+            tuples_list.append(underline_tuple)
+            self.annotations.set_highlights(self.page,  tuples_list)
+        else:
+            self.annotations.remove_bookmark(self.page)
+        self.show_underlines()
+
+    def show_underlines(self):
+        tuples_list =  self.annotations.get_highlights(self.page)
+        textbuffer = self.textview.get_buffer()
+        bounds = textbuffer.get_bounds()
+        textbuffer.remove_all_tags(bounds[0], bounds[1])
+        count = 0
+        while count < len(tuples_list) :
+            underline_tuple = tuples_list[count]
+            iterStart = textbuffer.get_iter_at_offset(underline_tuple[0])
+            iterEnd = textbuffer.get_iter_at_offset(underline_tuple[1])
+            textbuffer.apply_tag(self.underline_tag, iterStart, iterEnd)
+            count = count + 1
 
     def prev_bookmark(self):
         bookmarks = self.annotations.get_bookmarks()
@@ -466,14 +503,14 @@ class ReadEtextsActivity(activity.Activity):
             if bookmarks[count] < self.page:
                 self.page = bookmarks[count]
                 self.show_page(self.page)
-                self._read_toolbar.set_current_page(self.page)
+                self.read_toolbar.set_current_page(self.page)
                 return
             count = count - 1
         # if we're before the first bookmark wrap to the last.
         if len(bookmarks) > 0:
             self.page = bookmarks[len(bookmarks) - 1]
             self.show_page(self.page)
-            self._read_toolbar.set_current_page(self.page)
+            self.read_toolbar.set_current_page(self.page)
 
     def next_bookmark(self):
         bookmarks = self.annotations.get_bookmarks()
@@ -482,14 +519,14 @@ class ReadEtextsActivity(activity.Activity):
             if bookmarks[count] > self.page:
                 self.page = bookmarks[count]
                 self.show_page(self.page)
-                self._read_toolbar.set_current_page(self.page)
+                self.read_toolbar.set_current_page(self.page)
                 return
             count = count + 1
         # if we're after the last bookmark wrap to the first.
         if len(bookmarks) > 0:
             self.page = bookmarks[0]
             self.show_page(self.page)
-            self._read_toolbar.set_current_page(self.page)
+            self.read_toolbar.set_current_page(self.page)
 
     def page_next(self):
         textbuffer = self.annotation_textview.get_buffer()
@@ -499,7 +536,7 @@ class ReadEtextsActivity(activity.Activity):
         self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
         v_adjustment.value = v_adjustment.lower
-        self._read_toolbar.set_current_page(self.page)
+        self.read_toolbar.set_current_page(self.page)
 
     def page_previous(self):
         textbuffer = self.annotation_textview.get_buffer()
@@ -509,7 +546,7 @@ class ReadEtextsActivity(activity.Activity):
         self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
         v_adjustment.value = v_adjustment.upper - v_adjustment.page_size
-        self._read_toolbar.set_current_page(self.page)
+        self.read_toolbar.set_current_page(self.page)
 
     def font_decrease(self):
         font_size = self.font_desc.get_size() / 1024
@@ -559,7 +596,7 @@ class ReadEtextsActivity(activity.Activity):
         self.etext_file.seek(position)
         linecount = 0
         label_text = '\n\n\n'
-        while linecount < _PAGE_SIZE:
+        while linecount < PAGE_SIZE:
             line = self.etext_file.readline()
             if not line:
                 break
@@ -571,6 +608,7 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer.set_text(label_text)
         annotation_textbuffer = self.annotation_textview.get_buffer()
         annotation_textbuffer.set_text(self.annotations.get_note(page_number))
+        self.show_underlines()
         self.prepare_highlighting(label_text)
 
     def prepare_highlighting(self, label_text):
@@ -610,7 +648,7 @@ class ReadEtextsActivity(activity.Activity):
         self.etext_file.seek(position)
         linecount = 0
         label_text = '\n\n\n'
-        while linecount < _PAGE_SIZE:
+        while linecount < PAGE_SIZE:
             line = self.etext_file.readline()
             if not line:
                break
@@ -627,7 +665,7 @@ class ReadEtextsActivity(activity.Activity):
         iterStart = textbuffer.get_iter_at_offset(page_tuple[1])
         iterEnd = textbuffer.get_iter_at_offset(page_tuple[2])
         textbuffer.apply_tag(tag, iterStart, iterEnd)
-        self._edit_toolbar._update_find_buttons()
+        self.edit_toolbar.update_find_buttons()
 
     def save_extracted_file(self, zipfile, filename):
         "Extract the file to a temp directory for viewing"
@@ -657,11 +695,11 @@ class ReadEtextsActivity(activity.Activity):
 
     def read_file(self, file_path):
         """Load a file from the datastore on activity start"""
-        _logger.debug('ReadEtextsActivity.read_file: %s', file_path)
+        logger.debug('ReadEtextsActivity.read_file: %s', file_path)
         tempfile = os.path.join(self.get_activity_root(),  'instance', 'tmp%i' % time.time())
         os.link(file_path,  tempfile)
-        self._tempfile = tempfile
-        self._load_document(self._tempfile)
+        self.tempfile = tempfile
+        self.load_document(self.tempfile)
 
     def make_new_filename(self, filename):
         partition_tuple = filename.rpartition('/')
@@ -697,7 +735,7 @@ class ReadEtextsActivity(activity.Activity):
                 title = title + ' P' + str(self.page + 1)
         self.metadata['title'] = title
 
-    def _load_document(self, filename):
+    def load_document(self, filename):
         "Read the Etext file"
         if zipfile.is_zipfile(filename):
             self.zf = zipfile.ZipFile(filename, 'r')
@@ -707,7 +745,8 @@ class ReadEtextsActivity(activity.Activity):
             while (i < len(self.book_files)):
                 if (self.book_files[i] != 'annotations.pkl'):
                     self.save_extracted_file(self.zf, self.book_files[i]) 
-                    current_file_name = os.path.join(self.get_activity_root(), 'instance',  self.make_new_filename(self.book_files[i]))
+                    current_file_name = os.path.join(self.get_activity_root(), 'instance',  \
+                                                     self.make_new_filename(self.book_files[i]))
                 else:
                     self.extract_pickle_file()
                 i = i + 1
@@ -724,7 +763,7 @@ class ReadEtextsActivity(activity.Activity):
             if not line:
                 break
             linecount = linecount + 1
-            if linecount >= _PAGE_SIZE:
+            if linecount >= PAGE_SIZE:
                 position = self.etext_file.tell()
                 self.page_index.append(position)
                 linecount = 0
@@ -738,23 +777,23 @@ class ReadEtextsActivity(activity.Activity):
             
         self.get_saved_page_number()
         self.show_page(self.page)
-        self._read_toolbar.set_total_pages(pagecount + 1)
-        self._read_toolbar.set_current_page(self.page)
+        self.read_toolbar.set_total_pages(pagecount + 1)
+        self.read_toolbar.set_current_page(self.page)
         if filename.endswith(".zip"):
             os.remove(current_file_name)
             
         # We've got the document, so if we're a shared activity, offer it
         if self.get_shared():
             self.watch_for_tubes()
-            self._share_document()
+            self.share_document()
 
     def rewrite_zip(self):
-        if zipfile.is_zipfile(self._tempfile):
+        if zipfile.is_zipfile(self.tempfile):
             new_zipfile = os.path.join(self.get_activity_root(), 'instance',
                     'rewrite%i' % time.time())
-            print self._tempfile,  new_zipfile
+            print self.tempfile,  new_zipfile
             zf_new = zipfile.ZipFile(new_zipfile, 'w')
-            zf_old = zipfile.ZipFile(self._tempfile, 'r')
+            zf_old = zipfile.ZipFile(self.tempfile, 'r')
             book_files = self.zf.namelist()
             i = 0
             while (i < len(book_files)):
@@ -770,20 +809,20 @@ class ReadEtextsActivity(activity.Activity):
         
             zf_old.close()
             zf_new.close()
-            os.remove(self._tempfile)
-            self._tempfile = new_zipfile
+            os.remove(self.tempfile)
+            self.tempfile = new_zipfile
         else:
             new_zipfile = os.path.join(self.get_activity_root(), 'instance',
                     'rewrite%i' % time.time())
-            print self._tempfile,  new_zipfile
+            print self.tempfile,  new_zipfile
             zf_new = zipfile.ZipFile(new_zipfile, 'w')
-            outfn = self.make_new_filename(self._tempfile)
-            zf_new.write(self._tempfile,  outfn)
+            outfn = self.make_new_filename(self.tempfile)
+            zf_new.write(self.tempfile,  outfn)
             print 'adding',  outfn
             zf_new.write(self.pickle_file_temp,  'annotations.pkl')
             zf_new.close()
-            os.remove(self._tempfile)
-            self._tempfile = new_zipfile
+            os.remove(self.tempfile)
+            self.tempfile = new_zipfile
 
     def write_file(self, filename):
         "Save meta data for the file."
@@ -798,25 +837,25 @@ class ReadEtextsActivity(activity.Activity):
                 f.write(filebytes)
             finally:
                 f.close
-        elif self._tempfile:
-            if self._close_requested:
+        elif self.tempfile:
+            if self.close_requested:
                 textbuffer = self.annotation_textview.get_buffer()
                 self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter()))
                 title = self.metadata.get('title', '')
                 self.annotations.set_title(str(title))
                 self.annotations.save()
                 self.rewrite_zip()
-                os.link(self._tempfile,  filename)
-                _logger.debug("Removing temp file %s because we will close", self._tempfile)
-                os.unlink(self._tempfile)
+                os.link(self.tempfile,  filename)
+                logger.debug("Removing temp file %s because we will close", self.tempfile)
+                os.unlink(self.tempfile)
                 os.remove(self.pickle_file_temp)
-                self._tempfile = None
+                self.tempfile = None
                 self.pickle_file_temp = None
         else:
             # skip saving empty file
             raise NotImplementedError
         # The last book we downloaded has 2 journal entries.  Delete the other one.
-        if self.extra_journal_entry != None and self._close_requested:
+        if self.extra_journal_entry != None and self.close_requested:
             datastore.delete(self.extra_journal_entry.object_id)
 
         self.metadata['activity'] = self.get_bundle_id()
@@ -824,7 +863,7 @@ class ReadEtextsActivity(activity.Activity):
         self.save_page_number()
 
     def can_close(self):
-        self._close_requested = True
+        self.close_requested = True
         return True
 
     def selection_cb(self, selection):
@@ -837,19 +876,19 @@ class ReadEtextsActivity(activity.Activity):
             self.selected_title = model.get_value(iter,COLUMN_TITLE)
             self.selected_author = model.get_value(iter,COLUMN_AUTHOR)
             self.selected_path = model.get_value(iter,COLUMN_PATH)
-            self._books_toolbar._enable_button(True)
+            self.books_toolbar.enable_button(True)
 
     def find_books(self, search_text):
         self.clear_downloaded_bytes()
-        self._books_toolbar._enable_button(False)
+        self.books_toolbar.enable_button(False)
         self.list_scroller.hide()
         self.list_scroller_visible = False
         self.book_selected = False
         self.ls.clear()
         search_tuple = search_text.lower().split()
         if len(search_tuple) == 0:
-            self._alert(_('Error'), _('You must enter at least one search word.'))
-            self._books_toolbar._search_entry.grab_focus()
+            self.alert(_('Error'), _('You must enter at least one search word.'))
+            self.books_toolbar.search_entry.grab_focus()
             return
         f = open('bookcatalog.txt', 'r')
         while f:
@@ -875,64 +914,64 @@ class ReadEtextsActivity(activity.Activity):
      
     def get_book(self):
         self.progressbar.show()
-        self._books_toolbar._enable_button(False)
+        self.books_toolbar.enable_button(False)
         self.list_scroller.props.sensitive = False
         if self.selected_path.startswith('PGA'):
             gobject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  \
-                             self._get_book_result_cb)
+                             self.get_book_result_cb)
         elif self.selected_path.startswith('/etext'):
             gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  \
-                             self._get_old_book_result_cb)
+                             self.get_old_book_result_cb)
         else:
             gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  \
-                             self._get_iso_book_result_cb)
+                             self.get_iso_book_result_cb)
         
     def download_book(self,  url,  result_cb):
         path = os.path.join(self.get_activity_root(), 'instance',
                             'tmp%i' % time.time())
         getter = ReadURLDownloader(url)
         getter.connect("finished", result_cb)
-        getter.connect("progress", self._get_book_progress_cb)
-        getter.connect("error", self._get_book_error_cb)
-        _logger.debug("Starting download to %s...", path)
+        getter.connect("progress", self.get_book_progress_cb)
+        getter.connect("error", self.get_book_error_cb)
+        logger.debug("Starting download to %s...", path)
         try:
             getter.start(path)
         except:
-            self._alert(_('Error'), _('Connection timed out for ') + self.selected_title)
+            self.alert(_('Error'), _('Connection timed out for ') + self.selected_title)
            
-        self._download_content_length = getter.get_content_length()
-        self._download_content_type = getter.get_content_type()
+        self.download_content_length = getter.get_content_length()
+        self.download_content_type = getter.get_content_type()
         self.textview.grab_focus()
 
-    def _get_iso_book_result_cb(self, getter, tempfile, suggested_name):
-        if self._download_content_type.startswith('text/html'):
+    def get_iso_book_result_cb(self, getter, tempfile, suggested_name):
+        if self.download_content_type.startswith('text/html'):
             # got an error page instead
-            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + ".zip",  self._get_book_result_cb)
+            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + ".zip",  self.get_book_result_cb)
             return
         self.process_downloaded_book(tempfile,  suggested_name)
 
-    def _get_old_book_result_cb(self, getter, tempfile, suggested_name):
-        if self._download_content_type.startswith('text/html'):
+    def get_old_book_result_cb(self, getter, tempfile, suggested_name):
+        if self.download_content_type.startswith('text/html'):
             # got an error page instead
-            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + "10.zip",  self._get_book_result_cb)
+            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + "10.zip",  self.get_book_result_cb)
             return
         self.process_downloaded_book(tempfile,  suggested_name)
 
-    def _get_book_result_cb(self, getter, tempfile, suggested_name):
-        if self._download_content_type.startswith('text/html'):
+    def get_book_result_cb(self, getter, tempfile, suggested_name):
+        if self.download_content_type.startswith('text/html'):
             # got an error page instead
-            self._get_book_error_cb(getter, 'HTTP Error')
+            self.get_book_error_cb(getter, 'HTTP Error')
             return
         self.process_downloaded_book(tempfile,  suggested_name)
 
-    def _get_book_progress_cb(self, getter, bytes_downloaded):
-        if self._download_content_length > 0:
-            _logger.debug("Downloaded %u of %u bytes...",
-                          bytes_downloaded, self._download_content_length)
+    def get_book_progress_cb(self, getter, bytes_downloaded):
+        if self.download_content_length > 0:
+            logger.debug("Downloaded %u of %u bytes...",
+                          bytes_downloaded, self.download_content_length)
         else:
-            _logger.debug("Downloaded %u bytes...",
+            logger.debug("Downloaded %u bytes...",
                           bytes_downloaded)
-        total = self._download_content_length
+        total = self.download_content_length
         self.set_downloaded_bytes(bytes_downloaded,  total)
         gtk.gdk.threads_enter()
         while gtk.events_pending():
@@ -946,23 +985,23 @@ class ReadEtextsActivity(activity.Activity):
     def clear_downloaded_bytes(self):
         self.progressbar.set_fraction(0.0)
 
-    def _get_book_error_cb(self, getter, err):
+    def get_book_error_cb(self, getter, err):
         self.list_scroller.props.sensitive = True
         self.progressbar.hide()
-        _logger.debug("Error getting document: %s", err)
-        self._alert(_('Error'), _('Could not download ') + self.selected_title + _(' path in catalog may be incorrect.'))
-        self._download_content_length = 0
-        self._download_content_type = None
+        logger.debug("Error getting document: %s", err)
+        self.alert(_('Error'), _('Could not download ') + self.selected_title + _(' path in catalog may be incorrect.'))
+        self.download_content_length = 0
+        self.download_content_type = None
 
     def process_downloaded_book(self,  tempfile,  suggested_name):
         self.list_scroller.props.sensitive = True
-        self._tempfile = tempfile
+        self.tempfile = tempfile
         file_path = os.path.join(self.get_activity_root(), 'instance',
                                     '%i' % time.time())
         os.link(tempfile, file_path)
-        _logger.debug("Got document %s (%s)", tempfile, suggested_name)
+        logger.debug("Got document %s (%s)", tempfile, suggested_name)
         self.create_journal_entry(tempfile)
-        self._load_document(tempfile)
+        self.load_document(tempfile)
 
     def create_journal_entry(self,  tempfile):
         self.progressbar.hide()
@@ -983,7 +1022,7 @@ class ReadEtextsActivity(activity.Activity):
         journal_entry.file_path = tempfile
         datastore.write(journal_entry)
         self.extra_journal_entry = journal_entry
-        self._alert(_('Success'), self.selected_title + _(' added to Journal.'))
+        self.alert(_('Success'), self.selected_title + _(' added to Journal.'))
 
     def find_previous(self):
         self.current_found_item = self.current_found_item - 1
@@ -991,7 +1030,7 @@ class ReadEtextsActivity(activity.Activity):
             self.current_found_item = 0
         current_found_tuple = self.found_records[self.current_found_item]
         self.page = current_found_tuple[0]
-        self._read_toolbar.set_current_page(self.page)
+        self.read_toolbar.set_current_page(self.page)
         self.show_found_page(current_found_tuple)
 
     def find_next(self):
@@ -1000,7 +1039,7 @@ class ReadEtextsActivity(activity.Activity):
             self.current_found_item = len(self.found_records) - 1
         current_found_tuple = self.found_records[self.current_found_item]
         self.page = current_found_tuple[0]
-        self._read_toolbar.set_current_page(self.page)
+        self.read_toolbar.set_current_page(self.page)
         self.show_found_page(current_found_tuple)
     
     def can_find_previous(self):
@@ -1033,14 +1072,14 @@ class ReadEtextsActivity(activity.Activity):
                 self.found_records.append(found_tuple)
                 self.current_found_item = 0
             charcount = charcount + line_length  
-            if linecount >= _PAGE_SIZE:
+            if linecount >= PAGE_SIZE:
                 linecount = 0
                 charcount = 0
                 pagecount = pagecount + 1
         if self.current_found_item == 0:
             current_found_tuple = self.found_records[self.current_found_item]
             self.page = current_found_tuple[0]
-            self._read_toolbar.set_current_page(self.page)
+            self.read_toolbar.set_current_page(self.page)
             self.show_found_page(current_found_tuple)
 
     def allindices(self,  line, search, listindex=None,  offset=0):
@@ -1058,63 +1097,63 @@ class ReadEtextsActivity(activity.Activity):
         return self.page
 
     # The code from here on down is for sharing.
-    def _download_result_cb(self, getter, tempfile, suggested_name, tube_id):
-        if self._download_content_type.startswith('text/html'):
+    def download_result_cb(self, getter, tempfile, suggested_name, tube_id):
+        if self.download_content_type.startswith('text/html'):
             # got an error page instead
-            self._download_error_cb(getter, 'HTTP Error', tube_id)
+            self.download_error_cb(getter, 'HTTP Error', tube_id)
             return
 
         del self.unused_download_tubes
 
-        self._tempfile = tempfile
+        self.tempfile = tempfile
         file_path = os.path.join(self.get_activity_root(), 'instance',
                                     '%i' % time.time())
-        _logger.debug("Saving file %s to datastore...", file_path)
+        logger.debug("Saving file %s to datastore...", file_path)
         os.link(tempfile, file_path)
-        self._jobject.file_path = file_path
-        datastore.write(self._jobject, transfer_ownership=True)
+        self.jobject.file_path = file_path
+        datastore.write(self.jobject, transfer_ownership=True)
 
-        _logger.debug("Got document %s (%s) from tube %u",
+        logger.debug("Got document %s (%s) from tube %u",
                       tempfile, suggested_name, tube_id)
-        self._load_document(tempfile)
+        self.load_document(tempfile)
         self.save()
         self.progressbar.hide()
 
-    def _download_progress_cb(self, getter, bytes_downloaded, tube_id):
-        if self._download_content_length > 0:
-            _logger.debug("Downloaded %u of %u bytes from tube %u...",
-                          bytes_downloaded, self._download_content_length, 
+    def download_progress_cb(self, getter, bytes_downloaded, tube_id):
+        if self.download_content_length > 0:
+            logger.debug("Downloaded %u of %u bytes from tube %u...",
+                          bytes_downloaded, self.download_content_length, 
                           tube_id)
         else:
-            _logger.debug("Downloaded %u bytes from tube %u...",
+            logger.debug("Downloaded %u bytes from tube %u...",
                           bytes_downloaded, tube_id)
-        total = self._download_content_length
+        total = self.download_content_length
         self.set_downloaded_bytes(bytes_downloaded,  total)
         gtk.gdk.threads_enter()
         while gtk.events_pending():
             gtk.main_iteration()
         gtk.gdk.threads_leave()
 
-    def _download_error_cb(self, getter, err, tube_id):
+    def download_error_cb(self, getter, err, tube_id):
         self.progressbar.hide()
-        _logger.debug("Error getting document from tube %u: %s",
+        logger.debug("Error getting document from tube %u: %s",
                       tube_id, err)
-        self._alert(_('Failure'), _('Error getting document from tube'))
-        self._want_document = True
-        self._download_content_length = 0
-        self._download_content_type = None
-        gobject.idle_add(self._get_document)
+        self.alert(_('Failure'), _('Error getting document from tube'))
+        self.want_document = True
+        self.download_content_length = 0
+        self.download_content_type = None
+        gobject.idle_add(self.get_document)
 
-    def _download_document(self, tube_id, path):
+    def download_document(self, tube_id, path):
         # FIXME: should ideally have the CM listen on a Unix socket
         # instead of IPv4 (might be more compatible with Rainbow)
-        chan = self._shared_activity.telepathy_tubes_chan
+        chan = self.shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         addr = iface.AcceptStreamTube(tube_id,
                 telepathy.SOCKET_ADDRESS_TYPE_IPV4,
                 telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
                 utf8_strings=True)
-        _logger.debug('Accepted stream tube: listening address is %r', addr)
+        logger.debug('Accepted stream tube: listening address is %r', addr)
         # SOCKET_ADDRESS_TYPE_IPV4 is defined to have addresses of type '(sq)'
         assert isinstance(addr, dbus.Struct)
         assert len(addr) == 2
@@ -1126,60 +1165,60 @@ class ReadEtextsActivity(activity.Activity):
         self.progressbar.show()
         getter = ReadURLDownloader("http://%s:%d/document"
                                            % (addr[0], port))
-        getter.connect("finished", self._download_result_cb, tube_id)
-        getter.connect("progress", self._download_progress_cb, tube_id)
-        getter.connect("error", self._download_error_cb, tube_id)
-        _logger.debug("Starting download to %s...", path)
+        getter.connect("finished", self.download_result_cb, tube_id)
+        getter.connect("progress", self.download_progress_cb, tube_id)
+        getter.connect("error", self.download_error_cb, tube_id)
+        logger.debug("Starting download to %s...", path)
         getter.start(path)
-        self._download_content_length = getter.get_content_length()
-        self._download_content_type = getter.get_content_type()
+        self.download_content_length = getter.get_content_length()
+        self.download_content_type = getter.get_content_type()
         return False
 
-    def _get_document(self):
-        if not self._want_document:
+    def get_document(self):
+        if not self.want_document:
             return False
 
         # Assign a file path to download if one doesn't exist yet
-        if not self._jobject.file_path:
+        if not self.jobject.file_path:
             path = os.path.join(self.get_activity_root(), 'instance',
                                 'tmp%i' % time.time())
         else:
-            path = self._jobject.file_path
+            path = self.jobject.file_path
 
         # Pick an arbitrary tube we can try to download the document from
         try:
             tube_id = self.unused_download_tubes.pop()
         except (ValueError, KeyError), e:
-            _logger.debug('No tubes to get the document from right now: %s',
+            logger.debug('No tubes to get the document from right now: %s',
                           e)
             return False
 
         # Avoid trying to download the document multiple times at once
-        self._want_document = False
-        gobject.idle_add(self._download_document, tube_id, path)
+        self.want_document = False
+        gobject.idle_add(self.download_document, tube_id, path)
         return False
 
-    def _joined_cb(self, also_self):
+    def joined_cb(self, also_self):
         """Callback for when a shared activity is joined.
 
         Get the shared document from another participant.
         """
         self.watch_for_tubes()
-        gobject.idle_add(self._get_document)
+        gobject.idle_add(self.get_document)
 
-    def _share_document(self):
+    def share_document(self):
         """Share the document."""
         # FIXME: should ideally have the fileserver listen on a Unix socket
         # instead of IPv4 (might be more compatible with Rainbow)
 
-        _logger.debug('Starting HTTP server on port %d', self.port)
-        self._fileserver = ReadHTTPServer(("", self.port),
-            self._tempfile)
+        logger.debug('Starting HTTP server on port %d', self.port)
+        self.fileserver = ReadHTTPServer(("", self.port),
+            self.tempfile)
 
         # Make a tube for it
-        chan = self._shared_activity.telepathy_tubes_chan
+        chan = self.shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
-        self._fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
+        self.fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
                 {},
                 telepathy.SOCKET_ADDRESS_TYPE_IPV4,
                 ('127.0.0.1', dbus.UInt16(self.port)),
@@ -1187,37 +1226,37 @@ class ReadEtextsActivity(activity.Activity):
 
     def watch_for_tubes(self):
         """Watch for new tubes."""
-        tubes_chan = self._shared_activity.telepathy_tubes_chan
+        tubes_chan = self.shared_activity.telepathy_tubes_chan
 
         tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
-            self._new_tube_cb)
+            self.new_tube_cb)
         tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
-            reply_handler=self._list_tubes_reply_cb,
-            error_handler=self._list_tubes_error_cb)
+            reply_handler=self.list_tubes_reply_cb,
+            error_handler=self.list_tubes_error_cb)
 
-    def _new_tube_cb(self, tube_id, initiator, tube_type, service, params,
+    def new_tube_cb(self, tube_id, initiator, tube_type, service, params,
                      state):
         """Callback when a new tube becomes available."""
-        _logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
+        logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
                       'params=%r state=%d', tube_id, initiator, tube_type,
                       service, params, state)
         if service == READ_STREAM_SERVICE:
-            _logger.debug('I could download from that tube')
+            logger.debug('I could download from that tube')
             self.unused_download_tubes.add(tube_id)
             # if no download is in progress, let's fetch the document
-            if self._want_document:
-                gobject.idle_add(self._get_document)
+            if self.want_document:
+                gobject.idle_add(self.get_document)
 
-    def _list_tubes_reply_cb(self, tubes):
+    def list_tubes_reply_cb(self, tubes):
         """Callback when new tubes are available."""
         for tube_info in tubes:
-            self._new_tube_cb(*tube_info)
+            self.new_tube_cb(*tube_info)
 
-    def _list_tubes_error_cb(self, e):
+    def list_tubes_error_cb(self, e):
         """Handle ListTubes error by logging."""
-        _logger.error('ListTubes() failed: %s', e)
+        logger.error('ListTubes() failed: %s', e)
  
-    def _shared_cb(self, activityid):
+    def shared_cb(self, activityid):
         """Callback when activity shared.
 
         Set up to share the document.
@@ -1225,25 +1264,25 @@ class ReadEtextsActivity(activity.Activity):
         """
         # We initiated this activity and have now shared it, so by
         # definition we have the file.
-        _logger.debug('Activity became shared')
+        logger.debug('Activity became shared')
         self.watch_for_tubes()
-        self._share_document()
+        self.share_document()
 
-    def _alert(self, title, text=None):
+    def alert(self, title, text=None):
         alert = NotifyAlert(timeout=20)
         alert.props.title = title
         alert.props.msg = text
         self.add_alert(alert)
-        alert.connect('response', self._alert_cancel_cb)
+        alert.connect('response', self.alert_cancel_cb)
         alert.show()
 
-    def _alert_cancel_cb(self, alert, response_id):
+    def alert_cancel_cb(self, alert, response_id):
         self.remove_alert(alert)
         self.textview.grab_focus()
 
     # From here down is power management stuff.
 
-    def _now_active_cb(self, widget, pspec):
+    def now_active_cb(self, widget, pspec):
         if self.props.active:
             # Now active, start initial suspend timeout
             xopower.reset_sleep_timer()
@@ -1252,16 +1291,16 @@ class ReadEtextsActivity(activity.Activity):
             # Now inactive
             xopower.sleep_inhibit = True
 
-    def _focus_in_event_cb(self, widget, event):
+    def focus_in_event_cb(self, widget, event):
         xopower.turn_on_sleep_timer()
 
-    def _focus_out_event_cb(self, widget, event):
+    def focus_out_event_cb(self, widget, event):
         xopower.turn_off_sleep_timer()
 
-    def _user_action_cb(self, widget):
+    def user_action_cb(self, widget):
         xopower.reset_sleep_timer()
 
-    def _suspend_cb(self):
+    def suspend_cb(self):
         xopower.suspend()
         return False
  

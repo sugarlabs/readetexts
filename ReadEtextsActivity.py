@@ -335,7 +335,7 @@ class ReadEtextsActivity(activity.Activity):
 
         self.is_received_document = False
         
-        if self.shared_activity and handle.object_id == None:
+        if self._shared_activity and _handle.object_id == None:
             # We're joining, and we don't already have the document.
             if self.get_shared():
                 # Already joined for some reason, just get the document
@@ -1172,7 +1172,7 @@ class ReadEtextsActivity(activity.Activity):
     def download_document(self, tube_id, path):
         # FIXME: should ideally have the CM listen on a Unix socket
         # instead of IPv4 (might be more compatible with Rainbow)
-        chan = self.shared_activity.telepathy_tubes_chan
+        chan = self._shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         addr = iface.AcceptStreamTube(tube_id,
                 telepathy.SOCKET_ADDRESS_TYPE_IPV4,
@@ -1241,7 +1241,7 @@ class ReadEtextsActivity(activity.Activity):
             self.tempfile)
 
         # Make a tube for it
-        chan = self.shared_activity.telepathy_tubes_chan
+        chan = self._shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         self.fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
                 {},
@@ -1251,7 +1251,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def watch_for_tubes(self):
         """Watch for new tubes."""
-        tubes_chan = self.shared_activity.telepathy_tubes_chan
+        tubes_chan = self._shared_activity.telepathy_tubes_chan
 
         tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
             self.new_tube_cb)
@@ -1281,7 +1281,7 @@ class ReadEtextsActivity(activity.Activity):
         """Handle ListTubes error by logging."""
         logger.error('ListTubes() failed: %s', e)
  
-    def shared_cb(self, activityid):
+    def _shared_cb(self, activityid):
         """Callback when activity shared.
 
         Set up to share the document.

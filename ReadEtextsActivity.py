@@ -1140,6 +1140,7 @@ class ReadEtextsActivity(activity.Activity):
 
         logger.debug("Got document %s (%s) from tube %u",
                       tempfile, suggested_name, tube_id)
+        self.is_received_document = True
         self.load_document(tempfile)
         self.save()
         self.progressbar.hide()

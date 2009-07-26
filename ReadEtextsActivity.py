@@ -1135,8 +1135,8 @@ class ReadEtextsActivity(activity.Activity):
                                     '%i' % time.time())
         logger.debug("Saving file %s to datastore...", file_path)
         os.link(tempfile, file_path)
-        self.jobject.file_path = file_path
-        datastore.write(self.jobject, transfer_ownership=True)
+        self._jobject.file_path = file_path
+        datastore.write(self._jobject, transfer_ownership=True)
 
         logger.debug("Got document %s (%s) from tube %u",
                       tempfile, suggested_name, tube_id)
@@ -1204,11 +1204,11 @@ class ReadEtextsActivity(activity.Activity):
             return False
 
         # Assign a file path to download if one doesn't exist yet
-        if not self.jobject.file_path:
+        if not self._jobject.file_path:
             path = os.path.join(self.get_activity_root(), 'instance',
                                 'tmp%i' % time.time())
         else:
-            path = self.jobject.file_path
+            path = self._jobject.file_path
 
         # Pick an arbitrary tube we can try to download the document from
         try:

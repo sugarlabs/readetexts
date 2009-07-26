@@ -1281,7 +1281,7 @@ class ReadEtextsActivity(activity.Activity):
         """Handle ListTubes error by logging."""
         logger.error('ListTubes() failed: %s', e)
  
-    def _shared_cb(self, activityid):
+    def shared_cb(self, activityid):
         """Callback when activity shared.
 
         Set up to share the document.

@@ -393,18 +393,21 @@ class ReadEtextsActivity(activity.Activity):
         return True
 
     def mark_set_cb(self, textbuffer, iter, textmark):
-        buffer = self.textview.get_buffer()
-        begin, end = buffer.get_selection_bounds()
-        underline_tuple = [begin.get_offset(),  end.get_offset()]
-        tuples_list =  self.annotations.get_highlights(self.page)
-
-        count = 0
-        while count < len(tuples_list) :
-            underline_tuple = tuples_list[count]
-            
-            count = count + 1
+        self.read_toolbar.update_underline_button(False) 
 
         if textbuffer.get_has_selection():
+            buffer = self.textview.get_buffer()
+            begin, end = buffer.get_selection_bounds()
+            underline_tuple = [begin.get_offset(),  end.get_offset()]
+            tuples_list =  self.annotations.get_highlights(self.page)
+            count = 0
+            while count < len(tuples_list) :
+                compare_tuple = tuples_list[count]
+                if underline_tuple[0] >= compare_tuple[0] and underline_tuple[1] <= compare_tuple[1]:
+                    self.read_toolbar.update_underline_button(True) 
+                    break
+                count = count + 1
+
             self.edit_toolbar.copy.set_sensitive(True)
             self.read_toolbar.underline.props.sensitive = True
         else:
@@ -491,7 +494,18 @@ class ReadEtextsActivity(activity.Activity):
             tuples_list.append(underline_tuple)
             self.annotations.set_highlights(self.page,  tuples_list)
         else:
-            self.annotations.remove_bookmark(self.page)
+            buffer = self.textview.get_buffer()
+            begin, end = buffer.get_selection_bounds()
+            underline_tuple = [begin.get_offset(),  end.get_offset()]
+            tuples_list =  self.annotations.get_highlights(self.page)
+            count = 0
+            while count < len(tuples_list) :
+                compare_tuple = tuples_list[count]
+                if underline_tuple[0] >= compare_tuple[0] and underline_tuple[1] <= compare_tuple[1]:
+                    tuples_list.remove(compare_tuple)
+                    self.annotations.set_highlights(self.page,  tuples_list)
+                    break
+                count = count + 1
         self.show_underlines()
 
     def show_underlines(self):

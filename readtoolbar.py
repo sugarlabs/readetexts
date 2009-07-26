@@ -195,10 +195,10 @@ class ReadToolbar(gtk.Toolbar):
         button.handler_unblock(id)
         
     def update_underline_button(self,  state):
-        self.setToggleButtonState(self.bookmarker,  state,  self.bookmarker_handler_id)
+        self.setToggleButtonState(self.underline,  state,  self.underline_id)
 
     def update_bookmark_button(self,  state):
-        self.setToggleButtonState(self.underline,  state,  self.underline_id)
+        self.setToggleButtonState(self.bookmarker,  state,  self.bookmarker_handler_id)
 
 class ViewToolbar(gtk.Toolbar):
     __gtype_name__ = 'ViewToolbar'

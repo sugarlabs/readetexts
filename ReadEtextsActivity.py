@@ -206,7 +206,7 @@ class ReadEtextsActivity(activity.Activity):
         self.read_toolbar.set_activity(self)
         self.read_toolbar.show()
 
-        if not self._shared_activity and self._object_id is None:
+        if not self._shared_activity and self.object_id is None:
             self.books_toolbar = BooksToolbar()
             toolbox.add_toolbar(_('Books'), self.books_toolbar)
             self.books_toolbar.set_activity(self)

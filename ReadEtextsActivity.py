@@ -242,7 +242,7 @@ class ReadEtextsActivity(activity.Activity):
         self.annotation_textview.set_wrap_mode(gtk.WRAP_WORD)
 
         buffer = self.textview.get_buffer()
-        buffer.connect("mark-set", self.mark_set_cb)
+        self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
         self.font_desc = pango.FontDescription("sans %d" % style.zoom(10))
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
@@ -396,8 +396,7 @@ class ReadEtextsActivity(activity.Activity):
         self.read_toolbar.update_underline_button(False) 
 
         if textbuffer.get_has_selection():
-            buffer = self.textview.get_buffer()
-            begin, end = buffer.get_selection_bounds()
+            begin, end = textbuffer.get_selection_bounds()
             underline_tuple = [begin.get_offset(),  end.get_offset()]
             tuples_list =  self.annotations.get_highlights(self.page)
             count = 0
@@ -405,6 +404,11 @@ class ReadEtextsActivity(activity.Activity):
                 compare_tuple = tuples_list[count]
                 if underline_tuple[0] >= compare_tuple[0] and underline_tuple[1] <= compare_tuple[1]:
                     self.read_toolbar.update_underline_button(True) 
+                    textbuffer.handler_block(self.markset_id)
+                    iterStart = textbuffer.get_iter_at_offset(compare_tuple[0])
+                    iterEnd = textbuffer.get_iter_at_offset(compare_tuple[1])
+                    textbuffer.select_range(iterStart,  iterEnd)
+                    textbuffer.handler_unblock(self.markset_id)
                     break
                 count = count + 1
 
@@ -494,7 +498,6 @@ class ReadEtextsActivity(activity.Activity):
             tuples_list.append(underline_tuple)
             self.annotations.set_highlights(self.page,  tuples_list)
         else:
-            buffer = self.textview.get_buffer()
             begin, end = buffer.get_selection_bounds()
             underline_tuple = [begin.get_offset(),  end.get_offset()]
             tuples_list =  self.annotations.get_highlights(self.page)
@@ -506,6 +509,11 @@ class ReadEtextsActivity(activity.Activity):
                     self.annotations.set_highlights(self.page,  tuples_list)
                     break
                 count = count + 1
+        iterStart = buffer.get_iter_at_offset(0)
+        iterEnd = buffer.get_iter_at_offset(0)
+        buffer.handler_block(self.markset_id)
+        buffer.select_range(iterStart,  iterEnd)
+        buffer.handler_unblock(self.markset_id)
         self.show_underlines()
 
     def show_underlines(self):

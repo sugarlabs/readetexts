@@ -419,7 +419,9 @@ class ReadEtextsActivity(activity.Activity):
             self.read_toolbar.underline.props.sensitive = False
 
     def edit_toolbar_copy_cb(self, button):
-        copy_text = buffer.get_text(begin, end)
+        textbuffer = self.textview.get_buffer()
+        begin, end = textbuffer.get_selection_bounds()
+        copy_text = textbuffer.get_text(begin, end)
         self.clipboard.set_text(copy_text)
 
     def view_toolbar_go_fullscreen_cb(self, view_toolbar):

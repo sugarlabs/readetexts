@@ -234,6 +234,8 @@ class ReadEtextsActivity(activity.Activity):
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
         self.textview.set_left_margin(50)
+        self.textview.set_right_margin(50)
+        self.textview.set_wrap_mode(gtk.WRAP_WORD)
         self.textview.connect("key_press_event", self.keypress_cb)
 
         self.annotation_textview = gtk.TextView()
@@ -637,7 +639,8 @@ class ReadEtextsActivity(activity.Activity):
                 break
             else:
                 label_text = label_text + unicode(line,  "iso-8859-1")
-            linecount = linecount + 1
+            line_increment = (len(line) / 80) + 1
+            linecount = linecount + line_increment
         textbuffer = self.textview.get_buffer()
         label_text = label_text + '\n\n\n'
         textbuffer.set_text(label_text)
@@ -689,7 +692,8 @@ class ReadEtextsActivity(activity.Activity):
                break
             else:
                 label_text = label_text + unicode(line, "iso-8859-1")
-                linecount = linecount + 1
+                line_increment = (len(line) / 80) + 1
+                linecount = linecount + line_increment
         label_text = label_text + '\n\n\n'
         textbuffer = self.textview.get_buffer()
         tag = textbuffer.create_tag()
@@ -697,6 +701,10 @@ class ReadEtextsActivity(activity.Activity):
         tag.set_property( 'foreground', "white")
         tag.set_property( 'background', "black")
         textbuffer.set_text(label_text)
+        annotation_textbuffer = self.annotation_textview.get_buffer()
+        annotation_textbuffer.set_text(self.annotations.get_note(self.page))
+        self.show_underlines()
+        self.prepare_highlighting(label_text)
         iterStart = textbuffer.get_iter_at_offset(page_tuple[1])
         iterEnd = textbuffer.get_iter_at_offset(page_tuple[2])
         textbuffer.apply_tag(tag, iterStart, iterEnd)
@@ -797,7 +805,8 @@ class ReadEtextsActivity(activity.Activity):
             line = self.etext_file.readline()
             if not line:
                 break
-            linecount = linecount + 1
+            line_increment = (len(line) / 80) + 1
+            linecount = linecount + line_increment
             if linecount >= PAGE_SIZE:
                 position = self.etext_file.tell()
                 self.page_index.append(position)
@@ -837,7 +846,6 @@ class ReadEtextsActivity(activity.Activity):
                     outfn = self.make_new_filename(book_files[i])
                     fname = os.path.join(self.get_activity_root(), 'instance',  outfn)
                     zf_new.write(fname.encode( "utf-8" ),  outfn.encode( "utf-8" ))
-                    print 'rewriting',  outfn
                     os.remove(fname)
                 i = i + 1
             zf_new.write(self.pickle_file_temp,  'annotations.pkl')
@@ -1099,7 +1107,8 @@ class ReadEtextsActivity(activity.Activity):
             line_length = len(line)
             if not line:
                 break
-            linecount = linecount + 1
+            line_increment = (len(line) / 80) + 1
+            linecount = linecount + line_increment
             positions = self.allindices(line.lower(), search_text.lower())
             for position in positions:
                 found_pos = charcount + position + 3

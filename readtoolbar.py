@@ -268,6 +268,8 @@ class EditToolbar(activity.EditToolbar):
         width = int(gtk.gdk.screen_width() / 3)
         self.search_entry.set_size_request(width, -1)
 
+        self.search_entry.props.sensitive = False
+        
         search_item.add(self.search_entry)
         self.search_entry.show()
 
@@ -290,6 +292,9 @@ class EditToolbar(activity.EditToolbar):
 
     def set_activity(self, activity):
         self.activity = activity
+
+    def enable_search(self,  state):
+        self.search_entry.props.sensitive = state
 
     def search_entry_activate_cb(self, entry):
         current_page = self.activity.get_current_page()

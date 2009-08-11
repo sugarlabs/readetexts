@@ -359,6 +359,7 @@ class ReadEtextsActivity(activity.Activity):
                     label_text = label_text + unicode(line,  "iso-8859-1")
             textbuffer = self.textview.get_buffer()
             textbuffer.set_text(label_text)
+            self.prepare_highlighting(label_text)
             f.close()
 
         speech.highlight_cb = self.highlight_next_word
@@ -823,6 +824,7 @@ class ReadEtextsActivity(activity.Activity):
         self.show_page(self.page)
         self.read_toolbar.set_total_pages(pagecount + 1)
         self.read_toolbar.set_current_page(self.page)
+        self.edit_toolbar.enable_search(True)
         if filename.endswith(".zip"):
             os.remove(current_file_name)
             

@@ -4,6 +4,7 @@ speech.py
 ReadEtextsActivity.py
 readtoolbar.py
 readsidebar.py
+rtfconvert.py
 xopower.py
 setup.py
 gutextract.py

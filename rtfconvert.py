@@ -45,7 +45,7 @@ def convert(file_path):
         brace_count = brace_count + count_braces(line)
         line = strip_tags(line)
         if brace_count == 1 and line.find('{') < 0 and line.find('}') < 0:
-            out.write(line.lstrip(' \t'))
+            out.write(line.lstrip(' '))
     rtf_file.close()
     out.close()
     print "All done!"

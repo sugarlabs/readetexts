@@ -21,7 +21,7 @@ import sys
 
 # This is a script to take the a file in RTF format and convert it to a text file readable by Read Etexts.
 
-def main(file_path):
+def convert(file_path):
 
     rtf_file = open(file_path,"r")
     out = open("book.txt", 'w')
@@ -31,16 +31,21 @@ def main(file_path):
         line = rtf_file.readline()
         if not line:
             break
+        line = line.replace('\\s1', '\n')
+        line = line.replace('\\s2', '\n')
         line = line.replace('\\pard', '\n')
         line = line.replace('\\par', '\n')
         line = line.replace(' \\i0', '*')
         line = line.replace('\\i ', '*')
+        line = line.replace(' \\b0', '_')
+        line = line.replace('\\b ', '_')
         line = line.replace('\\emdash', '--')
         line = line.replace('\\line', '\n')
+        line = line.replace('\n ', '\n')
         brace_count = brace_count + count_braces(line)
         line = strip_tags(line)
         if brace_count == 1 and line.find('{') < 0 and line.find('}') < 0:
-            out.write(line.lstrip())
+            out.write(line.lstrip(' \t'))
     rtf_file.close()
     out.close()
     print "All done!"
@@ -73,7 +78,7 @@ def count_braces(string):
 if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "")
-        main(args[0])
+        convert(args[0])
     except getopt.error, msg:
         print msg
         print "This program has no options"

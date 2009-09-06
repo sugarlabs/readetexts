@@ -41,6 +41,7 @@ import cPickle as pickle
 
 import speech
 import xopower
+import rtfconvert
 
 PAGE_SIZE = 38
 TOOLBAR_READ = 2
@@ -796,6 +797,14 @@ class ReadEtextsActivity(activity.Activity):
                 i = i + 1
         else:
             current_file_name = filename
+
+        if rtfconvert.check(current_file_name):
+            converted_file_name = os.path.join(self.get_activity_root(), 'instance',
+                    'convert%i' % time.time()) 
+            rtfconvert.convert(current_file_name,  converted_file_name)
+            os.remove(current_file_name)
+            current_file_name = converted_file_name
+            self.tempfile = converted_file_name
             
         self.etext_file = open(current_file_name,"r")
         

@@ -2,12 +2,11 @@
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # James Simmons <ja.simmons@sbcglobal.net>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 18:25-0600\n"
+"POT-Creation-Date: 2009-07-11 00:32-0400\n"
 "PO-Revision-Date: 2009-02-19 18:29-0600\n"
 "Last-Translator: James Simmons <ja.simmons@sbcglobal.net>\n"
 "Language-Team: German\n"
@@ -15,59 +14,137 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
 msgstr "Lese-Aktivitäten"
 
-#: ReadEtextsActivity.py:147
+#: ReadEtextsActivity.py:188
 msgid "Edit"
 msgstr ""
 
-#: ReadEtextsActivity.py:152
+#: ReadEtextsActivity.py:193
 msgid "Read"
 msgstr ""
 
-#: ReadEtextsActivity.py:157
+#: ReadEtextsActivity.py:199
+msgid "Books"
+msgstr ""
+
+#: ReadEtextsActivity.py:204
 msgid "View"
 msgstr "Ansehen"
 
-#: ReadEtextsActivity.py:163
+#: ReadEtextsActivity.py:212
 msgid "Speech"
 msgstr ""
 
-#: ReadEtextsActivity.py:228
-msgid "Choose document"
+#: ReadEtextsActivity.py:845 ReadEtextsActivity.py:895
+#: ReadEtextsActivity.py:947
+msgid "Error"
 msgstr ""
 
-#: readtoolbar.py:43
+#: ReadEtextsActivity.py:845
+msgid "You must enter at least one search word."
+msgstr ""
+
+#: ReadEtextsActivity.py:895
+msgid "Connection timed out for "
+msgstr ""
+
+#: ReadEtextsActivity.py:947
+msgid "Could not download "
+msgstr ""
+
+#: ReadEtextsActivity.py:947
+msgid " path in catalog may be incorrect."
+msgstr ""
+
+#: ReadEtextsActivity.py:980
+msgid "Success"
+msgstr ""
+
+#: ReadEtextsActivity.py:980
+msgid " added to Journal."
+msgstr ""
+
+#: ReadEtextsActivity.py:1096
+msgid "Failure"
+msgstr ""
+
+#: ReadEtextsActivity.py:1096
+msgid "Error getting document from tube"
+msgstr ""
+
+#: readtoolbar.py:42
 msgid "Back"
 msgstr "Zurück"
 
-#: readtoolbar.py:50
+#: readtoolbar.py:45
+msgid "Previous page"
+msgstr ""
+
+#: readtoolbar.py:48
+msgid "Previous bookmark"
+msgstr ""
+
+#: readtoolbar.py:58
 msgid "Forward"
 msgstr "Weiter"
 
-#: readtoolbar.py:159
+#: readtoolbar.py:61
+msgid "Next page"
+msgstr ""
+
+#: readtoolbar.py:64
+msgid "Next bookmark"
+msgstr ""
+
+#: readtoolbar.py:113
+msgid "Toggle Bookmark"
+msgstr ""
+
+#: readtoolbar.py:195
 msgid "Zoom out"
 msgstr ""
 
-#: readtoolbar.py:165
+#: readtoolbar.py:201
 msgid "Zoom in"
 msgstr ""
 
-#: readtoolbar.py:205
+#: readtoolbar.py:212
+msgid "Fullscreen"
+msgstr ""
+
+#: readtoolbar.py:255
 msgid "Previous"
 msgstr "Vorheriges"
 
-#: readtoolbar.py:212
+#: readtoolbar.py:262
 msgid "Next"
 msgstr "Nächstes"
 
-#: readtoolbar.py:312
+#: readtoolbar.py:311
+msgid "Get Book"
+msgstr ""
+
+#: readtoolbar.py:318
+msgid "Remove Results List"
+msgstr ""
+
+#: readtoolbar.py:378
+msgid "Play / Pause"
+msgstr ""
+
+#: readtoolbar.py:428
 msgid "pitch adjusted"
 msgstr ""
 
-#: readtoolbar.py:316
+#: readtoolbar.py:432
 msgid "rate adjusted"
+msgstr ""
+
+#: readsidebar.py:47
+msgid "Bookmark"
 msgstr ""

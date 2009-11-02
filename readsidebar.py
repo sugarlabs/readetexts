@@ -35,18 +35,18 @@ class Sidebar(gtk.EventBox):
         white = gtk.gdk.color_parse("white")
         self.modify_bg(gtk.STATE_NORMAL, white)
 
-        self._box = gtk.VButtonBox()
-        self._box.set_layout(gtk.BUTTONBOX_CENTER)
-        self.add(self._box)
+        self.box = gtk.VButtonBox()
+        self.box.set_layout(gtk.BUTTONBOX_CENTER)
+        self.add(self.box)
 
-        self._box.show()
+        self.box.show()
         self.show()
 
         self.bookmark_icon = Icon(icon_name = 'emblem-favorite', \
             pixel_size = 18)
         tooltip_text = _('Bookmark') 
         self.bookmark_icon.set_tooltip_text(tooltip_text)
-        self._box.pack_start(self.bookmark_icon ,expand=False,fill=False)
+        self.box.pack_start(self.bookmark_icon ,expand=False,fill=False)
 
     def show_bookmark_icon(self, state):
         if state:

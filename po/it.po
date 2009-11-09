@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-11 00:32-0400\n"
-"PO-Revision-Date: 2009-08-25 13:43-0400\n"
+"POT-Creation-Date: 2009-11-03 00:32-0500\n"
+"PO-Revision-Date: 2009-11-09 04:04-0400\n"
 "Last-Translator: Carlo Falciola <cfalciola@yahoo.it>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: it\n"
@@ -21,60 +21,60 @@ msgstr ""
 msgid "Read ETexts"
 msgstr "Lettore Testi"
 
-#: ReadEtextsActivity.py:188
+#: ReadEtextsActivity.py:201
 msgid "Edit"
 msgstr "Modifica"
 
-#: ReadEtextsActivity.py:193
+#: ReadEtextsActivity.py:206
 msgid "Read"
 msgstr "Leggi"
 
-#: ReadEtextsActivity.py:199
+#: ReadEtextsActivity.py:212
 msgid "Books"
 msgstr "Libri"
 
-#: ReadEtextsActivity.py:204
+#: ReadEtextsActivity.py:217
 msgid "View"
 msgstr "Vista"
 
-#: ReadEtextsActivity.py:212
+#: ReadEtextsActivity.py:225
 msgid "Speech"
 msgstr "Parla"
 
-#: ReadEtextsActivity.py:845 ReadEtextsActivity.py:895
-#: ReadEtextsActivity.py:947
+#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
+#: ReadEtextsActivity.py:1046
 msgid "Error"
 msgstr "Errore"
 
-#: ReadEtextsActivity.py:845
+#: ReadEtextsActivity.py:944
 msgid "You must enter at least one search word."
 msgstr "Devi inserire almeno una parola da ricercare"
 
-#: ReadEtextsActivity.py:895
+#: ReadEtextsActivity.py:994
 msgid "Connection timed out for "
 msgstr "Connessione non disponibile (time out) per "
 
-#: ReadEtextsActivity.py:947
+#: ReadEtextsActivity.py:1046
 msgid "Could not download "
 msgstr "Non posso scaricare "
 
-#: ReadEtextsActivity.py:947
+#: ReadEtextsActivity.py:1046
 msgid " path in catalog may be incorrect."
 msgstr " il percorso nel catalogo potrebbe essere sbagliato."
 
-#: ReadEtextsActivity.py:980
+#: ReadEtextsActivity.py:1079
 msgid "Success"
 msgstr "Successo"
 
-#: ReadEtextsActivity.py:980
+#: ReadEtextsActivity.py:1079
 msgid " added to Journal."
 msgstr " aggiunto nel Diario."
 
-#: ReadEtextsActivity.py:1096
+#: ReadEtextsActivity.py:1197
 msgid "Failure"
 msgstr "Fallito"
 
-#: ReadEtextsActivity.py:1096
+#: ReadEtextsActivity.py:1197
 msgid "Error getting document from tube"
 msgstr "Errore nel reperire il documento dalla rete"
 
@@ -106,43 +106,47 @@ msgstr "Prossimo segnalibro"
 msgid "Toggle Bookmark"
 msgstr "Mostra segnalibri"
 
-#: readtoolbar.py:195
+#: readtoolbar.py:124
+msgid "Underline"
+msgstr "Sottolinea"
+
+#: readtoolbar.py:218
 msgid "Zoom out"
 msgstr "Zoom indietro"
 
-#: readtoolbar.py:201
+#: readtoolbar.py:224
 msgid "Zoom in"
 msgstr "Zoom avanti"
 
-#: readtoolbar.py:212
+#: readtoolbar.py:235
 msgid "Fullscreen"
 msgstr "Schermo intero"
 
-#: readtoolbar.py:255
+#: readtoolbar.py:280
 msgid "Previous"
 msgstr "Precedente"
 
-#: readtoolbar.py:262
+#: readtoolbar.py:287
 msgid "Next"
 msgstr "Prossimo"
 
-#: readtoolbar.py:311
+#: readtoolbar.py:339
 msgid "Get Book"
 msgstr "Prendi il libro"
 
-#: readtoolbar.py:318
+#: readtoolbar.py:346
 msgid "Remove Results List"
 msgstr "Vuota la Lista di risultati"
 
-#: readtoolbar.py:378
+#: readtoolbar.py:406
 msgid "Play / Pause"
 msgstr "Esegui/Pausa"
 
-#: readtoolbar.py:428
+#: readtoolbar.py:456
 msgid "pitch adjusted"
 msgstr "Correggi intonazione"
 
-#: readtoolbar.py:432
+#: readtoolbar.py:460
 msgid "rate adjusted"
 msgstr "Correggi frequenza"
 

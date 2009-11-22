@@ -42,6 +42,7 @@ import cPickle as pickle
 import speech
 import xopower
 import rtfconvert
+import pgconvert
 
 PAGE_SIZE = 38
 TOOLBAR_READ = 2
@@ -244,9 +245,16 @@ class ReadEtextsActivity(activity.Activity):
         self.annotation_textview.set_right_margin(50)
         self.annotation_textview.set_wrap_mode(gtk.WRAP_WORD)
 
+        if os.path.exists(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt')):
+            f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'r')
+            line = f.readline()
+            fontsize = int(line.strip())
+            self.font_desc = pango.FontDescription("sans %d" % style.zoom(fontsize))
+            f.close()
+        else:
+            self.font_desc = pango.FontDescription("sans %d" % style.zoom(10))
         buffer = self.textview.get_buffer()
         self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
-        self.font_desc = pango.FontDescription("sans %d" % style.zoom(10))
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
         self.scrolled.add(self.textview)
@@ -595,6 +603,11 @@ class ReadEtextsActivity(activity.Activity):
         self.font_desc.set_size(font_size * 1024)
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
+        f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'w')
+        try:
+            f.write(str(font_size))
+        finally:
+            f.close
 
     def font_increase(self):
         font_size = self.font_desc.get_size() / 1024
@@ -602,6 +615,11 @@ class ReadEtextsActivity(activity.Activity):
         self.font_desc.set_size(font_size * 1024)
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
+        f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'w')
+        try:
+            f.write(str(font_size))
+        finally:
+            f.close
 
     def scroll_down(self):
         v_adjustment = self.scrolled.get_vadjustment()
@@ -805,7 +823,14 @@ class ReadEtextsActivity(activity.Activity):
             os.remove(current_file_name)
             current_file_name = converted_file_name
             self.tempfile = converted_file_name
-            
+        else:
+            converted_file_name = os.path.join(self.get_activity_root(), 'instance',
+                    'convert%i' % time.time()) 
+            pgconvert.convert(current_file_name,  converted_file_name)
+            os.remove(current_file_name)
+            current_file_name = converted_file_name
+            self.tempfile = converted_file_name
+
         self.etext_file = open(current_file_name,"r")
         
         self.page_index = [ 0 ]

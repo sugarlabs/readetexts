@@ -823,7 +823,7 @@ class ReadEtextsActivity(activity.Activity):
             os.remove(current_file_name)
             current_file_name = converted_file_name
             self.tempfile = converted_file_name
-        else:
+        elif pgconvert.check(current_file_name):
             converted_file_name = os.path.join(self.get_activity_root(), 'instance',
                     'convert%i' % time.time()) 
             pgconvert.convert(current_file_name,  converted_file_name)

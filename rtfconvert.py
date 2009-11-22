@@ -36,6 +36,7 @@ def convert(file_path,  output_path):
 
     rtf_file = open(file_path,"r")
     out = open(output_path, 'w')
+    out.write('\t\t\t\t\r\n')
     brace_count = 0
 
     while rtf_file:

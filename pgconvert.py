@@ -22,10 +22,26 @@ import sys
 # This is a script to take the a file in PG format and convert it to a text file readable by Read Etexts that does
 # not have newlines at the end of each line.
 
+# My first attempt to make a pg converter that would remove unneeded  line endings from PG files
+# while leaving an already converted file alone didn't work, so plan B is to mark a converted 
+# file invisibly by giving it a first line containing four tabs in a row, followed by CR/LF.  If the 
+# file has this first line it is already converted, so return False.
+def check(file_path):
+
+    rtf_file = open(file_path,"r")
+    line = rtf_file.readline()
+    rtf_file.close()
+    
+    if line == '\t\t\t\t\r\n':
+        return False
+    else:
+        return True
+
 def convert(file_path,  output_path):
 
     pg_file = open(file_path,"r")
     out = open(output_path, 'w')
+    out.write('\t\t\t\t\r\n')
     previous_line_length = 0
 
     while pg_file:
@@ -33,20 +49,15 @@ def convert(file_path,  output_path):
         outline = ''
         if not line:
             break
-        # print line
         if len(line) == 2 and not previous_line_length  == 2:
             # Blank line separates paragraphs
             outline = line + '\r\n'
-            # print 'first blank line'''
         elif len(line) == 2 and previous_line_length == 2:
             outline = line
-            # print 'multiple blank lines'
         elif line[0] == ' ' or (line[0] >= '0' and line[0] <= '9'):
             outline = '\r\n' + line[0:len(line)-2] 
-            # print 'non-wrapped line;'
         else:
             outline = line[0:len(line)-2] + ' '
-            # print 'wrapped line'
         out.write(outline)
         previous_line_length = len(line)
     pg_file.close()
@@ -56,7 +67,11 @@ def convert(file_path,  output_path):
 if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "")
-        convert(args[0],  args[1])
+        if check(args[0]):
+            print 'It has NOT been converted yet.'
+            convert(args[0],  args[1])
+        else:
+            print 'It is ALREADY converted.'
     except getopt.error, msg:
         print msg
         print "This program has no options"

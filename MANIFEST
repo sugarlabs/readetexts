@@ -5,6 +5,7 @@ ReadEtextsActivity.py
 readtoolbar.py
 readsidebar.py
 rtfconvert.py
+pgconvert.py
 xopower.py
 setup.py
 gutextract.py
@@ -235,3 +236,9 @@ locale/he/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 locale/sq/activity.linfo
 locale/sq/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 po/sq.po
+locale/tzo/activity.linfo
+locale/tzo/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
+locale/kos/activity.linfo
+locale/kos/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
+po/tzo.po
+po/kos.po

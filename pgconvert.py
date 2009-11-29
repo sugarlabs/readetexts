@@ -19,7 +19,11 @@
 import getopt
 import sys
 
-# This is a script to take the a file in PG format and convert it to a text file readable by Read Etexts that does
+LINE_LENGTH = 80
+MAX_PARAGRAPH_LINES = 25
+MAX_LENGTH = (LINE_LENGTH * MAX_PARAGRAPH_LINES)
+
+# This is a script to take the a file in PG format and convert it to a text file readable by Read Etexts that do
 # not have newlines at the end of each line.
 
 # My first attempt to make a pg converter that would remove unneeded  line endings from PG files
@@ -43,6 +47,7 @@ def convert(file_path,  output_path):
     out = open(output_path, 'w')
     out.write('\t\t\t\t\r\n')
     previous_line_length = 0
+    paragraph_length = 0
 
     while pg_file:
         line = pg_file.readline()
@@ -52,24 +57,35 @@ def convert(file_path,  output_path):
         if len(line) == 2 and not previous_line_length  == 2:
             # Blank line separates paragraphs
             outline = line + '\r\n'
+            paragraph_length = 0
         elif len(line) == 2 and previous_line_length == 2:
             outline = line
+            paragraph_length = 0
         elif line[0] == ' ' or (line[0] >= '0' and line[0] <= '9'):
             outline = '\r\n' + line[0:len(line)-2] 
+            paragraph_length = 0
         else:
             outline = line[0:len(line)-2] + ' '
+            paragraph_length = paragraph_length + len(outline)
         out.write(outline)
         previous_line_length = len(line)
+        if paragraph_length > MAX_LENGTH:
+            break
     pg_file.close()
     out.close()
     print "All done!"
+    if paragraph_length > MAX_LENGTH:
+        return False
+    else:
+        return True
 
 if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "")
         if check(args[0]):
             print 'It has NOT been converted yet.'
-            convert(args[0],  args[1])
+            success = convert(args[0],  args[1])
+            print 'Success', success
         else:
             print 'It is ALREADY converted.'
     except getopt.error, msg:

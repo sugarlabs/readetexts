@@ -15,6 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import os
 import logging
 from gettext import gettext as _
 import re
@@ -415,7 +416,6 @@ class   SpeechToolbar(gtk.Toolbar):
         combotool.show()
 
         self.pitchadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
-        self.pitchadj.connect("value_changed", self.pitch_adjusted_cb)
         pitchbar = gtk.HScale(self.pitchadj)
         pitchbar.set_draw_value(False)
         pitchbar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
@@ -427,7 +427,6 @@ class   SpeechToolbar(gtk.Toolbar):
         pitchbar.show()
 
         self.rateadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
-        self.rateadj.connect("value_changed", self.rate_adjusted_cb)
         ratebar = gtk.HScale(self.rateadj)
         ratebar.set_draw_value(False)
         ratebar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
@@ -454,13 +453,39 @@ class   SpeechToolbar(gtk.Toolbar):
     def pitch_adjusted_cb(self, get):
         speech.pitch = int(get.value)
         speech.say(_("pitch adjusted"))
+        f = open(os.path.join(self.activity.get_activity_root(), 'instance',  'pitch.txt'),  'w')
+        try:
+            f.write(str(speech.pitch))
+        finally:
+            f.close
 
     def rate_adjusted_cb(self, get):
         speech.rate = int(get.value)
         speech.say(_("rate adjusted"))
+        f = open(os.path.join(self.activity.get_activity_root(), 'instance',  'rate.txt'),  'w')
+        try:
+            f.write(str(speech.rate))
+        finally:
+            f.close
       
     def set_activity(self, activity):
         self.activity = activity
+        if os.path.exists(os.path.join(activity.get_activity_root(), 'instance',  'pitch.txt')):
+            f = open(os.path.join(activity.get_activity_root(), 'instance',  'pitch.txt'),  'r')
+            line = f.readline()
+            pitch = int(line.strip())
+            self.pitchadj.set_value(pitch)
+            speech.pitch = pitch
+            f.close()
+        if os.path.exists(os.path.join(activity.get_activity_root(), 'instance',  'rate.txt')):
+            f = open(os.path.join(activity.get_activity_root(), 'instance',  'rate.txt'),  'r')
+            line = f.readline()
+            rate = int(line.strip())
+            self.rateadj.set_value(rate)
+            speech.rate = rate
+            f.close()
+        self.pitchadj.connect("value_changed", self.pitch_adjusted_cb)
+        self.rateadj.connect("value_changed", self.rate_adjusted_cb)
     
     def play_cb(self, widget, images):
         widget.set_icon_widget(images[int(widget.get_active())])

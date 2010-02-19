@@ -2,71 +2,156 @@
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # James Simmons <ja.simmons@sbcglobal.net>, 2009.
-#
+# Khaled Hosny <khaledhosny@eglug.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 18:25-0600\n"
-"PO-Revision-Date: 2009-02-19 18:28-0600\n"
-"Last-Translator: James Simmons <ja.simmons@sbcglobal.net>\n"
-"Language-Team: Arabic\n"
+"POT-Creation-Date: 2009-11-03 00:32-0500\n"
+"PO-Revision-Date: 2010-02-19 18:36+0300\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"Language-Team: Arabic <doc@arabeyes.org>\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Virtaal 0.5.2\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr ""
+msgstr "اقرأ النصوص"
 
-#: ReadEtextsActivity.py:147
+#: ReadEtextsActivity.py:201
 msgid "Edit"
-msgstr ""
+msgstr "حرر"
 
-#: ReadEtextsActivity.py:152
+#: ReadEtextsActivity.py:206
 msgid "Read"
-msgstr ""
+msgstr "اقرأ"
 
-#: ReadEtextsActivity.py:157
+#: ReadEtextsActivity.py:212
+msgid "Books"
+msgstr "كتب"
+
+#: ReadEtextsActivity.py:217
 msgid "View"
-msgstr "اعرض"
+msgstr "عرض"
 
-#: ReadEtextsActivity.py:163
+#: ReadEtextsActivity.py:225
 msgid "Speech"
-msgstr ""
+msgstr "نطق"
 
-#: ReadEtextsActivity.py:228
-msgid "Choose document"
-msgstr ""
+#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
+#: ReadEtextsActivity.py:1046
+msgid "Error"
+msgstr "خطأ"
 
-#: readtoolbar.py:43
+#: ReadEtextsActivity.py:944
+msgid "You must enter at least one search word."
+msgstr "عليك أن تدخل كلمة للبحث."
+
+#: ReadEtextsActivity.py:994
+msgid "Connection timed out for "
+msgstr "انتهت مهلة الاتصال"
+
+#: ReadEtextsActivity.py:1046
+msgid "Could not download "
+msgstr "تعذّر التنزيل"
+
+#: ReadEtextsActivity.py:1046
+msgid " path in catalog may be incorrect."
+msgstr " المسار في الفهرس قد يكون غير صحيح."
+
+#: ReadEtextsActivity.py:1079
+msgid "Success"
+msgstr "نجاح"
+
+#: ReadEtextsActivity.py:1079
+msgid " added to Journal."
+msgstr " أضيف إلى الدفتر"
+
+#: ReadEtextsActivity.py:1197
+msgid "Failure"
+msgstr "فشل"
+
+#: ReadEtextsActivity.py:1197
+msgid "Error getting document from tube"
+msgstr "فشل الحصول على الملف من القناة"
+
+#: readtoolbar.py:42
 msgid "Back"
-msgstr "للخلف"
+msgstr "إلى الخلف"
 
-#: readtoolbar.py:50
+#: readtoolbar.py:45
+msgid "Previous page"
+msgstr "الصفحة السابقة"
+
+#: readtoolbar.py:48
+msgid "Previous bookmark"
+msgstr "العلامة السابقة"
+
+#: readtoolbar.py:58
 msgid "Forward"
-msgstr "للأمام"
+msgstr "إلى الأمام"
 
-#: readtoolbar.py:159
+#: readtoolbar.py:61
+msgid "Next page"
+msgstr "الصفحة التالية"
+
+#: readtoolbar.py:64
+msgid "Next bookmark"
+msgstr "العلامة التالية"
+
+#: readtoolbar.py:113
+msgid "Toggle Bookmark"
+msgstr "بدّل العلامة"
+
+#: readtoolbar.py:124
+msgid "Underline"
+msgstr "تسطير"
+
+#: readtoolbar.py:218
 msgid "Zoom out"
-msgstr ""
+msgstr "بعّد"
 
-#: readtoolbar.py:165
+#: readtoolbar.py:224
 msgid "Zoom in"
-msgstr ""
+msgstr "قرّب"
 
-#: readtoolbar.py:205
-msgid "السابق"
-msgstr ""
+#: readtoolbar.py:235
+msgid "Fullscreen"
+msgstr "ملء الشاشة"
 
-#: readtoolbar.py:212
+#: readtoolbar.py:280
+msgid "Previous"
+msgstr "السابق"
+
+#: readtoolbar.py:287
 msgid "Next"
 msgstr "التالي"
 
-#: readtoolbar.py:312
-msgid "pitch adjusted"
-msgstr ""
+#: readtoolbar.py:339
+msgid "Get Book"
+msgstr "احصل على الكتاب"
 
-#: readtoolbar.py:316
+#: readtoolbar.py:346
+msgid "Remove Results List"
+msgstr "احذف النتائج من القائمة"
+
+#: readtoolbar.py:406
+msgid "Play / Pause"
+msgstr "شغّل / ألبِث"
+
+#: readtoolbar.py:456
+msgid "pitch adjusted"
+msgstr "صححت الشدة"
+
+#: readtoolbar.py:460
 msgid "rate adjusted"
-msgstr ""
+msgstr "صححت السرعة"
+
+#: readsidebar.py:47
+msgid "Bookmark"
+msgstr "علّم"

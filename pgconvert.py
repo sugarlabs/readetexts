@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-# Copyright (C) 2009 James D. Simmons
+# Copyright (C) 2010 James D. Simmons
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,34 +20,20 @@ import getopt
 import sys
 
 LINE_LENGTH = 80
+MAX_LINE_LENGTH = 100
 MAX_PARAGRAPH_LINES = 25
 MAX_LENGTH = (LINE_LENGTH * MAX_PARAGRAPH_LINES)
 
 # This is a script to take the a file in PG format and convert it to a text file readable by Read Etexts that do
 # not have newlines at the end of each line.
 
-# My first attempt to make a pg converter that would remove unneeded  line endings from PG files
-# while leaving an already converted file alone didn't work, so plan B is to mark a converted 
-# file invisibly by giving it a first line containing four tabs in a row, followed by CR/LF.  If the 
-# file has this first line it is already converted, so return False.
-def check(file_path):
-
-    rtf_file = open(file_path,"r")
-    line = rtf_file.readline()
-    rtf_file.close()
-    
-    if line == '\t\t\t\t\r\n':
-        return False
-    else:
-        return True
-
 def convert(file_path,  output_path):
 
     pg_file = open(file_path,"r")
     out = open(output_path, 'w')
-    out.write('\t\t\t\t\r\n')
     previous_line_length = 0
     paragraph_length = 0
+    conversion_rejected = False
 
     while pg_file:
         line = pg_file.readline()
@@ -69,12 +55,13 @@ def convert(file_path,  output_path):
             paragraph_length = paragraph_length + len(outline)
         out.write(outline)
         previous_line_length = len(line)
-        if paragraph_length > MAX_LENGTH:
+        if len(line) > MAX_LINE_LENGTH or paragraph_length > MAX_LENGTH:
+            conversion_rejected = True
             break
     pg_file.close()
     out.close()
     print "All done!"
-    if paragraph_length > MAX_LENGTH:
+    if conversion_rejected:
         return False
     else:
         return True

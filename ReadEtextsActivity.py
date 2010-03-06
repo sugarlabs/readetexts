@@ -440,6 +440,7 @@ class ReadEtextsActivity(activity.Activity):
         self.fullscreen()
 
     def hide_table_keypress_cb(self, widget, event):
+        keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Escape':
             self.list_scroller.hide()
             return True
@@ -487,7 +488,7 @@ class ReadEtextsActivity(activity.Activity):
         return False
         
     def bookmarker_clicked(self,  button):
-        if button.get_active() == True:
+        if button.get_active():
             self.annotations.add_bookmark(self.page)
         else:
             self.annotations.remove_bookmark(self.page)
@@ -495,7 +496,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def show_bookmark_state(self):
         bookmark = self.annotations.is_bookmarked(self.page)
-        if bookmark == True:
+        if bookmark:
             self.sidebar.show_bookmark_icon(True)
             self.read_toolbar.update_bookmark_button(True)
         else:
@@ -508,7 +509,7 @@ class ReadEtextsActivity(activity.Activity):
         begin, end = buffer.get_selection_bounds()
         underline_tuple = [begin.get_offset(),  end.get_offset()]
 
-        if button.get_active() == True:
+        if button.get_active():
             tuples_list.append(underline_tuple)
             self.annotations.set_highlights(self.page,  tuples_list)
         else:
@@ -607,7 +608,7 @@ class ReadEtextsActivity(activity.Activity):
         try:
             f.write(str(font_size))
         finally:
-            f.close
+            f.close()
 
     def font_increase(self):
         font_size = self.font_desc.get_size() / 1024
@@ -619,8 +620,8 @@ class ReadEtextsActivity(activity.Activity):
         try:
             f.write(str(font_size))
         finally:
-            f.close
-
+            f.close()
+            
     def scroll_down(self):
         v_adjustment = self.scrolled.get_vadjustment()
         if v_adjustment.value == v_adjustment.upper - v_adjustment.page_size:
@@ -740,7 +741,7 @@ class ReadEtextsActivity(activity.Activity):
         try:
             f.write(filebytes)
         finally:
-            f.close
+            f.close()
 
     def extract_pickle_file(self):
         "Extract the pickle file to an instance directory for viewing"
@@ -751,7 +752,7 @@ class ReadEtextsActivity(activity.Activity):
             try:
                 f.write(filebytes)
             finally:
-                f.close
+                f.close()
             return True
         except KeyError:
             return False
@@ -827,7 +828,7 @@ class ReadEtextsActivity(activity.Activity):
             converted_file_name = os.path.join(self.get_activity_root(), 'instance',
                     'convert%i' % time.time()) 
             success = pgconvert.convert(current_file_name,  converted_file_name)
-            if success == True:
+            if success:
                 os.remove(current_file_name)
                 current_file_name = converted_file_name
                 self.tempfile = converted_file_name
@@ -852,7 +853,7 @@ class ReadEtextsActivity(activity.Activity):
                 pagecount = pagecount + 1
 
         self.annotations.restore()
-        if self.is_received_document == True:
+        if self.is_received_document:
             self.metadata['title'] = self.annotations.get_title()
             self.metadata['title_set_by_user'] = '1'
             print self.annotations.get_title()
@@ -908,7 +909,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def write_file(self, filename):
         "Save meta data for the file."
-        if self.is_received_document == True:
+        if self.is_received_document:
             # This document was given to us by someone, so we have
             # to save it to the Journal.
             self.etext_file.seek(0)
@@ -918,7 +919,7 @@ class ReadEtextsActivity(activity.Activity):
             try:
                 f.write(filebytes)
             finally:
-                f.close
+                f.close()
         elif self.tempfile:
             if self.close_requested:
                 textbuffer = self.annotation_textview.get_buffer()

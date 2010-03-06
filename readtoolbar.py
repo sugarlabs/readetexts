@@ -457,7 +457,7 @@ class   SpeechToolbar(gtk.Toolbar):
         try:
             f.write(str(speech.pitch))
         finally:
-            f.close
+            f.close()
 
     def rate_adjusted_cb(self, get):
         speech.rate = int(get.value)
@@ -466,7 +466,7 @@ class   SpeechToolbar(gtk.Toolbar):
         try:
             f.write(str(speech.rate))
         finally:
-            f.close
+            f.close()
       
     def set_activity(self, activity):
         self.activity = activity

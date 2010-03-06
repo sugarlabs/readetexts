@@ -67,7 +67,7 @@ def reset_sleep_timer():
         gobject.source_remove(_idle_timer)
     _idle_timer = gobject.timeout_add(5000, _suspend)
 
-def _suspend():
+def suspend():
     # If the machine has been idle for 5 seconds, suspend
     global _idle_timer
     global _service

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-# Copyright (C) 2008, 2009 James D. Simmons
+# Copyright (C) 2008, 2009, 2010 James D. Simmons
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import os
+import re
 import logging
 import tempfile
 import time
@@ -30,7 +31,21 @@ from sugar.activity import activity
 from sugar import network
 from sugar.datastore import datastore
 from sugar.graphics.alert import NotifyAlert
-from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
+
+_NEW_TOOLBAR_SUPPORT = True
+try:
+    from sugar.graphics.toolbarbox import ToolbarBox
+    from sugar.graphics.toolbarbox import ToolbarButton
+    from sugar.activity.widgets import StopButton
+    from readtoolbar import ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
+    from sugar.graphics.toolbutton import ToolButton
+    from sugar.graphics.menuitem import MenuItem
+    from sugar.graphics.toggletoolbutton import ToggleToolButton
+    from mybutton import MyActivityToolbarButton
+except:
+    _NEW_TOOLBAR_SUPPORT = False
+    from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
+
 from readsidebar import Sidebar
 from gettext import gettext as _
 import pango
@@ -186,48 +201,11 @@ class ReadEtextsActivity(activity.Activity):
         self.object_id = handle.object_id
         self.extra_journal_entry = None
        
-        toolbox = activity.ActivityToolbox(self)
-        activity_toolbar = toolbox.get_activity_toolbar()
-        activity_toolbar.remove(activity_toolbar.keep)
-        activity_toolbar.keep = None
-        self.set_toolbox(toolbox)
-        
-        self.edit_toolbar = EditToolbar()
-        self.edit_toolbar.undo.props.visible = False
-        self.edit_toolbar.redo.props.visible = False
-        self.edit_toolbar.separator.props.visible = False
-        self.edit_toolbar.copy.set_sensitive(False)
-        self.edit_toolbar.copy.connect('clicked', self.edit_toolbar_copy_cb)
-        self.edit_toolbar.paste.props.visible = False
-        toolbox.add_toolbar(_('Edit'), self.edit_toolbar)
-        self.edit_toolbar.set_activity(self)
-        self.edit_toolbar.show()
-        
-        self.read_toolbar = ReadToolbar()
-        toolbox.add_toolbar(_('Read'), self.read_toolbar)
-        self.read_toolbar.set_activity(self)
-        self.read_toolbar.show()
+        if _NEW_TOOLBAR_SUPPORT:
+            self.create_new_toolbar()
+        else:
+            self.create_old_toolbar()
 
-        if not self._shared_activity and self.object_id is None:
-            self.books_toolbar = BooksToolbar()
-            toolbox.add_toolbar(_('Books'), self.books_toolbar)
-            self.books_toolbar.set_activity(self)
-            self.books_toolbar.show()
-
-        self.view_toolbar = ViewToolbar()
-        toolbox.add_toolbar(_('View'), self.view_toolbar)
-        self.view_toolbar.connect('go-fullscreen',
-                self.view_toolbar_go_fullscreen_cb)
-        self.view_toolbar.set_activity(self)
-        self.view_toolbar.show()
-
-        if speech.supported:
-            self.speech_toolbar = SpeechToolbar()
-            toolbox.add_toolbar(_('Speech'), self.speech_toolbar)
-            self.speech_toolbar.set_activity(self)
-            self.speech_toolbar.show()
-
-        toolbox.show()
         self.scrolled = gtk.ScrolledWindow()
         self.scrolled.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         self.scrolled.props.shadow_type = gtk.SHADOW_NONE
@@ -331,8 +309,6 @@ class ReadEtextsActivity(activity.Activity):
             self.connect("focus-out-event", self.focus_out_event_cb)
             self.connect("notify::active", self.now_active_cb)
     
-        # start on the read toolbar
-        self.toolbox.set_current_toolbar(TOOLBAR_READ)
         self.unused_download_tubes = set()
         self.want_document = True
         self.download_content_length = 0
@@ -356,7 +332,6 @@ class ReadEtextsActivity(activity.Activity):
                 self.connect("joined", self.joined_cb)
         elif self.object_id is None:
             # Not joining, not resuming
-            self.toolbox.set_current_toolbar(TOOLBAR_BOOKS)
             f = open("help.txt","r")
             line = ''
             label_text = ''
@@ -373,7 +348,262 @@ class ReadEtextsActivity(activity.Activity):
 
         speech.highlight_cb = self.highlight_next_word
         speech.reset_cb = self.reset_play_button
+
+    def create_old_toolbar(self):
+        toolbox = activity.ActivityToolbox(self)
+        activity_toolbar = toolbox.get_activity_toolbar()
+        activity_toolbar.remove(activity_toolbar.keep)
+        activity_toolbar.keep = None
+        self.set_toolbox(toolbox)
+
+        self.edit_toolbar = EditToolbar()
+        self.edit_toolbar.undo.props.visible = False
+        self.edit_toolbar.redo.props.visible = False
+        self.edit_toolbar.separator.props.visible = False
+        self.edit_toolbar.copy.set_sensitive(False)
+        self.edit_toolbar.copy.connect('clicked', self.edit_toolbar_copy_cb)
+        self.edit_toolbar.paste.props.visible = False
+        toolbox.add_toolbar(_('Edit'), self.edit_toolbar)
+        self.edit_toolbar.set_activity(self)
+        self.edit_toolbar.show()
+
+        self.read_toolbar = ReadToolbar()
+        toolbox.add_toolbar(_('Read'), self.read_toolbar)
+        self.read_toolbar.set_activity(self)
+        self.read_toolbar.show()
+
+        if not self._shared_activity and self.object_id is None:
+            self.books_toolbar = BooksToolbar()
+            toolbox.add_toolbar(_('Books'), self.books_toolbar)
+            self.books_toolbar.set_activity(self)
+            self.books_toolbar.show()
+
+        self.view_toolbar = ViewToolbar()
+        toolbox.add_toolbar(_('View'), self.view_toolbar)
+        self.view_toolbar.connect('go-fullscreen',
+                self.view_toolbar_go_fullscreen_cb)
+        self.view_toolbar.set_activity(self)
+        self.view_toolbar.show()
+
+        if speech.supported:
+            self.speech_toolbar = SpeechToolbar()
+            toolbox.add_toolbar(_('Speech'), self.speech_toolbar)
+            self.speech_toolbar.set_activity(self)
+            self.speech_toolbar.show()
+
+        toolbox.show()
+        # start on the read toolbar
+        if self.object_id is None:
+            # Not joining, not resuming
+            self.toolbox.set_current_toolbar(TOOLBAR_BOOKS)
+        else:
+            self.toolbox.set_current_toolbar(TOOLBAR_READ)
  
+    def create_new_toolbar(self):
+        toolbar_box = ToolbarBox()
+
+        activity_button = MyActivityToolbarButton(self)
+        toolbar_box.toolbar.insert(activity_button, 0)
+        activity_button.show()
+
+        self.edit_toolbar = activity.EditToolbar()
+        self.edit_toolbar.undo.props.visible = False
+        self.edit_toolbar.redo.props.visible = False
+        self.edit_toolbar.separator.props.visible = False
+        self.edit_toolbar.copy.set_sensitive(False)
+        self.edit_toolbar.copy.connect('clicked', self.edit_toolbar_copy_cb)
+        self.edit_toolbar.paste.props.visible = False
+
+        edit_toolbar_button = ToolbarButton(
+            page=self.edit_toolbar,
+            icon_name='toolbar-edit')
+        self.edit_toolbar.show()
+        toolbar_box.toolbar.insert(edit_toolbar_button, -1)
+        edit_toolbar_button.show()
+
+        if not self._shared_activity and self.object_id is None:
+            self.books_toolbar = BooksToolbar()
+            self.books_toolbar.set_activity(self)
+            self.books_toolbar.show()
+            books_toolbar_button = ToolbarButton(page=self.books_toolbar, icon_name='books')
+            toolbar_box.toolbar.insert(books_toolbar_button, -1)
+            books_toolbar_button.show()
+
+        self.view_toolbar = ViewToolbar()
+        self.view_toolbar.connect('go-fullscreen', \
+            self.view_toolbar_go_fullscreen_cb)
+        self.view_toolbar.set_activity(self)
+        self.view_toolbar.show()
+        view_toolbar_button = ToolbarButton(
+            page=self.view_toolbar,
+            icon_name='toolbar-view')
+        toolbar_box.toolbar.insert(view_toolbar_button, -1)
+        view_toolbar_button.show()
+
+        self.back = ToolButton('go-previous')
+        self.back.set_tooltip(_('Back'))
+        self.back.props.sensitive = False
+        palette = self.back.get_palette()
+        self.prev_page = MenuItem(text_label= _("Previous page"))
+        palette.menu.append(self.prev_page) 
+        self.prev_page.show_all()        
+        self.prev_bookmark = MenuItem(text_label= _("Previous bookmark"))
+        palette.menu.append(self.prev_bookmark) 
+        self.prev_bookmark.show_all()
+        self.back.connect('clicked', self.go_back_cb)
+        self.prev_page.connect('activate', self.go_back_cb)
+        self.prev_bookmark.connect('activate', self.prev_bookmark_activate_cb)
+        toolbar_box.toolbar.insert(self.back, -1)
+        self.back.show()
+
+        self.forward = ToolButton('go-next')
+        self.forward.set_tooltip(_('Forward'))
+        self.forward.props.sensitive = False
+        palette = self.forward.get_palette()
+        self.next_page = MenuItem(text_label= _("Next page"))
+        palette.menu.append(self.next_page) 
+        self.next_page.show_all()        
+        self.next_bookmark = MenuItem(text_label= _("Next bookmark"))
+        palette.menu.append(self.next_bookmark) 
+        self.next_bookmark.show_all()
+        self.forward.connect('clicked', self.go_forward_cb)
+        self.next_page.connect('activate', self.go_forward_cb)
+        self.next_bookmark.connect('activate', self.next_bookmark_activate_cb)
+        toolbar_box.toolbar.insert(self.forward, -1)
+        self.forward.show()
+
+        num_page_item = gtk.ToolItem()
+        self.num_page_entry = gtk.Entry()
+        self.num_page_entry.set_text('0')
+        self.num_page_entry.set_alignment(1)
+        self.num_page_entry.connect('insert-text',
+                               self.__new_num_page_entry_insert_text_cb)
+        self.num_page_entry.connect('activate',
+                               self.__new_num_page_entry_activate_cb)
+        self.num_page_entry.set_width_chars(4)
+        num_page_item.add(self.num_page_entry)
+        self.num_page_entry.show()
+        toolbar_box.toolbar.insert(num_page_item, -1)
+        num_page_item.show()
+
+        total_page_item = gtk.ToolItem()
+        self.total_page_label = gtk.Label()
+
+        label_attributes = pango.AttrList()
+        label_attributes.insert(pango.AttrSize(14000, 0, -1))
+        label_attributes.insert(pango.AttrForeground(65535, 65535, 
+                                                     65535, 0, -1))
+        self.total_page_label.set_attributes(label_attributes)
+
+        self.total_page_label.set_text(' / 0')
+        total_page_item.add(self.total_page_label)
+        self.total_page_label.show()
+        toolbar_box.toolbar.insert(total_page_item, -1)
+        total_page_item.show()
+
+        spacer = gtk.SeparatorToolItem()
+        toolbar_box.toolbar.insert(spacer, -1)
+        spacer.show()
+  
+        bookmarkitem = gtk.ToolItem()
+        self.bookmarker = ToggleToolButton('emblem-favorite')
+        self.bookmarker.set_tooltip(_('Toggle Bookmark'))
+        self.bookmarker_handler_id = self.bookmarker.connect('clicked',
+                                      self.bookmarker_clicked_cb)
+  
+        bookmarkitem.add(self.bookmarker)
+
+        toolbar_box.toolbar.insert(bookmarkitem, -1)
+        bookmarkitem.show_all()
+
+        underline_item = gtk.ToolItem()
+        self.underline = ToggleToolButton('format-text-underline')
+        self.underline.set_tooltip(_('Underline'))
+        self.underline.props.sensitive = False
+        self.underline_id = self.underline.connect('clicked', self.underline_cb)
+        underline_item.add(self.underline)
+        toolbar_box.toolbar.insert(underline_item, -1)
+        underline_item.show_all()
+
+        separator = gtk.SeparatorToolItem()
+        separator.props.draw = False
+        separator.set_expand(True)
+        toolbar_box.toolbar.insert(separator, -1)
+        separator.show()
+
+        stop_button = StopButton(self)
+        stop_button.props.accelerator = '<Ctrl><Shift>Q'
+        toolbar_box.toolbar.insert(stop_button, -1)
+        stop_button.show()
+
+        self.set_toolbar_box(toolbar_box)
+        toolbar_box.show()
+
+    def __new_num_page_entry_insert_text_cb(self, entry, text, length, position):
+        if not re.match('[0-9]', text):
+            entry.emit_stop_by_name('insert-text')
+            return True
+        return False
+
+    def __new_num_page_entry_activate_cb(self, entry):
+        if entry.props.text:
+            page = int(entry.props.text) - 1
+        else:
+            page = 0
+
+        if page >= self.total_pages:
+            page = self.total_pages - 1
+        elif page < 0:
+            page = 0
+
+        self.current_page = page
+        self.set_current_page(page)
+        self.show_page(page)
+        entry.props.text = str(page + 1)
+        self.update_nav_buttons()
+
+    def go_back_cb(self, button):
+        self.page_previous()
+    
+    def go_forward_cb(self, button):
+        self.page_next()
+    
+    def update_nav_buttons(self):
+        current_page = self.current_page
+        self.back.props.sensitive = current_page > 0
+        self.forward.props.sensitive = \
+            current_page < self.total_pages - 1
+        
+        self.num_page_entry.props.text = str(current_page + 1)
+        self.total_page_label.props.label = \
+            ' / ' + str(self.total_pages)
+
+    def set_total_pages(self, pages):
+        self.total_pages = pages
+
+    def prev_bookmark_activate_cb(self, menuitem):
+        self.prev_bookmark()
+ 
+    def next_bookmark_activate_cb(self, menuitem):
+        self.next_bookmark()
+        
+    def bookmarker_clicked_cb(self, button):
+        self.bookmarker_clicked(button)
+
+    def underline_cb(self, button):
+        self.underline_clicked(button)
+
+    def setToggleButtonState(self,button,b,id):
+        button.handler_block(id)
+        button.set_active(b)
+        button.handler_unblock(id)
+        
+    def update_underline_button(self,  state):
+        self.setToggleButtonState(self.underline,  state,  self.underline_id)
+
+    def update_bookmark_button(self,  state):
+        self.setToggleButtonState(self.bookmarker,  state,  self.bookmarker_handler_id)
+
     def reset_current_word(self):
         self.current_word = 0
         
@@ -405,7 +635,10 @@ class ReadEtextsActivity(activity.Activity):
         return True
 
     def mark_set_cb(self, textbuffer, iter, textmark):
-        self.read_toolbar.update_underline_button(False) 
+        if _NEW_TOOLBAR_SUPPORT:
+            self.update_underline_button(False) 
+        else:
+            self.read_toolbar.update_underline_button(False) 
 
         if textbuffer.get_has_selection():
             begin, end = textbuffer.get_selection_bounds()
@@ -415,7 +648,10 @@ class ReadEtextsActivity(activity.Activity):
             while count < len(tuples_list) :
                 compare_tuple = tuples_list[count]
                 if underline_tuple[0] >= compare_tuple[0] and underline_tuple[1] <= compare_tuple[1]:
-                    self.read_toolbar.update_underline_button(True) 
+                    if _NEW_TOOLBAR_SUPPORT:
+                        self.update_underline_button(True) 
+                    else:
+                        self.read_toolbar.update_underline_button(True) 
                     textbuffer.handler_block(self.markset_id)
                     iterStart = textbuffer.get_iter_at_offset(compare_tuple[0])
                     iterEnd = textbuffer.get_iter_at_offset(compare_tuple[1])
@@ -425,10 +661,16 @@ class ReadEtextsActivity(activity.Activity):
                 count = count + 1
 
             self.edit_toolbar.copy.set_sensitive(True)
-            self.read_toolbar.underline.props.sensitive = True
+            if _NEW_TOOLBAR_SUPPORT:
+                self.underline.props.sensitive = True
+            else:
+                self.read_toolbar.underline.props.sensitive = True
         else:
             self.edit_toolbar.copy.set_sensitive(False)
-            self.read_toolbar.underline.props.sensitive = False
+            if _NEW_TOOLBAR_SUPPORT:
+                self.underline.props.sensitive = False
+            else:
+                self.read_toolbar.underline.props.sensitive = False
 
     def edit_toolbar_copy_cb(self, button):
         textbuffer = self.textview.get_buffer()
@@ -498,10 +740,16 @@ class ReadEtextsActivity(activity.Activity):
         bookmark = self.annotations.is_bookmarked(self.page)
         if bookmark:
             self.sidebar.show_bookmark_icon(True)
-            self.read_toolbar.update_bookmark_button(True)
+            if _NEW_TOOLBAR_SUPPORT:
+                self.update_bookmark_button(True)
+            else:
+                self.read_toolbar.update_bookmark_button(True)
         else:
             self.sidebar.show_bookmark_icon(False)
-            self.read_toolbar.update_bookmark_button(False)
+            if _NEW_TOOLBAR_SUPPORT:
+                self.update_bookmark_button(False)
+            else:
+                self.read_toolbar.update_bookmark_button(False)
 
     def underline_clicked(self,  button):
         tuples_list =  self.annotations.get_highlights(self.page)
@@ -551,14 +799,20 @@ class ReadEtextsActivity(activity.Activity):
             if bookmarks[count] < self.page:
                 self.page = bookmarks[count]
                 self.show_page(self.page)
-                self.read_toolbar.set_current_page(self.page)
+                if _NEW_TOOLBAR_SUPPORT:
+                    self.set_current_page(self.page)
+                else:
+                    self.read_toolbar.set_current_page(self.page)
                 return
             count = count - 1
         # if we're before the first bookmark wrap to the last.
         if len(bookmarks) > 0:
             self.page = bookmarks[len(bookmarks) - 1]
             self.show_page(self.page)
-            self.read_toolbar.set_current_page(self.page)
+            if _NEW_TOOLBAR_SUPPORT:
+                self.set_current_page(self.page)
+            else:
+                self.read_toolbar.set_current_page(self.page)
 
     def next_bookmark(self):
         bookmarks = self.annotations.get_bookmarks()
@@ -567,14 +821,20 @@ class ReadEtextsActivity(activity.Activity):
             if bookmarks[count] > self.page:
                 self.page = bookmarks[count]
                 self.show_page(self.page)
-                self.read_toolbar.set_current_page(self.page)
+                if _NEW_TOOLBAR_SUPPORT:
+                    self.set_current_page(self.page)
+                else:
+                    self.read_toolbar.set_current_page(self.page)
                 return
             count = count + 1
         # if we're after the last bookmark wrap to the first.
         if len(bookmarks) > 0:
             self.page = bookmarks[0]
             self.show_page(self.page)
-            self.read_toolbar.set_current_page(self.page)
+            if _NEW_TOOLBAR_SUPPORT:
+                self.set_current_page(self.page)
+            else:
+                self.read_toolbar.set_current_page(self.page)
 
     def page_next(self):
         textbuffer = self.annotation_textview.get_buffer()
@@ -584,7 +844,10 @@ class ReadEtextsActivity(activity.Activity):
         self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
         v_adjustment.value = v_adjustment.lower
-        self.read_toolbar.set_current_page(self.page)
+        if _NEW_TOOLBAR_SUPPORT:
+            self.set_current_page(self.page)
+        else:
+            self.read_toolbar.set_current_page(self.page)
 
     def page_previous(self):
         textbuffer = self.annotation_textview.get_buffer()
@@ -594,7 +857,10 @@ class ReadEtextsActivity(activity.Activity):
         self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
         v_adjustment.value = v_adjustment.upper - v_adjustment.page_size
-        self.read_toolbar.set_current_page(self.page)
+        if _NEW_TOOLBAR_SUPPORT:
+            self.set_current_page(self.page)
+        else:
+            self.read_toolbar.set_current_page(self.page)
 
     def font_decrease(self):
         font_size = self.font_desc.get_size() / 1024
@@ -645,6 +911,8 @@ class ReadEtextsActivity(activity.Activity):
             v_adjustment.value = new_value
 
     def set_current_page(self, page):
+        self.current_page = page
+        self.update_nav_buttons()
         self.page = page
 
     def show_page(self, page_number):
@@ -860,8 +1128,12 @@ class ReadEtextsActivity(activity.Activity):
             
         self.get_saved_page_number()
         self.show_page(self.page)
-        self.read_toolbar.set_total_pages(pagecount + 1)
-        self.read_toolbar.set_current_page(self.page)
+        if _NEW_TOOLBAR_SUPPORT:
+            self.set_total_pages(pagecount + 1)
+            self.set_current_page(self.page)
+        else:
+            self.read_toolbar.set_total_pages(pagecount + 1)
+            self.read_toolbar.set_current_page(self.page)
         self.edit_toolbar.enable_search(True)
         if filename.endswith(".zip"):
             os.remove(current_file_name)
@@ -1113,7 +1385,10 @@ class ReadEtextsActivity(activity.Activity):
             self.current_found_item = 0
         current_found_tuple = self.found_records[self.current_found_item]
         self.page = current_found_tuple[0]
-        self.read_toolbar.set_current_page(self.page)
+        if _NEW_TOOLBAR_SUPPORT:
+            self.set_current_page(self.page)
+        else:
+            self.read_toolbar.set_current_page(self.page)
         self.show_found_page(current_found_tuple)
 
     def find_next(self):
@@ -1122,7 +1397,10 @@ class ReadEtextsActivity(activity.Activity):
             self.current_found_item = len(self.found_records) - 1
         current_found_tuple = self.found_records[self.current_found_item]
         self.page = current_found_tuple[0]
-        self.read_toolbar.set_current_page(self.page)
+        if _NEW_TOOLBAR_SUPPORT:
+            self.set_current_page(self.page)
+        else:
+            self.read_toolbar.set_current_page(self.page)
         self.show_found_page(current_found_tuple)
     
     def can_find_previous(self):
@@ -1163,7 +1441,10 @@ class ReadEtextsActivity(activity.Activity):
         if self.current_found_item == 0:
             current_found_tuple = self.found_records[self.current_found_item]
             self.page = current_found_tuple[0]
-            self.read_toolbar.set_current_page(self.page)
+            if _NEW_TOOLBAR_SUPPORT:
+                self.set_current_page(self.page)
+            else:
+                self.read_toolbar.set_current_page(self.page)
             self.show_found_page(current_found_tuple)
 
     def allindices(self,  line, search, listindex=None,  offset=0):

@@ -2,7 +2,7 @@
 
 "Outside of a dog, a book is man's best friend.  Inside of a dog it's too dark to read." -- Groucho Marx
 
-The Books tab above will let you search through the offline catalog of Project Gutenberg, an Internet repository of free etexts featuring books in many languages.  The catalog used contains 28,595 titles from Project Gutenberg and Project Gutenberg Australia.  The catalog is current as of January 29, 2009.  For titles added after that date you should visit http://www.gutenberg.org.
+The Books button or tab above will let you search through the offline catalog of Project Gutenberg, an Internet repository of free etexts featuring books in many languages.  The catalog used contains 28,595 titles from Project Gutenberg and Project Gutenberg Australia.  The catalog is current as of January 29, 2009.  For titles added after that date you should visit http://www.gutenberg.org.
 
 To find a book, type one or more words that would be in the author's name or the title, then press Enter.  The list will only include books that match all the words, so use fewer words to make the list longer and more words to shorten the list.   If an author goes by his initials (like H.G. Wells, P.G. Wodehouse, or E.E. Smith) you may need to try both the initials and the complete first name to get every title available.  If you use a well known author's name like "Shakespeare" you will get titles both by and about him.
 

@@ -440,6 +440,14 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(view_toolbar_button, -1)
         view_toolbar_button.show()
 
+        if speech.supported:
+            self.speech_toolbar = SpeechToolbar()
+            self.speech_toolbar.set_activity(self)
+            self.speech_toolbar.show()
+            speech_toolbar_button = ToolbarButton(page=self.speech_toolbar,  icon_name='speech')
+            toolbar_box.toolbar.insert(speech_toolbar_button, -1)
+            speech_toolbar_button.show()
+
         self.back = ToolButton('go-previous')
         self.back.set_tooltip(_('Back'))
         self.back.props.sensitive = False

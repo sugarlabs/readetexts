@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-11 00:32-0400\n"
-"PO-Revision-Date: 2009-09-25 10:38-0400\n"
+"POT-Creation-Date: 2009-11-03 00:32-0500\n"
+"PO-Revision-Date: 2010-03-07 17:04+0200\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: vi\n"
@@ -15,66 +15,66 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 1.2.1\n"
+"X-Generator: Pootle 2.0.1\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
 msgstr "Đọc Sách Điện Tử"
 
-#: ReadEtextsActivity.py:188
+#: ReadEtextsActivity.py:201
 msgid "Edit"
 msgstr "Sửa"
 
-#: ReadEtextsActivity.py:193
+#: ReadEtextsActivity.py:206
 msgid "Read"
 msgstr "Đọc"
 
-#: ReadEtextsActivity.py:199
+#: ReadEtextsActivity.py:212
 msgid "Books"
 msgstr "Sách"
 
-#: ReadEtextsActivity.py:204
+#: ReadEtextsActivity.py:217
 msgid "View"
 msgstr "Xem"
 
-#: ReadEtextsActivity.py:212
+#: ReadEtextsActivity.py:225
 msgid "Speech"
 msgstr "Tiếng nói"
 
-#: ReadEtextsActivity.py:845 ReadEtextsActivity.py:895
-#: ReadEtextsActivity.py:947
+#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
+#: ReadEtextsActivity.py:1046
 msgid "Error"
 msgstr "Lỗi"
 
-#: ReadEtextsActivity.py:845
+#: ReadEtextsActivity.py:944
 msgid "You must enter at least one search word."
 msgstr "Bạn cần phải gõ ít nhất một từ cần tìm."
 
-#: ReadEtextsActivity.py:895
+#: ReadEtextsActivity.py:994
 msgid "Connection timed out for "
 msgstr "Kết nối đã quá giờ trong vòng "
 
-#: ReadEtextsActivity.py:947
+#: ReadEtextsActivity.py:1046
 msgid "Could not download "
 msgstr "Không thể tải về "
 
-#: ReadEtextsActivity.py:947
+#: ReadEtextsActivity.py:1046
 msgid " path in catalog may be incorrect."
 msgstr " đường dẫn trong phân loại có thể không đúng."
 
-#: ReadEtextsActivity.py:980
+#: ReadEtextsActivity.py:1079
 msgid "Success"
 msgstr "Thành công"
 
-#: ReadEtextsActivity.py:980
+#: ReadEtextsActivity.py:1079
 msgid " added to Journal."
 msgstr " được thêm vào Nhật ký."
 
-#: ReadEtextsActivity.py:1096
+#: ReadEtextsActivity.py:1197
 msgid "Failure"
 msgstr "Không thành công"
 
-#: ReadEtextsActivity.py:1096
+#: ReadEtextsActivity.py:1197
 msgid "Error getting document from tube"
 msgstr "Gặp lỗi khi lấy tài liệu từ ống"
 
@@ -106,43 +106,47 @@ msgstr "Liên kết lưu sau"
 msgid "Toggle Bookmark"
 msgstr "Bật/tắt liên kết lưu"
 
-#: readtoolbar.py:195
+#: readtoolbar.py:124
+msgid "Underline"
+msgstr "Gạch dưới"
+
+#: readtoolbar.py:218
 msgid "Zoom out"
 msgstr "Thu nhỏ"
 
-#: readtoolbar.py:201
+#: readtoolbar.py:224
 msgid "Zoom in"
 msgstr "Phóng to"
 
-#: readtoolbar.py:212
+#: readtoolbar.py:235
 msgid "Fullscreen"
 msgstr "Toàn màn hình"
 
-#: readtoolbar.py:255
+#: readtoolbar.py:280
 msgid "Previous"
 msgstr "Lùi"
 
-#: readtoolbar.py:262
+#: readtoolbar.py:287
 msgid "Next"
 msgstr "Tiếp"
 
-#: readtoolbar.py:311
+#: readtoolbar.py:339
 msgid "Get Book"
 msgstr "Lấy sách"
 
-#: readtoolbar.py:318
+#: readtoolbar.py:346
 msgid "Remove Results List"
 msgstr "Bỏ danh sách kết quả"
 
-#: readtoolbar.py:378
+#: readtoolbar.py:406
 msgid "Play / Pause"
 msgstr "Chạy / Tạm dừng"
 
-#: readtoolbar.py:428
+#: readtoolbar.py:456
 msgid "pitch adjusted"
 msgstr "cao độ đã chỉnh"
 
-#: readtoolbar.py:432
+#: readtoolbar.py:460
 msgid "rate adjusted"
 msgstr "tỷ lệ đã chỉnh"
 

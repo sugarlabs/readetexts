@@ -18,13 +18,11 @@
 import os
 import re
 import logging
-import tempfile
 import time
 import zipfile
 import pygtk
 pygtk.require('2.0')
 import gtk
-import string
 from sugar.graphics import style
 from sugar import profile
 from sugar.activity import activity

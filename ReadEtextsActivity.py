@@ -18,13 +18,11 @@
 import os
 import re
 import logging
-import tempfile
 import time
 import zipfile
 import pygtk
 pygtk.require('2.0')
 import gtk
-import string
 from sugar.graphics import style
 from sugar import profile
 from sugar.activity import activity
@@ -920,7 +918,10 @@ class ReadEtextsActivity(activity.Activity):
 
     def set_current_page(self, page):
         self.current_page = page
-        self.update_nav_buttons()
+        if _NEW_TOOLBAR_SUPPORT:
+            self.update_nav_buttons()
+        else:
+            self.read_toolbar.update_nav_buttons()
         self.page = page
 
     def show_page(self, page_number):

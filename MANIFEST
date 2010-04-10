@@ -10,7 +10,6 @@ xopower.py
 setup.py
 gutextract.py
 ausextract.py
-bookcatalog.txt
 help.txt
 NEWS
 activity/read-etexts.svg
@@ -243,11 +242,12 @@ locale/kos/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 po/tzo.po
 po/kos.po
 mybutton.py
-locale/fil/activity.linfo
-locale/fil/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
-locale/tvl/activity.linfo
-locale/tvl/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
-icons/books.svg
-icons/speech.svg
 po/tvl.po
 po/fil.po
+locale/tvl/activity.linfo
+locale/tvl/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
+locale/fil/activity.linfo
+locale/fil/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
+icons/books.svg
+icons/speech.svg
+bookcatalog.txt

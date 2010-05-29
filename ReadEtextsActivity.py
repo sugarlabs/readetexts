@@ -544,6 +544,9 @@ class ReadEtextsActivity(activity.Activity):
 
         self.set_toolbar_box(toolbar_box)
         toolbar_box.show()
+        if self.object_id is None:
+            # Not joining, not resuming
+            books_toolbar_button.set_expanded(True)
 
     def __new_num_page_entry_insert_text_cb(self, entry, text, length, position):
         if not re.match('[0-9]', text):

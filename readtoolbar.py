@@ -495,4 +495,4 @@ class   SpeechToolbar(gtk.Toolbar):
                 speech.play(self.activity.add_word_marks())
         else:
             speech.stop()
-            self.activity.show_underlines()
+            # self.activity.show_underlines()

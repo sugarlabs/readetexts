@@ -224,13 +224,16 @@ class ReadEtextsActivity(activity.Activity):
         if os.path.exists(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt')):
             f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'r')
             line = f.readline()
+            print 'font size=',  line
             fontsize = int(line.strip())
             self.font_desc = pango.FontDescription("sans %d" % style.zoom(fontsize))
             f.close()
         else:
+            print 'no font size found'
             self.font_desc = pango.FontDescription("sans %d" % style.zoom(10))
         buffer = self.textview.get_buffer()
         self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
+        print self.font_desc
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
         self.scrolled.add(self.textview)
@@ -288,8 +291,8 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
         self.tag.set_property('weight', pango.WEIGHT_BOLD)
-        self.tag.set_property( 'foreground', "white")
-        self.tag.set_property( 'background', "black")
+        # self.tag.set_property( 'foreground', "white")
+        # self.tag.set_property( 'background', "black")
 
         self.underline_tag = textbuffer.create_tag()
         self.underline_tag.set_property('underline', 'single')
@@ -404,13 +407,14 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(activity_button, 0)
         activity_button.show()
 
-        self.edit_toolbar = activity.EditToolbar()
+        self.edit_toolbar = EditToolbar()
         self.edit_toolbar.undo.props.visible = False
         self.edit_toolbar.redo.props.visible = False
         self.edit_toolbar.separator.props.visible = False
         self.edit_toolbar.copy.set_sensitive(False)
         self.edit_toolbar.copy.connect('clicked', self.edit_toolbar_copy_cb)
         self.edit_toolbar.paste.props.visible = False
+        self.edit_toolbar.set_activity(self)
 
         edit_toolbar_button = ToolbarButton(
             page=self.edit_toolbar,
@@ -630,10 +634,11 @@ class ReadEtextsActivity(activity.Activity):
         if word_count < len(self.word_tuples) :
             word_tuple = self.word_tuples[word_count]
             textbuffer = self.textview.get_buffer()
-            iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
+            # iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
+            iterStart = textbuffer.get_iter_at_offset(0)
             iterEnd = textbuffer.get_iter_at_offset(word_tuple[1])
             bounds = textbuffer.get_bounds()
-            textbuffer.remove_all_tags(bounds[0], bounds[1])
+            # textbuffer.remove_all_tags(bounds[0], bounds[1])
             textbuffer.apply_tag(self.tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
             max = v_adjustment.upper - v_adjustment.page_size

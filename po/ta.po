@@ -2,72 +2,177 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 18:25-0600\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-03 00:32-0500\n"
+"PO-Revision-Date: 2010-08-03 23:13+0200\n"
+"Last-Translator: தங்கமணி <thangam.arunx@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.3\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr ""
+msgstr " ETextகளை வாசி"
 
-#: ReadEtextsActivity.py:147
+#: ReadEtextsActivity.py:201
 msgid "Edit"
-msgstr ""
+msgstr "திருத்து"
 
-#: ReadEtextsActivity.py:152
+#: ReadEtextsActivity.py:206
 msgid "Read"
-msgstr ""
+msgstr "வாசி"
 
-#: ReadEtextsActivity.py:157
+#: ReadEtextsActivity.py:212
+msgid "Books"
+msgstr "புத்தகங்கள்"
+
+#: ReadEtextsActivity.py:217
 msgid "View"
-msgstr ""
+msgstr "பார்"
 
-#: ReadEtextsActivity.py:163
+#: ReadEtextsActivity.py:225
 msgid "Speech"
-msgstr ""
+msgstr "பேச்சு"
 
-#: ReadEtextsActivity.py:228
-msgid "Choose document"
-msgstr ""
+#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
+#: ReadEtextsActivity.py:1046
+msgid "Error"
+msgstr "தவறு"
 
-#: readtoolbar.py:43
+#: ReadEtextsActivity.py:944
+msgid "You must enter at least one search word."
+msgstr "நீங்கள் குறைந்தபட்சம் தேடுதலுக்கு ஒரு சொல்லாவது உள்ளீடு செய்ய வேண்டும்"
+
+#: ReadEtextsActivity.py:994
+msgid "Connection timed out for "
+msgstr "_ ற்கு இணைப்பு நேரம் முடிந்து விட்டது"
+
+#: ReadEtextsActivity.py:1046
+msgid "Could not download "
+msgstr " _ பதிவிறக்க முடியவில்லை"
+
+#: ReadEtextsActivity.py:1046
+msgid " path in catalog may be incorrect."
+msgstr "பட்டியலிலுள்ள பாதை பிழையாக இருக்கலாம்"
+
+#: ReadEtextsActivity.py:1079
+msgid "Success"
+msgstr "வெற்றி"
+
+#: ReadEtextsActivity.py:1079
+msgid " added to Journal."
+msgstr "சஞ்சிகைக்கு சேர்க்கப்பட்டுள்ளது"
+
+#: ReadEtextsActivity.py:1197
+msgid "Failure"
+msgstr "பூரணப்படுத்த முடியவில்லை"
+
+#: ReadEtextsActivity.py:1197
+msgid "Error getting document from tube"
+msgstr "Tubeஇலிருந்து கோப்பைப் பெறுவதில் தவறு"
+
+#: readtoolbar.py:42
 msgid "Back"
-msgstr ""
+msgstr "பின்"
 
-#: readtoolbar.py:50
+#: readtoolbar.py:45
+msgid "Previous page"
+msgstr "முன்னைய பக்கம்"
+
+#: readtoolbar.py:48
+msgid "Previous bookmark"
+msgstr "முன்னைய புத்தகக் குறி"
+
+#: readtoolbar.py:58
 msgid "Forward"
-msgstr ""
+msgstr "முன்னோக்கி அனுப்பு"
 
-#: readtoolbar.py:159
+#: readtoolbar.py:61
+msgid "Next page"
+msgstr "அடுத்த பக்கம்"
+
+#: readtoolbar.py:64
+msgid "Next bookmark"
+msgstr "அடுத்த புத்தகக் குறி"
+
+#: readtoolbar.py:113
+msgid "Toggle Bookmark"
+msgstr "ருநிலை மாற்றி புத்தகக் குறி"
+
+#: readtoolbar.py:124
+msgid "Underline"
+msgstr "அடிக்கோடு இடு"
+
+#: readtoolbar.py:218
 msgid "Zoom out"
-msgstr ""
+msgstr "சிறிதாய்க்காட்டு"
 
-#: readtoolbar.py:165
+#: readtoolbar.py:224
 msgid "Zoom in"
-msgstr ""
+msgstr "பெரிதாய்க்காட்டு"
 
-#: readtoolbar.py:205
+#: readtoolbar.py:235
+msgid "Fullscreen"
+msgstr "முழுத்திரை"
+
+#: readtoolbar.py:280
 msgid "Previous"
-msgstr ""
+msgstr "முன்னைய"
 
-#: readtoolbar.py:212
+#: readtoolbar.py:287
 msgid "Next"
-msgstr ""
+msgstr "அடுத்த"
 
-#: readtoolbar.py:312
+#: readtoolbar.py:339
+msgid "Get Book"
+msgstr "புத்தகத்தைப் பெறு"
+
+#: readtoolbar.py:346
+msgid "Remove Results List"
+msgstr "பெறுபேற்று பட்டியலை அகற்று"
+
+#: readtoolbar.py:406
+msgid "Play / Pause"
+msgstr "இயக்கு/இடைநிறுத்து"
+
+#: readtoolbar.py:456
 msgid "pitch adjusted"
-msgstr ""
+msgstr "சரிபடுத்தப்பட்ட சுருதி"
 
-#: readtoolbar.py:316
+#: readtoolbar.py:460
 msgid "rate adjusted"
-msgstr ""
+msgstr "சரிபடுத்தப்பட்ட வீதம்"
+
+#: readsidebar.py:47
+msgid "Bookmark"
+msgstr "புத்தகக் குறி"
+
+#~ msgid "Choose document"
+#~ msgstr "ஆவணத்தை தெரிவு செய்"

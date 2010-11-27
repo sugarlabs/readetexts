@@ -108,7 +108,6 @@ class Annotations():
     def remove_bookmark(self,  page):
         try:
             self.bookmarks.remove(page)
-            # print 'bookmarks=',  self.bookmarks
         except ValueError:
             print 'page already not bookmarked',  page
 
@@ -224,7 +223,6 @@ class ReadEtextsActivity(activity.Activity):
         if os.path.exists(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt')):
             f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'r')
             line = f.readline()
-            print 'font size=',  line
             fontsize = int(line.strip())
             self.font_desc = pango.FontDescription("sans %d" % style.zoom(fontsize))
             f.close()
@@ -233,7 +231,6 @@ class ReadEtextsActivity(activity.Activity):
             self.font_desc = pango.FontDescription("sans %d" % style.zoom(10))
         buffer = self.textview.get_buffer()
         self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
-        print self.font_desc
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
         self.scrolled.add(self.textview)
@@ -291,8 +288,8 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
         self.tag.set_property('weight', pango.WEIGHT_BOLD)
-        # self.tag.set_property( 'foreground', "white")
-        # self.tag.set_property( 'background', "black")
+        self.normal_tag = textbuffer.create_tag()
+        self.normal_tag.set_property('weight',  pango.WEIGHT_NORMAL)
 
         self.underline_tag = textbuffer.create_tag()
         self.underline_tag.set_property('underline', 'single')
@@ -631,14 +628,14 @@ class ReadEtextsActivity(activity.Activity):
         return False
 
     def highlight_next_word(self,  word_count):
+        print 'word_count',  word_count
         if word_count < len(self.word_tuples) :
             word_tuple = self.word_tuples[word_count]
             textbuffer = self.textview.get_buffer()
-            # iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
-            iterStart = textbuffer.get_iter_at_offset(0)
+            iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
             iterEnd = textbuffer.get_iter_at_offset(word_tuple[1])
             bounds = textbuffer.get_bounds()
-            # textbuffer.remove_all_tags(bounds[0], bounds[1])
+            textbuffer.apply_tag(self.normal_tag,  bounds[0], iterStart)
             textbuffer.apply_tag(self.tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
             max = v_adjustment.upper - v_adjustment.page_size
@@ -984,6 +981,7 @@ class ReadEtextsActivity(activity.Activity):
             word_tuple = self.word_tuples[i]
             marked_up_text = marked_up_text + '<mark name="' + str(i) + '"/>' + word_tuple[2]
             i = i + 1
+        print marked_up_text
         return marked_up_text + '</speak>'
 
     def show_found_page(self, page_tuple):
@@ -1141,7 +1139,6 @@ class ReadEtextsActivity(activity.Activity):
         if self.is_received_document:
             self.metadata['title'] = self.annotations.get_title()
             self.metadata['title_set_by_user'] = '1'
-            print self.annotations.get_title()
             
         self.get_saved_page_number()
         self.show_page(self.page)
@@ -1164,7 +1161,6 @@ class ReadEtextsActivity(activity.Activity):
         if zipfile.is_zipfile(self.tempfile):
             new_zipfile = os.path.join(self.get_activity_root(), 'instance',
                     'rewrite%i' % time.time())
-            print self.tempfile,  new_zipfile
             zf_new = zipfile.ZipFile(new_zipfile, 'w')
             zf_old = zipfile.ZipFile(self.tempfile, 'r')
             book_files = self.zf.namelist()
@@ -1186,11 +1182,9 @@ class ReadEtextsActivity(activity.Activity):
         else:
             new_zipfile = os.path.join(self.get_activity_root(), 'instance',
                     'rewrite%i' % time.time())
-            print self.tempfile,  new_zipfile
             zf_new = zipfile.ZipFile(new_zipfile, 'w')
             outfn = self.make_new_filename(self.tempfile)
             zf_new.write(self.tempfile,  outfn)
-            print 'adding',  outfn
             zf_new.write(self.pickle_file_temp,  'annotations.pkl')
             zf_new.close()
             os.remove(self.tempfile)

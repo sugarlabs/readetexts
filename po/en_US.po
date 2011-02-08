@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-03 00:32-0500\n"
+"PO-Revision-Date: 2010-12-28 04:39+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.3\n"
+
+#: activity/activity.info:2
+msgid "Read ETexts"
+msgstr "Read ETexts"
+
+#: ReadEtextsActivity.py:201
+msgid "Edit"
+msgstr "Edit"
+
+#: ReadEtextsActivity.py:206
+msgid "Read"
+msgstr "Read"
+
+#: ReadEtextsActivity.py:212
+msgid "Books"
+msgstr "Books"
+
+#: ReadEtextsActivity.py:217
+msgid "View"
+msgstr "View"
+
+#: ReadEtextsActivity.py:225
+msgid "Speech"
+msgstr "Speech"
+
+#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
+#: ReadEtextsActivity.py:1046
+msgid "Error"
+msgstr "Error"
+
+#: ReadEtextsActivity.py:944
+msgid "You must enter at least one search word."
+msgstr "You must enter at least one search word."
+
+#: ReadEtextsActivity.py:994
+msgid "Connection timed out for "
+msgstr "Connection timed out for "
+
+#: ReadEtextsActivity.py:1046
+msgid "Could not download "
+msgstr "Could not download "
+
+#: ReadEtextsActivity.py:1046
+msgid " path in catalog may be incorrect."
+msgstr " path in catalog may be incorrect."
+
+#: ReadEtextsActivity.py:1079
+msgid "Success"
+msgstr "Success"
+
+#: ReadEtextsActivity.py:1079
+msgid " added to Journal."
+msgstr " added to Journal."
+
+#: ReadEtextsActivity.py:1197
+msgid "Failure"
+msgstr "Failure"
+
+#: ReadEtextsActivity.py:1197
+msgid "Error getting document from tube"
+msgstr "Error getting document from tube"
+
+#: readtoolbar.py:42
+msgid "Back"
+msgstr "Back"
+
+#: readtoolbar.py:45
+msgid "Previous page"
+msgstr "Previous page"
+
+#: readtoolbar.py:48
+msgid "Previous bookmark"
+msgstr "Previous bookmark"
+
+#: readtoolbar.py:58
+msgid "Forward"
+msgstr "Forward"
+
+#: readtoolbar.py:61
+msgid "Next page"
+msgstr "Next page"
+
+#: readtoolbar.py:64
+msgid "Next bookmark"
+msgstr "Next bookmark"
+
+#: readtoolbar.py:113
+msgid "Toggle Bookmark"
+msgstr "Toggle Bookmark"
+
+#: readtoolbar.py:124
+msgid "Underline"
+msgstr "Underline"
+
+#: readtoolbar.py:218
+msgid "Zoom out"
+msgstr "Zoom out"
+
+#: readtoolbar.py:224
+msgid "Zoom in"
+msgstr "Zoom in"
+
+#: readtoolbar.py:235
+msgid "Fullscreen"
+msgstr "Fullscreen"
+
+#: readtoolbar.py:280
+msgid "Previous"
+msgstr "Previous"
+
+#: readtoolbar.py:287
+msgid "Next"
+msgstr "Next"
+
+#: readtoolbar.py:339
+msgid "Get Book"
+msgstr "Get Book"
+
+#: readtoolbar.py:346
+msgid "Remove Results List"
+msgstr "Remove Results List"
+
+#: readtoolbar.py:406
+msgid "Play / Pause"
+msgstr "Play / Pause"
+
+#: readtoolbar.py:456
+msgid "pitch adjusted"
+msgstr "pitch adjusted"
+
+#: readtoolbar.py:460
+msgid "rate adjusted"
+msgstr "rate adjusted"
+
+#: readsidebar.py:47
+msgid "Bookmark"
+msgstr "Bookmark"

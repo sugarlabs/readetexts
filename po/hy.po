@@ -22,186 +22,154 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# German translations for PACKAGE package.
-# Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# James Simmons <ja.simmons@sbcglobal.net>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-03 00:32-0500\n"
-"PO-Revision-Date: 2010-11-03 20:02+0200\n"
-"Last-Translator: FlowerPowerGirl <o.parczyk@online.de>\n"
-"Language-Team: German\n"
-"Language: de\n"
+"PO-Revision-Date: 2011-05-15 13:05+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.1\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr "Lese-Aktivitäten"
+msgstr "Կարդալ ԷՏեքստեր"
 
 #: ReadEtextsActivity.py:201
 msgid "Edit"
-msgstr "Bearbeiten"
+msgstr "Խմբագրել"
 
 #: ReadEtextsActivity.py:206
 msgid "Read"
-msgstr "Lesen"
+msgstr "Կարդալ"
 
 #: ReadEtextsActivity.py:212
 msgid "Books"
-msgstr "Bücher"
+msgstr "Գրքեր"
 
 #: ReadEtextsActivity.py:217
 msgid "View"
-msgstr "Ansehen"
+msgstr "Դիտել"
 
 #: ReadEtextsActivity.py:225
 msgid "Speech"
-msgstr "Sprache"
+msgstr "Խոսք"
 
 #: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
 #: ReadEtextsActivity.py:1046
 msgid "Error"
-msgstr "Fehler"
+msgstr "Սխալ"
 
 #: ReadEtextsActivity.py:944
 msgid "You must enter at least one search word."
-msgstr "Du must mindestens ein Wort eingeben"
+msgstr "Պետք է գեթ մեկ որոնելիք բառ առաջարկել"
 
 #: ReadEtextsActivity.py:994
 msgid "Connection timed out for "
-msgstr "Die Verbindung wurde unterbrochen für "
+msgstr "Կապի ժամանակը սպառվեց "
 
 #: ReadEtextsActivity.py:1046
 msgid "Could not download "
-msgstr " konnte nicht heruntergeladen werden."
+msgstr "Չկարողացավ բեռնաթափել "
 
 #: ReadEtextsActivity.py:1046
 msgid " path in catalog may be incorrect."
-msgstr "  Weg im Katalog kann falsch sein."
+msgstr " արահետը կատալոգում կարող է սխալ լինել"
 
 #: ReadEtextsActivity.py:1079
 msgid "Success"
-msgstr "Erfolg"
+msgstr "Հաջողություն"
 
 #: ReadEtextsActivity.py:1079
 msgid " added to Journal."
-msgstr " wurde zum Tagebuch hinzugefügt."
+msgstr " ավելացրեց Մատյանում:"
 
 #: ReadEtextsActivity.py:1197
 msgid "Failure"
-msgstr "Ausfall"
+msgstr "Անհաջողություն"
 
 #: ReadEtextsActivity.py:1197
 msgid "Error getting document from tube"
-msgstr "Fehler beim Abrufen von Dokumenten aus dem Rohr."
+msgstr "Փաստաթուղթը խողովակից հանելիս՝ սխալ"
 
 #: readtoolbar.py:42
 msgid "Back"
-msgstr "Zurück"
+msgstr "Ետ"
 
 #: readtoolbar.py:45
 msgid "Previous page"
-msgstr "Voherige Seite"
+msgstr "նախորդ էջը"
 
 #: readtoolbar.py:48
 msgid "Previous bookmark"
-msgstr "Voheriges Lesezeichen"
+msgstr "նախորդ էջանշանը"
 
 #: readtoolbar.py:58
 msgid "Forward"
-msgstr "Weiter"
+msgstr "Առաջ"
 
 #: readtoolbar.py:61
 msgid "Next page"
-msgstr "Nächste Seite"
+msgstr "Հաջորդ էջը"
 
 #: readtoolbar.py:64
 msgid "Next bookmark"
-msgstr "Nächstes Lesezeichen"
+msgstr "Հաջորդ էջանշանը"
 
 #: readtoolbar.py:113
 msgid "Toggle Bookmark"
-msgstr "Lesezeichen umschalten"
+msgstr "Ակտիվացնել էջանշանը"
 
 #: readtoolbar.py:124
 msgid "Underline"
-msgstr "unterstreichen"
+msgstr "Ընդգծել"
 
 #: readtoolbar.py:218
 msgid "Zoom out"
-msgstr "Verkleinern"
+msgstr "Մեծացնել մասշտաբը"
 
 #: readtoolbar.py:224
 msgid "Zoom in"
-msgstr "Vergrößern"
+msgstr "Փոքրացնել մասշտաբը"
 
 #: readtoolbar.py:235
 msgid "Fullscreen"
-msgstr "Vollbild"
+msgstr "Լիաէկրան"
 
 #: readtoolbar.py:280
 msgid "Previous"
-msgstr "Vorheriges"
+msgstr "Նախորդ"
 
 #: readtoolbar.py:287
 msgid "Next"
-msgstr "Nächstes"
+msgstr "Հաջորդ"
 
 #: readtoolbar.py:339
 msgid "Get Book"
-msgstr "Buch erhalten"
+msgstr "Ստանալ գիրքը"
 
 #: readtoolbar.py:346
 msgid "Remove Results List"
-msgstr "Ergebnisliste entfernen"
+msgstr "Դուրս հանել արդյունքների ցանկը"
 
 #: readtoolbar.py:406
 msgid "Play / Pause"
-msgstr "Abspielen, Pause"
+msgstr "Խաղալ / Ընդմիջում"
 
 #: readtoolbar.py:456
 msgid "pitch adjusted"
-msgstr "Tonhöhe eingestellt"
+msgstr "տոնը կարգավորված է"
 
 #: readtoolbar.py:460
 msgid "rate adjusted"
-msgstr "Geschwindigkeit eingestellt"
+msgstr "արագությունը կարգավորված է"
 
 #: readsidebar.py:47
 msgid "Bookmark"
-msgstr "Lesezeichen"
+msgstr "Էջանշան"

@@ -30,178 +30,160 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# German translations for PACKAGE package.
+# Arabic translations for PACKAGE package.
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # James Simmons <ja.simmons@sbcglobal.net>, 2009.
+# Khaled Hosny <khaledhosny@eglug.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-03 00:32-0500\n"
-"PO-Revision-Date: 2010-11-03 20:02+0200\n"
-"Last-Translator: FlowerPowerGirl <o.parczyk@online.de>\n"
-"Language-Team: German\n"
-"Language: de\n"
+"PO-Revision-Date: 2010-02-19 18:36+0300\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"Language-Team: Arabic <doc@arabeyes.org>\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Virtaal 0.5.2\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr "Lese-Aktivitäten"
+msgstr "اقرأ النصوص"
 
 #: ReadEtextsActivity.py:201
 msgid "Edit"
-msgstr "Bearbeiten"
+msgstr "حرر"
 
 #: ReadEtextsActivity.py:206
 msgid "Read"
-msgstr "Lesen"
+msgstr "اقرأ"
 
 #: ReadEtextsActivity.py:212
 msgid "Books"
-msgstr "Bücher"
+msgstr "كتب"
 
 #: ReadEtextsActivity.py:217
 msgid "View"
-msgstr "Ansehen"
+msgstr "عرض"
 
 #: ReadEtextsActivity.py:225
 msgid "Speech"
-msgstr "Sprache"
+msgstr "نطق"
 
 #: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
 #: ReadEtextsActivity.py:1046
 msgid "Error"
-msgstr "Fehler"
+msgstr "خطأ"
 
 #: ReadEtextsActivity.py:944
 msgid "You must enter at least one search word."
-msgstr "Du must mindestens ein Wort eingeben"
+msgstr "عليك أن تدخل كلمة للبحث."
 
 #: ReadEtextsActivity.py:994
 msgid "Connection timed out for "
-msgstr "Die Verbindung wurde unterbrochen für "
+msgstr "انتهت مهلة الاتصال"
 
 #: ReadEtextsActivity.py:1046
 msgid "Could not download "
-msgstr " konnte nicht heruntergeladen werden."
+msgstr "تعذّر التنزيل"
 
 #: ReadEtextsActivity.py:1046
 msgid " path in catalog may be incorrect."
-msgstr "  Weg im Katalog kann falsch sein."
+msgstr " المسار في الفهرس قد يكون غير صحيح."
 
 #: ReadEtextsActivity.py:1079
 msgid "Success"
-msgstr "Erfolg"
+msgstr "نجاح"
 
 #: ReadEtextsActivity.py:1079
 msgid " added to Journal."
-msgstr " wurde zum Tagebuch hinzugefügt."
+msgstr " أضيف إلى الدفتر"
 
 #: ReadEtextsActivity.py:1197
 msgid "Failure"
-msgstr "Ausfall"
+msgstr "فشل"
 
 #: ReadEtextsActivity.py:1197
 msgid "Error getting document from tube"
-msgstr "Fehler beim Abrufen von Dokumenten aus dem Rohr."
+msgstr "فشل الحصول على الملف من القناة"
 
 #: readtoolbar.py:42
 msgid "Back"
-msgstr "Zurück"
+msgstr "إلى الخلف"
 
 #: readtoolbar.py:45
 msgid "Previous page"
-msgstr "Voherige Seite"
+msgstr "الصفحة السابقة"
 
 #: readtoolbar.py:48
 msgid "Previous bookmark"
-msgstr "Voheriges Lesezeichen"
+msgstr "العلامة السابقة"
 
 #: readtoolbar.py:58
 msgid "Forward"
-msgstr "Weiter"
+msgstr "إلى الأمام"
 
 #: readtoolbar.py:61
 msgid "Next page"
-msgstr "Nächste Seite"
+msgstr "الصفحة التالية"
 
 #: readtoolbar.py:64
 msgid "Next bookmark"
-msgstr "Nächstes Lesezeichen"
+msgstr "العلامة التالية"
 
 #: readtoolbar.py:113
 msgid "Toggle Bookmark"
-msgstr "Lesezeichen umschalten"
+msgstr "بدّل العلامة"
 
 #: readtoolbar.py:124
 msgid "Underline"
-msgstr "unterstreichen"
+msgstr "تسطير"
 
 #: readtoolbar.py:218
 msgid "Zoom out"
-msgstr "Verkleinern"
+msgstr "بعّد"
 
 #: readtoolbar.py:224
 msgid "Zoom in"
-msgstr "Vergrößern"
+msgstr "قرّب"
 
 #: readtoolbar.py:235
 msgid "Fullscreen"
-msgstr "Vollbild"
+msgstr "ملء الشاشة"
 
 #: readtoolbar.py:280
 msgid "Previous"
-msgstr "Vorheriges"
+msgstr "السابق"
 
 #: readtoolbar.py:287
 msgid "Next"
-msgstr "Nächstes"
+msgstr "التالي"
 
 #: readtoolbar.py:339
 msgid "Get Book"
-msgstr "Buch erhalten"
+msgstr "احصل على الكتاب"
 
 #: readtoolbar.py:346
 msgid "Remove Results List"
-msgstr "Ergebnisliste entfernen"
+msgstr "احذف النتائج من القائمة"
 
 #: readtoolbar.py:406
 msgid "Play / Pause"
-msgstr "Abspielen, Pause"
+msgstr "شغّل / ألبِث"
 
 #: readtoolbar.py:456
 msgid "pitch adjusted"
-msgstr "Tonhöhe eingestellt"
+msgstr "صححت الشدة"
 
 #: readtoolbar.py:460
 msgid "rate adjusted"
-msgstr "Geschwindigkeit eingestellt"
+msgstr "صححت السرعة"
 
 #: readsidebar.py:47
 msgid "Bookmark"
-msgstr "Lesezeichen"
+msgstr "علّم"

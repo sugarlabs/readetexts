@@ -1,73 +1,199 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Greek translations for PACKAGE package.
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # James Simmons <ja.simmons@sbcglobal.net>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 18:25-0600\n"
-"PO-Revision-Date: 2009-02-19 18:30-0600\n"
-"Last-Translator: James Simmons <ja.simmons@sbcglobal.net>\n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"PO-Revision-Date: 2011-03-14 18:39+0200\n"
+"Last-Translator: pavlos hatzopoulos <phatzopoulos@gmail.com>\n"
 "Language-Team: Greek\n"
+"Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.1\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr "Ανάγνωση δραστηριότητας"
+msgstr "Ανάγνωση ηλεκτρονικών κειμένων"
 
-#: ReadEtextsActivity.py:147
-msgid "Edit"
-msgstr ""
-
-#: ReadEtextsActivity.py:152
-msgid "Read"
-msgstr ""
-
-#: ReadEtextsActivity.py:157
-msgid "View"
-msgstr "Προβολή"
-
-#: ReadEtextsActivity.py:163
-msgid "Speech"
-msgstr ""
-
-#: ReadEtextsActivity.py:228
-msgid "Choose document"
-msgstr ""
-
-#: readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
 msgid "Back"
 msgstr "Πίσω"
 
-#: readtoolbar.py:50
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+msgid "Previous page"
+msgstr "Προηγούμενη σελίδα"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+msgid "Previous bookmark"
+msgstr "Προηγούμενος σελιδοδείκτης"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
 msgid "Forward"
 msgstr "Μπροστά"
 
-#: readtoolbar.py:159
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+msgid "Next page"
+msgstr "Επόμενη σελίδα"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+msgid "Next bookmark"
+msgstr "Επόμενος σελιδοδείκτης"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+msgid "Toggle Bookmark"
+msgstr "Εναλλαγή σελιδοδείκτη"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+msgid "Underline"
+msgstr "Υπογράμμιση"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
-msgstr ""
+msgstr "Μεγέθυνση"
 
-#: readtoolbar.py:165
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
-msgstr ""
+msgstr "Σμίκρυνση"
 
-#: readtoolbar.py:205
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
+msgid "Fullscreen"
+msgstr "Πλήρης οθόνη"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
 msgid "Previous"
 msgstr "Προηγούμενο"
 
-#: readtoolbar.py:212
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
 msgid "Next"
 msgstr "Επόμενο"
 
-#: readtoolbar.py:312
-msgid "pitch adjusted"
-msgstr ""
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
+msgid "Get Book"
+msgstr "Λήψη βιβλίου"
 
-#: readtoolbar.py:316
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
+msgid "Remove Results List"
+msgstr "Αφαίρεση λίστας αποτελεσμάτων"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
+msgid "Play / Pause"
+msgstr "Αναπαραγωγή / Παύση"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
+msgid "pitch adjusted"
+msgstr "Ρύθμιση τόνου"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
-msgstr ""
+msgstr "Ρύθμιση ρυθμού"
+
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
+msgid "Bookmark"
+msgstr "Σελιδοδείκτης"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr "Ανάγνωση"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr "Βιβλία"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr "Προβολή"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr "Ομιλία"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr "Σφάλμα"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr "Πρέπει να εισάγετε το λιγότερο έναν όρο προς αναζήτηση."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr "Η σύνδεση διακόπηκε για "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr "Αδυναμία λήψης "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr " η διαδρομή στον κατάλογο ενδεχομένως είναι λανθασμένη."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr "Επιτυχία"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr " προστέθηκε στο Ημερολόγιο."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr "Αποτυχία"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
+msgstr "Σφάλμα λήψης εγγράφου από το κανάλι"
+
+#~ msgid "Choose document"
+#~ msgstr "Επιλογή εγγράφου"

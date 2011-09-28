@@ -22,157 +22,174 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-03 00:32-0500\n"
-"PO-Revision-Date: 2010-08-03 23:13+0200\n"
-"Last-Translator: தங்கமணி <thangam.arunx@gmail.com>\n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"PO-Revision-Date: 2011-07-03 14:49+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.0.1\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr " ETextகளை வாசி"
+msgstr "ETextகளை வாசி"
 
-#: ReadEtextsActivity.py:201
-msgid "Edit"
-msgstr "திருத்து"
-
-#: ReadEtextsActivity.py:206
-msgid "Read"
-msgstr "வாசி"
-
-#: ReadEtextsActivity.py:212
-msgid "Books"
-msgstr "புத்தகங்கள்"
-
-#: ReadEtextsActivity.py:217
-msgid "View"
-msgstr "பார்"
-
-#: ReadEtextsActivity.py:225
-msgid "Speech"
-msgstr "பேச்சு"
-
-#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
-#: ReadEtextsActivity.py:1046
-msgid "Error"
-msgstr "தவறு"
-
-#: ReadEtextsActivity.py:944
-msgid "You must enter at least one search word."
-msgstr "நீங்கள் குறைந்தபட்சம் தேடுதலுக்கு ஒரு சொல்லாவது உள்ளீடு செய்ய வேண்டும்"
-
-#: ReadEtextsActivity.py:994
-msgid "Connection timed out for "
-msgstr "_ ற்கு இணைப்பு நேரம் முடிந்து விட்டது"
-
-#: ReadEtextsActivity.py:1046
-msgid "Could not download "
-msgstr " _ பதிவிறக்க முடியவில்லை"
-
-#: ReadEtextsActivity.py:1046
-msgid " path in catalog may be incorrect."
-msgstr "பட்டியலிலுள்ள பாதை பிழையாக இருக்கலாம்"
-
-#: ReadEtextsActivity.py:1079
-msgid "Success"
-msgstr "வெற்றி"
-
-#: ReadEtextsActivity.py:1079
-msgid " added to Journal."
-msgstr "சஞ்சிகைக்கு சேர்க்கப்பட்டுள்ளது"
-
-#: ReadEtextsActivity.py:1197
-msgid "Failure"
-msgstr "பூரணப்படுத்த முடியவில்லை"
-
-#: ReadEtextsActivity.py:1197
-msgid "Error getting document from tube"
-msgstr "Tubeஇலிருந்து கோப்பைப் பெறுவதில் தவறு"
-
-#: readtoolbar.py:42
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
 msgid "Back"
 msgstr "பின்"
 
-#: readtoolbar.py:45
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
 msgid "Previous page"
 msgstr "முன்னைய பக்கம்"
 
-#: readtoolbar.py:48
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
 msgid "Previous bookmark"
 msgstr "முன்னைய புத்தகக் குறி"
 
-#: readtoolbar.py:58
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
 msgid "Forward"
 msgstr "முன்னோக்கி அனுப்பு"
 
-#: readtoolbar.py:61
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
 msgid "Next page"
 msgstr "அடுத்த பக்கம்"
 
-#: readtoolbar.py:64
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
 msgid "Next bookmark"
 msgstr "அடுத்த புத்தகக் குறி"
 
-#: readtoolbar.py:113
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
 msgstr "ருநிலை மாற்றி புத்தகக் குறி"
 
-#: readtoolbar.py:124
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
 msgid "Underline"
 msgstr "அடிக்கோடு இடு"
 
-#: readtoolbar.py:218
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
 msgstr "சிறிதாய்க்காட்டு"
 
-#: readtoolbar.py:224
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
 msgstr "பெரிதாய்க்காட்டு"
 
-#: readtoolbar.py:235
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
 msgid "Fullscreen"
 msgstr "முழுத்திரை"
 
-#: readtoolbar.py:280
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
 msgid "Previous"
 msgstr "முன்னைய"
 
-#: readtoolbar.py:287
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
 msgid "Next"
 msgstr "அடுத்த"
 
-#: readtoolbar.py:339
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
 msgstr "புத்தகத்தைப் பெறு"
 
-#: readtoolbar.py:346
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
 msgid "Remove Results List"
 msgstr "பெறுபேற்று பட்டியலை அகற்று"
 
-#: readtoolbar.py:406
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
 msgid "Play / Pause"
 msgstr "இயக்கு/இடைநிறுத்து"
 
-#: readtoolbar.py:456
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
 msgstr "சரிபடுத்தப்பட்ட சுருதி"
 
-#: readtoolbar.py:460
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
 msgstr "சரிபடுத்தப்பட்ட வீதம்"
 
-#: readsidebar.py:47
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"
 msgstr "புத்தகக் குறி"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr "திருத்து"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr "வாசி"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr "புத்தகங்கள்"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr "பார்"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr "பேச்சு"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr "தவறு"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr "நீங்கள் குறைந்தபட்சம் தேடுதலுக்கு ஒரு சொல்லாவது உள்ளீடு செய்ய வேண்டும்"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr "_ ற்கு இணைப்பு நேரம் முடிந்து விட்டது "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr "பதிவிறக்க முடியவில்லை "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr " பட்டியலிலுள்ள பாதை பிழையாக இருக்கலாம்"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr "வெற்றி"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr " சஞ்சிகைக்கு சேர்க்கப்பட்டுள்ளது"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr "பூரணப்படுத்த முடியவில்லை"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
+msgstr "Tubeஇலிருந்து கோப்பைப் பெறுவதில் தவறு"
 
 #~ msgid "Choose document"
 #~ msgstr "ஆவணத்தை தெரிவு செய்"

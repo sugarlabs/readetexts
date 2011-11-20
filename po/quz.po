@@ -1,0 +1,195 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"PO-Revision-Date: 2011-11-12 19:07+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: quz\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#  "Actividad Leer"
+#: activity/activity.info:2
+msgid "Read ETexts"
+msgstr ""
+
+#  "Volver"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
+msgid "Back"
+msgstr "Kutichiy"
+
+#  "Página anterior"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+msgid "Previous page"
+msgstr ""
+
+#  "Anterior marcador"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+msgid "Previous bookmark"
+msgstr ""
+
+#  "Avanzar"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
+msgid "Forward"
+msgstr ""
+
+#  "Página siguiente"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+msgid "Next page"
+msgstr ""
+
+#  "Siguiente marcador"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+msgid "Next bookmark"
+msgstr ""
+
+#  "Activar o desactivar marcador"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+msgid "Toggle Bookmark"
+msgstr ""
+
+#  "Subrayar"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+msgid "Underline"
+msgstr "Ura siq'isqa"
+
+#  "Reducir"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
+msgid "Zoom out"
+msgstr "Kharuykachaspa huch'uyachiq"
+
+#  "Ampliar"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
+msgid "Zoom in"
+msgstr "Achuykachaspa hatunyachiq"
+
+#  "Pantalla completa"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
+msgid "Fullscreen"
+msgstr "Hunt'asqa pantalla"
+
+#  "Anterior"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
+msgid "Previous"
+msgstr "Ñawpaq"
+
+#  "Siguiente"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
+msgid "Next"
+msgstr "Jamuq"
+
+#  "Obtener Libro"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
+msgid "Get Book"
+msgstr ""
+
+#  "Eliminar lista de resultados"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
+msgid "Remove Results List"
+msgstr ""
+
+#  "Reproducir / Pausa"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
+#, fuzzy
+msgid "Play / Pause"
+msgstr "Puqllay / Sayay"
+
+#  "tono ajustado"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
+msgid "pitch adjusted"
+msgstr ""
+
+#  "velocidad ajustada"
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
+msgid "rate adjusted"
+msgstr ""
+
+#  "Marcador"
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
+msgid "Bookmark"
+msgstr ""
+
+#  "Editar"
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr "Allinchay"
+
+#  "Leer"
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr ""
+
+#  "Libros"
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr ""
+
+#  "Ver"
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr "Qhaway"
+
+#  "Habla"
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr ""
+
+#  "Error"
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr "Pantay"
+
+#  "Debes introducir al menos una palabra en la búsqueda."
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr ""
+
+#  "Intento de coneccion terminado para "
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr ""
+
+#  "No se pudo descargar "
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr ""
+
+#  " ruta en el catálogo puede ser incorrecta."
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr ""
+
+#  "Éxito"
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr ""
+
+#  " añadido al Diario."
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr ""
+
+#  "Error"
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr ""
+
+#  "Error al obtener el documento de tubo"
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
+msgstr ""

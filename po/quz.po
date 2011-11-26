@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2011-11-12 19:07+0200\n"
+"PO-Revision-Date: 2011-11-26 09:09+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: quz\n"
@@ -28,31 +28,31 @@ msgstr "Kutichiy"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
 msgid "Previous page"
-msgstr ""
+msgstr "Ñawpa raphi"
 
 #  "Anterior marcador"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
 msgid "Previous bookmark"
-msgstr ""
+msgstr "Ñawpa qillqachisqa"
 
 #  "Avanzar"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
 msgid "Forward"
-msgstr ""
+msgstr "Ñawpay"
 
 #  "Página siguiente"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
 msgid "Next page"
-msgstr ""
+msgstr "Hamuq raphi"
 
 #  "Siguiente marcador"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
 msgid "Next bookmark"
-msgstr ""
+msgstr "Hamuq qillqachisqa"
 
 #  "Activar o desactivar marcador"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
@@ -120,7 +120,7 @@ msgstr ""
 #  "Marcador"
 #: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"
-msgstr ""
+msgstr "T'upsichiq"
 
 #  "Editar"
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
@@ -130,7 +130,7 @@ msgstr "Allinchay"
 #  "Leer"
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
 msgid "Read"
-msgstr ""
+msgstr "Ñawichay"
 
 #  "Libros"
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375

@@ -26,150 +26,159 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-03 00:32-0500\n"
-"PO-Revision-Date: 2011-05-15 13:05+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"PO-Revision-Date: 2011-12-21 22:05+0200\n"
+"Last-Translator: anush.mkrtchyan <anush.mkrtchyan@ca1492.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: hy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
 msgstr "Կարդալ ԷՏեքստեր"
 
-#: ReadEtextsActivity.py:201
-msgid "Edit"
-msgstr "Խմբագրել"
-
-#: ReadEtextsActivity.py:206
-msgid "Read"
-msgstr "Կարդալ"
-
-#: ReadEtextsActivity.py:212
-msgid "Books"
-msgstr "Գրքեր"
-
-#: ReadEtextsActivity.py:217
-msgid "View"
-msgstr "Դիտել"
-
-#: ReadEtextsActivity.py:225
-msgid "Speech"
-msgstr "Խոսք"
-
-#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
-#: ReadEtextsActivity.py:1046
-msgid "Error"
-msgstr "Սխալ"
-
-#: ReadEtextsActivity.py:944
-msgid "You must enter at least one search word."
-msgstr "Պետք է գեթ մեկ որոնելիք բառ առաջարկել"
-
-#: ReadEtextsActivity.py:994
-msgid "Connection timed out for "
-msgstr "Կապի ժամանակը սպառվեց "
-
-#: ReadEtextsActivity.py:1046
-msgid "Could not download "
-msgstr "Չկարողացավ բեռնաթափել "
-
-#: ReadEtextsActivity.py:1046
-msgid " path in catalog may be incorrect."
-msgstr " արահետը կատալոգում կարող է սխալ լինել"
-
-#: ReadEtextsActivity.py:1079
-msgid "Success"
-msgstr "Հաջողություն"
-
-#: ReadEtextsActivity.py:1079
-msgid " added to Journal."
-msgstr " ավելացրեց Մատյանում:"
-
-#: ReadEtextsActivity.py:1197
-msgid "Failure"
-msgstr "Անհաջողություն"
-
-#: ReadEtextsActivity.py:1197
-msgid "Error getting document from tube"
-msgstr "Փաստաթուղթը խողովակից հանելիս՝ սխալ"
-
-#: readtoolbar.py:42
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
 msgid "Back"
 msgstr "Ետ"
 
-#: readtoolbar.py:45
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
 msgid "Previous page"
 msgstr "նախորդ էջը"
 
-#: readtoolbar.py:48
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
 msgid "Previous bookmark"
 msgstr "նախորդ էջանշանը"
 
-#: readtoolbar.py:58
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
 msgid "Forward"
 msgstr "Առաջ"
 
-#: readtoolbar.py:61
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
 msgid "Next page"
 msgstr "Հաջորդ էջը"
 
-#: readtoolbar.py:64
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
 msgid "Next bookmark"
 msgstr "Հաջորդ էջանշանը"
 
-#: readtoolbar.py:113
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
 msgstr "Ակտիվացնել էջանշանը"
 
-#: readtoolbar.py:124
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
 msgid "Underline"
 msgstr "Ընդգծել"
 
-#: readtoolbar.py:218
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
-msgstr "Մեծացնել մասշտաբը"
+msgstr "Հեռվացնել"
 
-#: readtoolbar.py:224
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
-msgstr "Փոքրացնել մասշտաբը"
+msgstr "Մոտեցնել"
 
-#: readtoolbar.py:235
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
 msgid "Fullscreen"
-msgstr "Լիաէկրան"
+msgstr "Էկրանի չափով"
 
-#: readtoolbar.py:280
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
 msgid "Previous"
 msgstr "Նախորդ"
 
-#: readtoolbar.py:287
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
 msgid "Next"
 msgstr "Հաջորդ"
 
-#: readtoolbar.py:339
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
-msgstr "Ստանալ գիրքը"
+msgstr "Ստանալ գիրք"
 
-#: readtoolbar.py:346
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
 msgid "Remove Results List"
 msgstr "Դուրս հանել արդյունքների ցանկը"
 
-#: readtoolbar.py:406
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
 msgid "Play / Pause"
-msgstr "Խաղալ / Ընդմիջում"
+msgstr "նվագարկել / Դադար"
 
-#: readtoolbar.py:456
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
 msgstr "տոնը կարգավորված է"
 
-#: readtoolbar.py:460
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
 msgstr "արագությունը կարգավորված է"
 
-#: readsidebar.py:47
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"
 msgstr "Էջանշան"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr "Խմբագրել"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr "Կարդալ"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr "Գրքեր"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr "Դիտել"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr "Խոսք"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr "Սխալ"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr "Դուք պետք է մուտքագրեք նվազագույնը մեկ որոնման բառ:"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr "Կապի ժամանակը սպառվեց "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr "Հնարավոր չէ բեռնել "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr " արահետը կատալոգում կարող է սխալ լինել"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr "Հաջողություն"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr " ավելացվեց Մատյանում:"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr "Ձախողում"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
+msgstr "Վրիպում` էլեկտրո-ճառագայթային սարքավորումից փաստաթուղթ ստանալիս"

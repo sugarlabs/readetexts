@@ -27,8 +27,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2011-12-21 22:05+0200\n"
-"Last-Translator: anush.mkrtchyan <anush.mkrtchyan@ca1492.com>\n"
+"PO-Revision-Date: 2011-12-23 06:12+0200\n"
+"Last-Translator: Jasmine <udea_jasmine@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: hy\n"
 "MIME-Version: 1.0\n"
@@ -37,6 +37,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
+# ETexts - electronic text
 #: activity/activity.info:2
 msgid "Read ETexts"
 msgstr "Կարդալ ԷՏեքստեր"
@@ -49,12 +50,12 @@ msgstr "Ետ"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
 msgid "Previous page"
-msgstr "նախորդ էջը"
+msgstr "Նախորդ էջը"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
 msgid "Previous bookmark"
-msgstr "նախորդ էջանշանը"
+msgstr "Նախորդ էջանշանը"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
@@ -74,7 +75,7 @@ msgstr "Հաջորդ էջանշանը"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
-msgstr "Ակտիվացնել էջանշանը"
+msgstr "Միացնել/անջատել էջանշանը"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
@@ -83,11 +84,11 @@ msgstr "Ընդգծել"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
-msgstr "Հեռվացնել"
+msgstr "Փոքրացնել"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
-msgstr "Մոտեցնել"
+msgstr "Մեծացնել"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
 msgid "Fullscreen"
@@ -103,7 +104,7 @@ msgstr "Հաջորդ"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
-msgstr "Ստանալ գիրք"
+msgstr "Ձեռք բերել գիրք"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
 msgid "Remove Results List"
@@ -111,11 +112,11 @@ msgstr "Դուրս հանել արդյունքների ցանկը"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
 msgid "Play / Pause"
-msgstr "նվագարկել / Դադար"
+msgstr "Վերարտադրել / Դադար"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
-msgstr "տոնը կարգավորված է"
+msgstr "ձայնի տոնայնությունը կարգավորված է"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
@@ -161,7 +162,7 @@ msgstr "Կապի ժամանակը սպառվեց "
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
 msgid "Could not download "
-msgstr "Հնարավոր չէ բեռնել "
+msgstr "Չհաջողվեց բեռնել "
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
 msgid " path in catalog may be incorrect."

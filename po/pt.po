@@ -35,18 +35,19 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2009-02-19 18:34-0600\n"
-"Last-Translator: James Simmons <ja.simmons@sbcglobal.net>\n"
+"PO-Revision-Date: 2012-01-15 07:40+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: Portuguese\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr "Actividade Ler"
+msgstr "Ler Etextos"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
@@ -56,12 +57,12 @@ msgstr "Voltar"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
 msgid "Previous page"
-msgstr ""
+msgstr "Página anterior"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
 msgid "Previous bookmark"
-msgstr ""
+msgstr "Marcador anterior"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
@@ -71,34 +72,34 @@ msgstr "Avançar"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
 msgid "Next page"
-msgstr ""
+msgstr "Página seguinte"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
 msgid "Next bookmark"
-msgstr ""
+msgstr "Marcador seguinte"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
-msgstr ""
+msgstr "Marcadores"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
 msgid "Underline"
-msgstr ""
+msgstr "Sublinhar"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
-msgstr ""
+msgstr "Afastar zoom"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
-msgstr ""
+msgstr "Aproximar zoom"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
 msgid "Fullscreen"
-msgstr ""
+msgstr "Ecrã completo"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
 msgid "Previous"
@@ -110,85 +111,85 @@ msgstr "Seguinte"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
-msgstr ""
+msgstr "Obter Livro"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
 msgid "Remove Results List"
-msgstr ""
+msgstr "Remover Lista de Resultados"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
 msgid "Play / Pause"
-msgstr ""
+msgstr "Tocar / Pausar"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
-msgstr ""
+msgstr "tom ajustado"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
-msgstr ""
+msgstr "velocidade ajustada"
 
 #: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"
-msgstr ""
+msgstr "Marcar"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
 msgid "Read"
-msgstr ""
+msgstr "Ler"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
 msgid "Books"
-msgstr ""
+msgstr "Livros"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
 msgid "View"
-msgstr ""
+msgstr "Ver"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
 msgid "Speech"
-msgstr ""
+msgstr "Fala"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
 msgid "Error"
-msgstr ""
+msgstr "Erro"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
 msgid "You must enter at least one search word."
-msgstr ""
+msgstr "Deves introduzir pelo menos uma palavra de busca."
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
 msgid "Connection timed out for "
-msgstr ""
+msgstr "A ligação expirou o tempo "
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
 msgid "Could not download "
-msgstr ""
+msgstr "Não foi possível transferir "
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
 msgid " path in catalog may be incorrect."
-msgstr ""
+msgstr " caminho no catálogo pode estar incorrecto."
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
 msgid "Success"
-msgstr ""
+msgstr "Sucesso"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
 msgid " added to Journal."
-msgstr ""
+msgstr " adicionado ao Diário."
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
 msgid "Failure"
-msgstr ""
+msgstr "Falha"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
 msgid "Error getting document from tube"
-msgstr ""
+msgstr "Erro em obter o documento do \"tube\""
 
 #~ msgid "Choose document"
 #~ msgstr "Abrir um documento para o ler"

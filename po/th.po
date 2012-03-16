@@ -35,7 +35,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2012-03-09 11:40+0200\n"
+"PO-Revision-Date: 2012-03-16 04:17+0200\n"
 "Last-Translator: Meechai <malaku38@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: th\n"
@@ -123,11 +123,11 @@ msgstr "เล่น / หยุดชั่วคราว"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
-msgstr "pitch adjusted"
+msgstr "ปรับค่าระดับเสียง"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
-msgstr "rate adjusted"
+msgstr "ปรับค่าอัตราความเร็ว"
 
 #: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"

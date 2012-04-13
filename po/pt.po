@@ -35,7 +35,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2012-04-13 18:12+0200\n"
+"PO-Revision-Date: 2012-04-13 18:41+0200\n"
 "Last-Translator: Eduardo H. <hoboprimate@gmail.com>\n"
 "Language-Team: Portuguese\n"
 "Language: pt\n"
@@ -47,7 +47,7 @@ msgstr ""
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr "Ler Etextos"
+msgstr "Ler Textos Eletrónicos"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451

@@ -35,7 +35,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2012-04-03 00:28+0200\n"
+"PO-Revision-Date: 2012-04-13 18:12+0200\n"
 "Last-Translator: Eduardo H. <hoboprimate@gmail.com>\n"
 "Language-Team: Portuguese\n"
 "Language: pt\n"
@@ -82,7 +82,7 @@ msgstr "Marcador seguinte"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
-msgstr "Marcadores"
+msgstr "Adicionar / Remover Marcador"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
@@ -131,7 +131,7 @@ msgstr "velocidade ajustada"
 
 #: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"
-msgstr "Marcar"
+msgstr "Marcador"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
 msgid "Edit"
@@ -161,11 +161,11 @@ msgstr "Erro"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
 msgid "You must enter at least one search word."
-msgstr "Deves introduzir pelo menos uma palavra de busca."
+msgstr "Deves inserir pelo menos uma palavra de pesquisa."
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
 msgid "Connection timed out for "
-msgstr "A ligação expirou o limite de tempo "
+msgstr "A ligação expirou o limite de tempo para"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
 msgid "Could not download "

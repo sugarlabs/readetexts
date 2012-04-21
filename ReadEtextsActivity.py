@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-# Copyright (C) 2008, 2009, 2010 James D. Simmons
+# Copyright (C) 2008, 2009, 2010, 2011, 2012 James D. Simmons
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -224,11 +224,12 @@ class ReadEtextsActivity(activity.Activity):
             f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'r')
             line = f.readline()
             fontsize = int(line.strip())
-            self.font_desc = pango.FontDescription("sans %d" % style.zoom(fontsize))
+            self.font_desc = pango.FontDescription("monospace %d" % style.zoom(fontsize))
+            # self.font_desc = pango.FontDescription("sans %d" % style.zoom(fontsize))
             f.close()
         else:
             print 'no font size found'
-            self.font_desc = pango.FontDescription("sans %d" % style.zoom(10))
+            self.font_desc = pango.FontDescription("monospace %d" % style.zoom(10))
         buffer = self.textview.get_buffer()
         self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
         self.textview.modify_font(self.font_desc)

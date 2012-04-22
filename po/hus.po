@@ -2,153 +2,164 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-03 00:32-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"PO-Revision-Date: 2011-08-28 05:15+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hus\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.1\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr ""
+msgstr "T'ojláb ajum"
 
-#: ReadEtextsActivity.py:201
-msgid "Edit"
-msgstr ""
-
-#: ReadEtextsActivity.py:206
-msgid "Read"
-msgstr ""
-
-#: ReadEtextsActivity.py:212
-msgid "Books"
-msgstr ""
-
-#: ReadEtextsActivity.py:217
-msgid "View"
-msgstr ""
-
-#: ReadEtextsActivity.py:225
-msgid "Speech"
-msgstr ""
-
-#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
-#: ReadEtextsActivity.py:1046
-msgid "Error"
-msgstr ""
-
-#: ReadEtextsActivity.py:944
-msgid "You must enter at least one search word."
-msgstr ""
-
-#: ReadEtextsActivity.py:994
-msgid "Connection timed out for "
-msgstr ""
-
-#: ReadEtextsActivity.py:1046
-msgid "Could not download "
-msgstr ""
-
-#: ReadEtextsActivity.py:1046
-msgid " path in catalog may be incorrect."
-msgstr ""
-
-#: ReadEtextsActivity.py:1079
-msgid "Success"
-msgstr ""
-
-#: ReadEtextsActivity.py:1079
-msgid " added to Journal."
-msgstr ""
-
-#: ReadEtextsActivity.py:1197
-msgid "Failure"
-msgstr ""
-
-#: ReadEtextsActivity.py:1197
-msgid "Error getting document from tube"
-msgstr ""
-
-#: readtoolbar.py:42
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
 msgid "Back"
-msgstr ""
+msgstr "Wichiy"
 
-#: readtoolbar.py:45
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
 msgid "Previous page"
-msgstr ""
+msgstr "Walxeklek wat'elom"
 
-#: readtoolbar.py:48
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
 msgid "Previous bookmark"
-msgstr ""
+msgstr "T'ipoxtaláb xi ok'xidh"
 
-#: readtoolbar.py:58
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
 msgid "Forward"
-msgstr ""
+msgstr "Áynanchij"
 
-#: readtoolbar.py:61
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
 msgid "Next page"
-msgstr ""
+msgstr "Junakej walxeklek"
 
-#: readtoolbar.py:64
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
 msgid "Next bookmark"
-msgstr ""
+msgstr "Junakej t'ipoxtaláb"
 
-#: readtoolbar.py:113
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
-msgstr ""
+msgstr "T'ipoxtaláb walkadh o yab walkadh"
 
-#: readtoolbar.py:124
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
 msgid "Underline"
-msgstr ""
+msgstr "Kits'oxtaláb"
 
-#: readtoolbar.py:218
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
-msgstr ""
+msgstr "Tsipti'médha'"
 
-#: readtoolbar.py:224
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
-msgstr ""
+msgstr "Puwedha'"
 
-#: readtoolbar.py:235
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
 msgid "Fullscreen"
-msgstr ""
+msgstr "Putát walek"
 
-#: readtoolbar.py:280
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
 msgid "Previous"
-msgstr ""
+msgstr "Wat'elom"
 
-#: readtoolbar.py:287
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
 msgid "Next"
-msgstr ""
+msgstr "Junakej"
 
-#: readtoolbar.py:339
+# Libro = T'i'dhuchlab
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
-msgstr ""
+msgstr "Bats'uw an t'i'dhuchlab"
 
-#: readtoolbar.py:346
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
 msgid "Remove Results List"
-msgstr ""
+msgstr "Pakluw an nik'at tok'tsixtaláb"
 
-#: readtoolbar.py:406
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
 msgid "Play / Pause"
-msgstr ""
+msgstr "Tsabk'wajba' / Tonk'iy"
 
-#: readtoolbar.py:456
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
-msgstr ""
+msgstr "t'ojojodh janidhtaláb"
 
-#: readtoolbar.py:460
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
-msgstr ""
+msgstr "t'ojojodh in janídh"
 
-#: readsidebar.py:47
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"
-msgstr ""
+msgstr "´T'apidhbél"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr "Jalkúy"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr "Ajumtaláb"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr "T'i'dhuchlabchik"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr "Tsu'uw"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr "Káw"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr "K'ibts'ontaláb"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr "Ka odha' abajúnk'ij i káw ti alimtaláb."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr "Putun ti lujkul ti pólts'óx abal "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr "Yab ejtowat ka pa'báj "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr " an bél axi ti kwenétakuxtaláb walám yab alwa'."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr "Alwa'its"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr " punk'unchámej ti chudhél dhuchlab."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr "K'ibts'ontaláb"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
+msgstr "K'ibtson tamti in bats'uw ti jabaxpat'ál"

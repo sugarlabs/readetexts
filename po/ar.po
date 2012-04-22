@@ -1,3 +1,7 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Arabic translations for PACKAGE package.
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
@@ -7,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-03 00:32-0500\n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
 "PO-Revision-Date: 2010-02-19 18:36+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -23,135 +27,144 @@ msgstr ""
 msgid "Read ETexts"
 msgstr "اقرأ النصوص"
 
-#: ReadEtextsActivity.py:201
-msgid "Edit"
-msgstr "حرر"
-
-#: ReadEtextsActivity.py:206
-msgid "Read"
-msgstr "اقرأ"
-
-#: ReadEtextsActivity.py:212
-msgid "Books"
-msgstr "كتب"
-
-#: ReadEtextsActivity.py:217
-msgid "View"
-msgstr "عرض"
-
-#: ReadEtextsActivity.py:225
-msgid "Speech"
-msgstr "نطق"
-
-#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
-#: ReadEtextsActivity.py:1046
-msgid "Error"
-msgstr "خطأ"
-
-#: ReadEtextsActivity.py:944
-msgid "You must enter at least one search word."
-msgstr "عليك أن تدخل كلمة للبحث."
-
-#: ReadEtextsActivity.py:994
-msgid "Connection timed out for "
-msgstr "انتهت مهلة الاتصال"
-
-#: ReadEtextsActivity.py:1046
-msgid "Could not download "
-msgstr "تعذّر التنزيل"
-
-#: ReadEtextsActivity.py:1046
-msgid " path in catalog may be incorrect."
-msgstr " المسار في الفهرس قد يكون غير صحيح."
-
-#: ReadEtextsActivity.py:1079
-msgid "Success"
-msgstr "نجاح"
-
-#: ReadEtextsActivity.py:1079
-msgid " added to Journal."
-msgstr " أضيف إلى الدفتر"
-
-#: ReadEtextsActivity.py:1197
-msgid "Failure"
-msgstr "فشل"
-
-#: ReadEtextsActivity.py:1197
-msgid "Error getting document from tube"
-msgstr "فشل الحصول على الملف من القناة"
-
-#: readtoolbar.py:42
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
 msgid "Back"
 msgstr "إلى الخلف"
 
-#: readtoolbar.py:45
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
 msgid "Previous page"
 msgstr "الصفحة السابقة"
 
-#: readtoolbar.py:48
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
 msgid "Previous bookmark"
 msgstr "العلامة السابقة"
 
-#: readtoolbar.py:58
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
 msgid "Forward"
 msgstr "إلى الأمام"
 
-#: readtoolbar.py:61
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
 msgid "Next page"
 msgstr "الصفحة التالية"
 
-#: readtoolbar.py:64
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
 msgid "Next bookmark"
 msgstr "العلامة التالية"
 
-#: readtoolbar.py:113
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
 msgstr "بدّل العلامة"
 
-#: readtoolbar.py:124
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
 msgid "Underline"
 msgstr "تسطير"
 
-#: readtoolbar.py:218
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
 msgstr "بعّد"
 
-#: readtoolbar.py:224
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
 msgstr "قرّب"
 
-#: readtoolbar.py:235
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
 msgid "Fullscreen"
 msgstr "ملء الشاشة"
 
-#: readtoolbar.py:280
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
 msgid "Previous"
 msgstr "السابق"
 
-#: readtoolbar.py:287
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
 msgid "Next"
 msgstr "التالي"
 
-#: readtoolbar.py:339
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
 msgstr "احصل على الكتاب"
 
-#: readtoolbar.py:346
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
 msgid "Remove Results List"
 msgstr "احذف النتائج من القائمة"
 
-#: readtoolbar.py:406
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
 msgid "Play / Pause"
 msgstr "شغّل / ألبِث"
 
-#: readtoolbar.py:456
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
 msgstr "صححت الشدة"
 
-#: readtoolbar.py:460
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
 msgstr "صححت السرعة"
 
-#: readsidebar.py:47
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"
 msgstr "علّم"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr "حرر"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr "اقرأ"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr "كتب"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr "عرض"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr "نطق"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr "خطأ"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr "عليك أن تدخل كلمة للبحث."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr "انتهت مهلة الاتصال"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr "تعذّر التنزيل"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr " المسار في الفهرس قد يكون غير صحيح."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr "نجاح"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr " أضيف إلى الدفتر"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr "فشل"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
+msgstr "فشل الحصول على الملف من القناة"

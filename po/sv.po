@@ -2,72 +2,191 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 18:25-0600\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"PO-Revision-Date: 2010-02-12 06:17+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.1\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
-msgstr ""
+msgstr "ETexter Läsning"
 
-#: ReadEtextsActivity.py:147
-msgid "Edit"
-msgstr ""
-
-#: ReadEtextsActivity.py:152
-msgid "Read"
-msgstr ""
-
-#: ReadEtextsActivity.py:157
-msgid "View"
-msgstr ""
-
-#: ReadEtextsActivity.py:163
-msgid "Speech"
-msgstr ""
-
-#: ReadEtextsActivity.py:228
-msgid "Choose document"
-msgstr ""
-
-#: readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
 msgid "Back"
-msgstr ""
+msgstr "Tillbaka"
 
-#: readtoolbar.py:50
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+msgid "Previous page"
+msgstr "Föregående sida"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+msgid "Previous bookmark"
+msgstr "Föregående bokmärke"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
 msgid "Forward"
-msgstr ""
+msgstr "Framåt"
 
-#: readtoolbar.py:159
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+msgid "Next page"
+msgstr "Följande sida"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+msgid "Next bookmark"
+msgstr "Följande bokmärke"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+msgid "Toggle Bookmark"
+msgstr "Växla bokmärken"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+msgid "Underline"
+msgstr "Strecka under"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
-msgstr ""
+msgstr "Zooma ut"
 
-#: readtoolbar.py:165
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
-msgstr ""
+msgstr "Zooma in"
 
-#: readtoolbar.py:205
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
+msgid "Fullscreen"
+msgstr "Helskärm"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
 msgid "Previous"
-msgstr ""
+msgstr "Föregående"
 
-#: readtoolbar.py:212
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
 msgid "Next"
-msgstr ""
+msgstr "Följande"
 
-#: readtoolbar.py:312
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
+msgid "Get Book"
+msgstr "Hämta bok"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
+msgid "Remove Results List"
+msgstr "Ta bort resultatlista"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
+msgid "Play / Pause"
+msgstr "Spela upp / Pausa"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
-msgstr ""
+msgstr "justerad stämma"
 
-#: readtoolbar.py:316
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
-msgstr ""
+msgstr "justerad hastighet"
+
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
+msgid "Bookmark"
+msgstr "Bokmärke"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr "Redigera"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr "Läs"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr "Böcker"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr "Visa"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr "Tal"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr "Fel"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr "Du måste ange åtminstone ett sökord."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr "Tid för anslutning har gått ut för "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr "Kunde inte ladda ned "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr " sökväg i katalogen kan vara felaktig."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr "Framgång"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr " lagts till i Dagboken."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr "Misslyckades"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
+msgstr "Fel i hämtning av dokument från tub"

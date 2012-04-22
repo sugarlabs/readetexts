@@ -2,12 +2,16 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-03 00:32-0500\n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,135 +24,144 @@ msgstr ""
 msgid "Read ETexts"
 msgstr ""
 
-#: ReadEtextsActivity.py:201
-msgid "Edit"
-msgstr ""
-
-#: ReadEtextsActivity.py:206
-msgid "Read"
-msgstr ""
-
-#: ReadEtextsActivity.py:212
-msgid "Books"
-msgstr ""
-
-#: ReadEtextsActivity.py:217
-msgid "View"
-msgstr ""
-
-#: ReadEtextsActivity.py:225
-msgid "Speech"
-msgstr ""
-
-#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
-#: ReadEtextsActivity.py:1046
-msgid "Error"
-msgstr ""
-
-#: ReadEtextsActivity.py:944
-msgid "You must enter at least one search word."
-msgstr ""
-
-#: ReadEtextsActivity.py:994
-msgid "Connection timed out for "
-msgstr ""
-
-#: ReadEtextsActivity.py:1046
-msgid "Could not download "
-msgstr ""
-
-#: ReadEtextsActivity.py:1046
-msgid " path in catalog may be incorrect."
-msgstr ""
-
-#: ReadEtextsActivity.py:1079
-msgid "Success"
-msgstr ""
-
-#: ReadEtextsActivity.py:1079
-msgid " added to Journal."
-msgstr ""
-
-#: ReadEtextsActivity.py:1197
-msgid "Failure"
-msgstr ""
-
-#: ReadEtextsActivity.py:1197
-msgid "Error getting document from tube"
-msgstr ""
-
-#: readtoolbar.py:42
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
 msgid "Back"
 msgstr ""
 
-#: readtoolbar.py:45
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
 msgid "Previous page"
 msgstr ""
 
-#: readtoolbar.py:48
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
 msgid "Previous bookmark"
 msgstr ""
 
-#: readtoolbar.py:58
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
 msgid "Forward"
 msgstr ""
 
-#: readtoolbar.py:61
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
 msgid "Next page"
 msgstr ""
 
-#: readtoolbar.py:64
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
 msgid "Next bookmark"
 msgstr ""
 
-#: readtoolbar.py:113
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
 msgstr ""
 
-#: readtoolbar.py:124
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
 msgid "Underline"
 msgstr ""
 
-#: readtoolbar.py:218
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
 msgstr ""
 
-#: readtoolbar.py:224
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
 msgstr ""
 
-#: readtoolbar.py:235
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
 msgid "Fullscreen"
 msgstr ""
 
-#: readtoolbar.py:280
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
 msgid "Previous"
 msgstr ""
 
-#: readtoolbar.py:287
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
 msgid "Next"
 msgstr ""
 
-#: readtoolbar.py:339
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
 msgstr ""
 
-#: readtoolbar.py:346
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
 msgid "Remove Results List"
 msgstr ""
 
-#: readtoolbar.py:406
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
 msgid "Play / Pause"
 msgstr ""
 
-#: readtoolbar.py:456
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
 msgstr ""
 
-#: readtoolbar.py:460
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
 msgstr ""
 
-#: readsidebar.py:47
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr ""
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
 msgstr ""

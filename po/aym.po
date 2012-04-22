@@ -1,3 +1,7 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -13,7 +17,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#  "Actividad Leer"
 #: activity/activity.info:2
 msgid "Read ETexts"
 msgstr ""
@@ -54,7 +57,6 @@ msgstr "Jutiri laphi"
 msgid "Next bookmark"
 msgstr "Jutiri chimtaña"
 
-#  "Activar o desactivar marcador"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
@@ -91,27 +93,22 @@ msgstr "Nayrankiri"
 msgid "Next"
 msgstr "Jutiri"
 
-#  "Obtener Libro"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
 msgstr ""
 
-#  "Eliminar lista de resultados"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
 msgid "Remove Results List"
 msgstr ""
 
-#  "Reproducir / Pausa"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
 msgid "Play / Pause"
 msgstr ""
 
-#  "tono ajustado"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
 msgstr ""
 
-#  "velocidad ajustada"
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
 msgstr ""
@@ -131,7 +128,6 @@ msgstr "Chiqachaña"
 msgid "Read"
 msgstr "Ullaña"
 
-#  "Libros"
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
 msgid "Books"
 msgstr ""
@@ -141,7 +137,6 @@ msgstr ""
 msgid "View"
 msgstr "Unjaña"
 
-#  "Habla"
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
 msgid "Speech"
 msgstr ""
@@ -153,42 +148,34 @@ msgstr ""
 msgid "Error"
 msgstr "Pantjata"
 
-#  "Debes introducir al menos una palabra en la búsqueda."
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
 msgid "You must enter at least one search word."
 msgstr ""
 
-#  "Intento de coneccion terminado para "
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
 msgid "Connection timed out for "
 msgstr ""
 
-#  "No se pudo descargar "
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
 msgid "Could not download "
 msgstr ""
 
-#  " ruta en el catálogo puede ser incorrecta."
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
 msgid " path in catalog may be incorrect."
 msgstr ""
 
-#  "Éxito"
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
 msgid "Success"
 msgstr ""
 
-#  " añadido al Diario."
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
 msgid " added to Journal."
 msgstr ""
 
-#  "Error"
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
 msgid "Failure"
 msgstr ""
 
-#  "Error al obtener el documento de tubo"
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
 msgid "Error getting document from tube"
 msgstr ""

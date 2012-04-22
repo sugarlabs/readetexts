@@ -58,150 +58,159 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-03 00:32-0500\n"
-"PO-Revision-Date: 2010-11-03 20:02+0200\n"
-"Last-Translator: FlowerPowerGirl <o.parczyk@online.de>\n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"PO-Revision-Date: 2011-10-15 04:37+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
 msgstr "Lese-Aktivitäten"
 
-#: ReadEtextsActivity.py:201
-msgid "Edit"
-msgstr "Bearbeiten"
-
-#: ReadEtextsActivity.py:206
-msgid "Read"
-msgstr "Lesen"
-
-#: ReadEtextsActivity.py:212
-msgid "Books"
-msgstr "Bücher"
-
-#: ReadEtextsActivity.py:217
-msgid "View"
-msgstr "Ansehen"
-
-#: ReadEtextsActivity.py:225
-msgid "Speech"
-msgstr "Sprache"
-
-#: ReadEtextsActivity.py:944 ReadEtextsActivity.py:994
-#: ReadEtextsActivity.py:1046
-msgid "Error"
-msgstr "Fehler"
-
-#: ReadEtextsActivity.py:944
-msgid "You must enter at least one search word."
-msgstr "Du must mindestens ein Wort eingeben"
-
-#: ReadEtextsActivity.py:994
-msgid "Connection timed out for "
-msgstr "Die Verbindung wurde unterbrochen für "
-
-#: ReadEtextsActivity.py:1046
-msgid "Could not download "
-msgstr " konnte nicht heruntergeladen werden."
-
-#: ReadEtextsActivity.py:1046
-msgid " path in catalog may be incorrect."
-msgstr "  Weg im Katalog kann falsch sein."
-
-#: ReadEtextsActivity.py:1079
-msgid "Success"
-msgstr "Erfolg"
-
-#: ReadEtextsActivity.py:1079
-msgid " added to Journal."
-msgstr " wurde zum Tagebuch hinzugefügt."
-
-#: ReadEtextsActivity.py:1197
-msgid "Failure"
-msgstr "Ausfall"
-
-#: ReadEtextsActivity.py:1197
-msgid "Error getting document from tube"
-msgstr "Fehler beim Abrufen von Dokumenten aus dem Rohr."
-
-#: readtoolbar.py:42
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
 msgid "Back"
 msgstr "Zurück"
 
-#: readtoolbar.py:45
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
 msgid "Previous page"
 msgstr "Voherige Seite"
 
-#: readtoolbar.py:48
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
 msgid "Previous bookmark"
 msgstr "Voheriges Lesezeichen"
 
-#: readtoolbar.py:58
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
 msgid "Forward"
 msgstr "Weiter"
 
-#: readtoolbar.py:61
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
 msgid "Next page"
 msgstr "Nächste Seite"
 
-#: readtoolbar.py:64
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
 msgid "Next bookmark"
 msgstr "Nächstes Lesezeichen"
 
-#: readtoolbar.py:113
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
 msgid "Toggle Bookmark"
 msgstr "Lesezeichen umschalten"
 
-#: readtoolbar.py:124
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
 msgid "Underline"
 msgstr "unterstreichen"
 
-#: readtoolbar.py:218
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
 msgid "Zoom out"
 msgstr "Verkleinern"
 
-#: readtoolbar.py:224
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
 msgid "Zoom in"
 msgstr "Vergrößern"
 
-#: readtoolbar.py:235
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
 msgid "Fullscreen"
 msgstr "Vollbild"
 
-#: readtoolbar.py:280
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
 msgid "Previous"
 msgstr "Vorheriges"
 
-#: readtoolbar.py:287
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
 msgid "Next"
 msgstr "Nächstes"
 
-#: readtoolbar.py:339
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
 msgstr "Buch erhalten"
 
-#: readtoolbar.py:346
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
 msgid "Remove Results List"
 msgstr "Ergebnisliste entfernen"
 
-#: readtoolbar.py:406
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
 msgid "Play / Pause"
 msgstr "Abspielen, Pause"
 
-#: readtoolbar.py:456
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
 msgid "pitch adjusted"
 msgstr "Tonhöhe eingestellt"
 
-#: readtoolbar.py:460
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
 msgid "rate adjusted"
 msgstr "Geschwindigkeit eingestellt"
 
-#: readsidebar.py:47
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
 msgid "Bookmark"
 msgstr "Lesezeichen"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr "Lesen"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr "Bücher"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr "Ansehen"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr "Sprache"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr "Fehler"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr "Du must mindestens ein Wort eingeben."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr "Die Verbindung wurde unterbrochen für "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr "konnte nicht heruntergeladen werden "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr " Weg im Katalog kann falsch sein."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr "Erfolg"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr " wurde zum Tagebuch hinzugefügt."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr "Ausfall"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
+msgstr "Fehler beim Abrufen von Dokumenten aus dem Rohr"

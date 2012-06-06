@@ -35,7 +35,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2011-04-04 11:38+0200\n"
+"PO-Revision-Date: 2012-05-22 00:43+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: id\n"
@@ -43,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #: activity/activity.info:2
 msgid "Read ETexts"
@@ -56,13 +56,15 @@ msgstr ""
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+#, fuzzy
 msgid "Previous page"
-msgstr ""
+msgstr "Halaman sebelumnya"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+#, fuzzy
 msgid "Previous bookmark"
-msgstr ""
+msgstr "Alamat sebelumnya"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
@@ -71,13 +73,15 @@ msgstr ""
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+#, fuzzy
 msgid "Next page"
-msgstr ""
+msgstr "Halaman selanjutnya"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+#, fuzzy
 msgid "Next bookmark"
-msgstr ""
+msgstr "Alamat selanjutnya"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
@@ -86,28 +90,34 @@ msgstr ""
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+#, fuzzy
 msgid "Underline"
-msgstr ""
+msgstr "Garis bawah"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
+#, fuzzy
 msgid "Zoom out"
-msgstr ""
+msgstr "Perkecil"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
+#, fuzzy
 msgid "Zoom in"
-msgstr ""
+msgstr "Perbesar"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
+#, fuzzy
 msgid "Fullscreen"
-msgstr ""
+msgstr "Layar Penuh"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
+#, fuzzy
 msgid "Previous"
-msgstr ""
+msgstr "Sebelumnya"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
+#, fuzzy
 msgid "Next"
-msgstr ""
+msgstr "Selanjutnya"
 
 #: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
 msgid "Get Book"
@@ -130,24 +140,28 @@ msgid "rate adjusted"
 msgstr ""
 
 #: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
+#, fuzzy
 msgid "Bookmark"
-msgstr ""
+msgstr "Alamat"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
 msgid "Edit"
 msgstr "Sunting"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+#, fuzzy
 msgid "Read"
-msgstr ""
+msgstr "Baca"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+#, fuzzy
 msgid "Books"
-msgstr ""
+msgstr "Buku"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+#, fuzzy
 msgid "View"
-msgstr ""
+msgstr "Tampilan"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
 msgid "Speech"
@@ -156,8 +170,9 @@ msgstr ""
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#, fuzzy
 msgid "Error"
-msgstr ""
+msgstr "Galat"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
 msgid "You must enter at least one search word."
@@ -184,8 +199,9 @@ msgid " added to Journal."
 msgstr ""
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#, fuzzy
 msgid "Failure"
-msgstr ""
+msgstr "Gagal"
 
 #: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
 msgid "Error getting document from tube"

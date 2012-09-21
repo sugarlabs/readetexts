@@ -1,0 +1,164 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"PO-Revision-Date: 2012-09-21 11:19+0200\n"
+"Last-Translator: hariru <hariruroa@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: mi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: activity/activity.info:2
+msgid "Read ETexts"
+msgstr "Kuputuhi Hiko kua pānuitia"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
+msgid "Back"
+msgstr "Whakamuri"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+msgid "Previous page"
+msgstr "Whārangi tōmua"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+msgid "Previous bookmark"
+msgstr "Tohuwāhi tōmua"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
+msgid "Forward"
+msgstr "Whakamua"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+msgid "Next page"
+msgstr "Whārangi panuku"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+msgid "Next bookmark"
+msgstr "Tohuwāhi panuku"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+msgid "Toggle Bookmark"
+msgstr "Takahuri Tohuwāhi"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+msgid "Underline"
+msgstr "Tāraro"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
+msgid "Zoom out"
+msgstr "Topa atu"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
+msgid "Zoom in"
+msgstr "Topa mai"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
+msgid "Fullscreen"
+msgstr "Matakatoa"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
+msgid "Previous"
+msgstr "Tōmua"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
+msgid "Next"
+msgstr "Panuku"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
+msgid "Get Book"
+msgstr "Tiki Pukapuka"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
+msgid "Remove Results List"
+msgstr "Tango Rārangi Hua"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
+msgid "Play / Pause"
+msgstr "Pūrei / Tatari"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
+msgid "pitch adjusted"
+msgstr "whakarite rangi"
+
+#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
+msgid "rate adjusted"
+msgstr "whakarite mokatere"
+
+#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
+msgid "Bookmark"
+msgstr "Tohuwāhi"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
+msgid "Edit"
+msgstr "Whakatika"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
+msgid "Read"
+msgstr "Pānui"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
+msgid "Books"
+msgstr "Ngā Pukapuka"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
+msgid "View"
+msgstr "Tiro"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
+msgid "Speech"
+msgstr "Whaikōrero"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Error"
+msgstr "Hapa"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+msgid "You must enter at least one search word."
+msgstr "Me tāuru kupu rapu."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+msgid "Connection timed out for "
+msgstr "I momotu te hononga mō "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid "Could not download "
+msgstr "Kāore i taea te tikiake "
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+msgid " path in catalog may be incorrect."
+msgstr " kei te hē pea te ara i roto i te putumōhio."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid "Success"
+msgstr "Angitū"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+msgid " added to Journal."
+msgstr " kua tāpiri ki te Tuhitaka."
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Failure"
+msgstr "Rahunga"
+
+#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+msgid "Error getting document from tube"
+msgstr "I hapa te tiki i te tuhinga mai i te pū"

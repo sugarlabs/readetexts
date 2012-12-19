@@ -20,35 +20,27 @@ import re
 import logging
 import time
 import zipfile
-import pygtk
-pygtk.require('2.0')
-import gtk
-from sugar.graphics import style
-from sugar import profile
-from sugar.activity import activity
-from sugar import network
-from sugar.datastore import datastore
-from sugar.graphics.alert import NotifyAlert
-
-_NEW_TOOLBAR_SUPPORT = True
-try:
-    from sugar.graphics.toolbarbox import ToolbarBox
-    from sugar.graphics.toolbarbox import ToolbarButton
-    from sugar.activity.widgets import StopButton
-    from readtoolbar import ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
-    from sugar.graphics.toolbutton import ToolButton
-    from sugar.graphics.menuitem import MenuItem
-    from sugar.graphics.toggletoolbutton import ToggleToolButton
-    from mybutton import MyActivityToolbarButton
-except:
-    _NEW_TOOLBAR_SUPPORT = False
-    from readtoolbar import ReadToolbar, ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
-
+from gi.repository import Gtk
+from gi.repository import Gdk
+from sugar3.graphics import style
+from sugar3 import profile
+from sugar3.activity import activity
+from sugar3 import network
+from sugar3.datastore import datastore
+from sugar3.graphics.alert import NotifyAlert
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.graphics.toolbarbox import ToolbarButton
+from sugar3.activity.widgets import StopButton
+from readtoolbar import ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.graphics.menuitem import MenuItem
+from sugar3.graphics.toggletoolbutton import ToggleToolButton
+from mybutton import MyActivityToolbarButton
 from readsidebar import Sidebar
 from gettext import gettext as _
-import pango
+from gi.repository import Pango
 import dbus
-import gobject
+from gi.repository import GObject
 import telepathy
 import cPickle as pickle
 
@@ -187,7 +179,7 @@ READ_STREAM_SERVICE = 'read-activity-http'
 class ReadEtextsActivity(activity.Activity):
     def __init__(self, handle):
         "The entry point to the Activity"
-        gtk.gdk.threads_init()
+        Gdk.threads_init()
         self.current_word = 0
         self.word_tuples = []
         
@@ -198,38 +190,33 @@ class ReadEtextsActivity(activity.Activity):
         self.object_id = handle.object_id
         self.extra_journal_entry = None
        
-        if _NEW_TOOLBAR_SUPPORT:
-            self.create_new_toolbar()
-        else:
-            self.create_old_toolbar()
+        self.create_new_toolbar()
+        self.scrolled = Gtk.ScrolledWindow()
+        self.scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
-        self.scrolled = gtk.ScrolledWindow()
-        self.scrolled.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        self.scrolled.props.shadow_type = gtk.SHADOW_NONE
-
-        self.textview = gtk.TextView()
+        self.textview = Gtk.TextView()
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
         self.textview.set_left_margin(50)
         self.textview.set_right_margin(50)
-        self.textview.set_wrap_mode(gtk.WRAP_WORD)
+        self.textview.set_wrap_mode(Gtk.WrapMode.WORD)
         self.textview.connect("key_press_event", self.keypress_cb)
 
-        self.annotation_textview = gtk.TextView()
+        self.annotation_textview = Gtk.TextView()
         self.annotation_textview.set_left_margin(50)
         self.annotation_textview.set_right_margin(50)
-        self.annotation_textview.set_wrap_mode(gtk.WRAP_WORD)
+        self.annotation_textview.set_wrap_mode(Gtk.WrapMode.WORD)
 
         if os.path.exists(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt')):
             f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'r')
             line = f.readline()
             fontsize = int(line.strip())
-            self.font_desc = pango.FontDescription("monospace %d" % style.zoom(fontsize))
-            # self.font_desc = pango.FontDescription("sans %d" % style.zoom(fontsize))
+            self.font_desc = Pango.FontDescription("monospace %d" % style.zoom(fontsize))
+            # self.font_desc = Pango.FontDescription("sans %d" % style.zoom(fontsize))
             f.close()
         else:
             print 'no font size found'
-            self.font_desc = pango.FontDescription("monospace %d" % style.zoom(10))
+            self.font_desc = Pango.FontDescription("monospace %d" % style.zoom(10))
         buffer = self.textview.get_buffer()
         self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
         self.textview.modify_font(self.font_desc)
@@ -238,39 +225,38 @@ class ReadEtextsActivity(activity.Activity):
         self.textview.show()
         self.scrolled.show()
         v_adjustment = self.scrolled.get_vadjustment()
-        self.clipboard = gtk.Clipboard(display=gtk.gdk.display_get_default(), selection="CLIPBOARD")
+        self.clipboard = Gtk.Clipboard()
         self.page = 0
         self.textview.grab_focus()
 
-        self.ls = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING)
-        tv = gtk.TreeView(self.ls)
+        self.ls = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_STRING)
+        tv = Gtk.TreeView(self.ls)
         tv.set_rules_hint(True)
         tv.set_search_column(COLUMN_TITLE)
         selection = tv.get_selection()
-        selection.set_mode(gtk.SELECTION_SINGLE)
+        selection.set_mode(Gtk.SelectionMode.SINGLE)
         selection.connect("changed", self.selection_cb)
-        renderer = gtk.CellRendererText()
-        col = gtk.TreeViewColumn('Title', renderer, text=COLUMN_TITLE)
+        renderer = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn('Title', renderer, text=COLUMN_TITLE)
         col.set_sort_column_id(COLUMN_TITLE)
         tv.append_column(col)
     
-        renderer = gtk.CellRendererText()
-        col = gtk.TreeViewColumn('Author', renderer, text=COLUMN_AUTHOR)
+        renderer = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn('Author', renderer, text=COLUMN_AUTHOR)
         col.set_sort_column_id(COLUMN_AUTHOR)
         tv.append_column(col)
 
-        self.list_scroller = gtk.ScrolledWindow(hadjustment=None, vadjustment=None)
-        self.list_scroller.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.list_scroller = Gtk.ScrolledWindow(hadjustment=None, vadjustment=None)
+        self.list_scroller.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         self.list_scroller.add(tv)
         
-        self.progressbar = gtk.ProgressBar()
-        self.progressbar.set_orientation(gtk.PROGRESS_LEFT_TO_RIGHT)
+        self.progressbar = Gtk.ProgressBar()
         self.progressbar.set_fraction(0.0)
         
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
         vbox.pack_start(self.progressbar,  False,  False,  10)
-        vbox.pack_start(self.scrolled)
-        vbox.pack_end(self.list_scroller)
+        vbox.pack_start(self.scrolled, True, True, 0)
+        vbox.pack_end(self.list_scroller, True, True, 0)
         vbox.pack_end(self.annotation_textview,  False,  False,  10)
         tv.show()
         vbox.show()
@@ -280,17 +266,17 @@ class ReadEtextsActivity(activity.Activity):
         self.sidebar = Sidebar()
         self.sidebar.show()
 
-        sidebar_hbox = gtk.HBox()
-        sidebar_hbox.pack_start(self.sidebar, expand=False, fill=False)
-        sidebar_hbox.pack_start(vbox,  expand=True, fill=True)
+        sidebar_hbox = Gtk.HBox()
+        sidebar_hbox.pack_start(self.sidebar, False, False, 0)
+        sidebar_hbox.pack_start(vbox, True, True, 0)
         self.set_canvas(sidebar_hbox)
         sidebar_hbox.show()
 
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
-        self.tag.set_property('weight', pango.WEIGHT_BOLD)
+        self.tag.set_property('weight', Pango.Weight.BOLD)
         self.normal_tag = textbuffer.create_tag()
-        self.normal_tag.set_property('weight',  pango.WEIGHT_NORMAL)
+        self.normal_tag.set_property('weight',  Pango.Weight.NORMAL)
 
         self.underline_tag = textbuffer.create_tag()
         self.underline_tag.set_property('underline', 'single')
@@ -321,7 +307,7 @@ class ReadEtextsActivity(activity.Activity):
 
         self.is_received_document = False
         
-        if self._shared_activity and handle.object_id == None:
+        if self.shared_activity and handle.object_id == None:
             # We're joining, and we don't already have the document.
             if self.get_shared():
                 # Already joined for some reason, just get the document
@@ -347,56 +333,6 @@ class ReadEtextsActivity(activity.Activity):
 
         speech.highlight_cb = self.highlight_next_word
         speech.reset_cb = self.reset_play_button
-
-    def create_old_toolbar(self):
-        toolbox = activity.ActivityToolbox(self)
-        activity_toolbar = toolbox.get_activity_toolbar()
-        activity_toolbar.remove(activity_toolbar.keep)
-        activity_toolbar.keep = None
-        self.set_toolbox(toolbox)
-
-        self.edit_toolbar = EditToolbar()
-        self.edit_toolbar.undo.props.visible = False
-        self.edit_toolbar.redo.props.visible = False
-        self.edit_toolbar.separator.props.visible = False
-        self.edit_toolbar.copy.set_sensitive(False)
-        self.edit_toolbar.copy.connect('clicked', self.edit_toolbar_copy_cb)
-        self.edit_toolbar.paste.props.visible = False
-        toolbox.add_toolbar(_('Edit'), self.edit_toolbar)
-        self.edit_toolbar.set_activity(self)
-        self.edit_toolbar.show()
-
-        self.read_toolbar = ReadToolbar()
-        toolbox.add_toolbar(_('Read'), self.read_toolbar)
-        self.read_toolbar.set_activity(self)
-        self.read_toolbar.show()
-
-        if not self._shared_activity and self.object_id is None:
-            self.books_toolbar = BooksToolbar()
-            toolbox.add_toolbar(_('Books'), self.books_toolbar)
-            self.books_toolbar.set_activity(self)
-            self.books_toolbar.show()
-
-        self.view_toolbar = ViewToolbar()
-        toolbox.add_toolbar(_('View'), self.view_toolbar)
-        self.view_toolbar.connect('go-fullscreen',
-                self.view_toolbar_go_fullscreen_cb)
-        self.view_toolbar.set_activity(self)
-        self.view_toolbar.show()
-
-        if speech.supported:
-            self.speech_toolbar = SpeechToolbar()
-            toolbox.add_toolbar(_('Speech'), self.speech_toolbar)
-            self.speech_toolbar.set_activity(self)
-            self.speech_toolbar.show()
-
-        toolbox.show()
-        # start on the read toolbar
-        if self.object_id is None:
-            # Not joining, not resuming
-            self.toolbox.set_current_toolbar(TOOLBAR_BOOKS)
-        else:
-            self.toolbox.set_current_toolbar(TOOLBAR_READ)
  
     def create_new_toolbar(self):
         toolbar_box = ToolbarBox()
@@ -421,7 +357,7 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(edit_toolbar_button, -1)
         edit_toolbar_button.show()
 
-        if not self._shared_activity and self.object_id is None:
+        if not self.shared_activity and self.object_id is None:
             self.books_toolbar = BooksToolbar()
             self.books_toolbar.set_activity(self)
             self.books_toolbar.show()
@@ -480,8 +416,8 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(self.forward, -1)
         self.forward.show()
 
-        num_page_item = gtk.ToolItem()
-        self.num_page_entry = gtk.Entry()
+        num_page_item = Gtk.ToolItem()
+        self.num_page_entry = Gtk.Entry()
         self.num_page_entry.set_text('0')
         self.num_page_entry.set_alignment(1)
         self.num_page_entry.connect('insert-text',
@@ -494,14 +430,9 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(num_page_item, -1)
         num_page_item.show()
 
-        total_page_item = gtk.ToolItem()
-        self.total_page_label = gtk.Label()
-
-        label_attributes = pango.AttrList()
-        label_attributes.insert(pango.AttrSize(14000, 0, -1))
-        label_attributes.insert(pango.AttrForeground(65535, 65535, 
-                                                     65535, 0, -1))
-        self.total_page_label.set_attributes(label_attributes)
+        total_page_item = Gtk.ToolItem()
+        self.total_page_label = Gtk.Label()
+        self.total_page_label.set_markup("<span foreground='black' size='14000'>")
 
         self.total_page_label.set_text(' / 0')
         total_page_item.add(self.total_page_label)
@@ -509,11 +440,11 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(total_page_item, -1)
         total_page_item.show()
 
-        spacer = gtk.SeparatorToolItem()
+        spacer = Gtk.SeparatorToolItem()
         toolbar_box.toolbar.insert(spacer, -1)
         spacer.show()
   
-        bookmarkitem = gtk.ToolItem()
+        bookmarkitem = Gtk.ToolItem()
         self.bookmarker = ToggleToolButton('emblem-favorite')
         self.bookmarker.set_tooltip(_('Toggle Bookmark'))
         self.bookmarker_handler_id = self.bookmarker.connect('clicked',
@@ -524,7 +455,7 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(bookmarkitem, -1)
         bookmarkitem.show_all()
 
-        underline_item = gtk.ToolItem()
+        underline_item = Gtk.ToolItem()
         self.underline = ToggleToolButton('format-text-underline')
         self.underline.set_tooltip(_('Underline'))
         self.underline.props.sensitive = False
@@ -533,7 +464,7 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(underline_item, -1)
         underline_item.show_all()
 
-        separator = gtk.SeparatorToolItem()
+        separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
         separator.set_expand(True)
         toolbar_box.toolbar.insert(separator, -1)
@@ -639,19 +570,16 @@ class ReadEtextsActivity(activity.Activity):
             textbuffer.apply_tag(self.normal_tag,  bounds[0], iterStart)
             textbuffer.apply_tag(self.tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
-            max = v_adjustment.upper - v_adjustment.page_size
+            max = v_adjustment.get_upper() - v_adjustment.get_page_size()
             max = max * word_count
             max = max / len(self.word_tuples)
-            v_adjustment.value = max
+            v_adjustment.set_value(max)
             self.current_word = word_count
         return True
 
     def mark_set_cb(self, textbuffer, iter, textmark):
-        if _NEW_TOOLBAR_SUPPORT:
-            self.update_underline_button(False) 
-        else:
-            self.read_toolbar.update_underline_button(False) 
-
+        self.update_underline_button(False) 
+        
         if textbuffer.get_has_selection():
             begin, end = textbuffer.get_selection_bounds()
             underline_tuple = [begin.get_offset(),  end.get_offset()]
@@ -660,10 +588,7 @@ class ReadEtextsActivity(activity.Activity):
             while count < len(tuples_list) :
                 compare_tuple = tuples_list[count]
                 if underline_tuple[0] >= compare_tuple[0] and underline_tuple[1] <= compare_tuple[1]:
-                    if _NEW_TOOLBAR_SUPPORT:
-                        self.update_underline_button(True) 
-                    else:
-                        self.read_toolbar.update_underline_button(True) 
+                    self.update_underline_button(True) 
                     textbuffer.handler_block(self.markset_id)
                     iterStart = textbuffer.get_iter_at_offset(compare_tuple[0])
                     iterEnd = textbuffer.get_iter_at_offset(compare_tuple[1])
@@ -673,16 +598,11 @@ class ReadEtextsActivity(activity.Activity):
                 count = count + 1
 
             self.edit_toolbar.copy.set_sensitive(True)
-            if _NEW_TOOLBAR_SUPPORT:
-                self.underline.props.sensitive = True
-            else:
-                self.read_toolbar.underline.props.sensitive = True
+            self.underline.props.sensitive = True
+
         else:
             self.edit_toolbar.copy.set_sensitive(False)
-            if _NEW_TOOLBAR_SUPPORT:
-                self.underline.props.sensitive = False
-            else:
-                self.read_toolbar.underline.props.sensitive = False
+            self.underline.props.sensitive = False
 
     def edit_toolbar_copy_cb(self, button):
         textbuffer = self.textview.get_buffer()
@@ -694,7 +614,7 @@ class ReadEtextsActivity(activity.Activity):
         self.fullscreen()
 
     def hide_table_keypress_cb(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = Gdk.keyval_name(event.keyval)
         if keyname == 'Escape':
             self.list_scroller.hide()
             return True
@@ -704,7 +624,7 @@ class ReadEtextsActivity(activity.Activity):
         "Respond when the user presses one of the arrow keys"
         if xopower.service_activated:
             xopower.reset_sleep_timer()
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = Gdk.keyval_name(event.keyval)
         if keyname == 'KP_End' and speech.supported:
             play = self.speech_toolbar.play_btn
             play.set_active(int(not play.get_active()))
@@ -752,17 +672,10 @@ class ReadEtextsActivity(activity.Activity):
         bookmark = self.annotations.is_bookmarked(self.page)
         if bookmark:
             self.sidebar.show_bookmark_icon(True)
-            if _NEW_TOOLBAR_SUPPORT:
-                self.update_bookmark_button(True)
-            else:
-                self.read_toolbar.update_bookmark_button(True)
+            self.update_bookmark_button(True)
         else:
             self.sidebar.show_bookmark_icon(False)
-            if _NEW_TOOLBAR_SUPPORT:
-                self.update_bookmark_button(False)
-            else:
-                self.read_toolbar.update_bookmark_button(False)
-
+            self.update_bookmark_button(False)
     def underline_clicked(self,  button):
         tuples_list =  self.annotations.get_highlights(self.page)
         buffer = self.textview.get_buffer()
@@ -811,21 +724,14 @@ class ReadEtextsActivity(activity.Activity):
             if bookmarks[count] < self.page:
                 self.page = bookmarks[count]
                 self.show_page(self.page)
-                if _NEW_TOOLBAR_SUPPORT:
-                    self.set_current_page(self.page)
-                else:
-                    self.read_toolbar.set_current_page(self.page)
+                self.set_current_page(self.page)
                 return
             count = count - 1
         # if we're before the first bookmark wrap to the last.
         if len(bookmarks) > 0:
             self.page = bookmarks[len(bookmarks) - 1]
             self.show_page(self.page)
-            if _NEW_TOOLBAR_SUPPORT:
-                self.set_current_page(self.page)
-            else:
-                self.read_toolbar.set_current_page(self.page)
-
+            self.set_current_page(self.page)
     def next_bookmark(self):
         bookmarks = self.annotations.get_bookmarks()
         count = 0
@@ -833,20 +739,14 @@ class ReadEtextsActivity(activity.Activity):
             if bookmarks[count] > self.page:
                 self.page = bookmarks[count]
                 self.show_page(self.page)
-                if _NEW_TOOLBAR_SUPPORT:
-                    self.set_current_page(self.page)
-                else:
-                    self.read_toolbar.set_current_page(self.page)
+                self.set_current_page(self.page)
                 return
             count = count + 1
         # if we're after the last bookmark wrap to the first.
         if len(bookmarks) > 0:
             self.page = bookmarks[0]
             self.show_page(self.page)
-            if _NEW_TOOLBAR_SUPPORT:
-                self.set_current_page(self.page)
-            else:
-                self.read_toolbar.set_current_page(self.page)
+            self.set_current_page(self.page)
 
     def page_next(self):
         textbuffer = self.annotation_textview.get_buffer()
@@ -855,11 +755,8 @@ class ReadEtextsActivity(activity.Activity):
         if self.page >= len(self.page_index): self.page=len(self.page_index) - 1
         self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
-        v_adjustment.value = v_adjustment.lower
-        if _NEW_TOOLBAR_SUPPORT:
-            self.set_current_page(self.page)
-        else:
-            self.read_toolbar.set_current_page(self.page)
+        v_adjustment.set_value(v_adjustment.get_lower())
+        self.set_current_page(self.page)
 
     def page_previous(self):
         textbuffer = self.annotation_textview.get_buffer()
@@ -868,11 +765,9 @@ class ReadEtextsActivity(activity.Activity):
         if self.page < 0: self.page=0
         self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
-        v_adjustment.value = v_adjustment.upper - v_adjustment.page_size
-        if _NEW_TOOLBAR_SUPPORT:
-            self.set_current_page(self.page)
-        else:
-            self.read_toolbar.set_current_page(self.page)
+        v_adjustment.set_value(v_adjustment.get_upper() - \
+                               v_adjustment.get_page_size())
+        self.set_current_page(self.page)
 
     def font_decrease(self):
         font_size = self.font_desc.get_size() / 1024
@@ -902,32 +797,29 @@ class ReadEtextsActivity(activity.Activity):
             
     def scroll_down(self):
         v_adjustment = self.scrolled.get_vadjustment()
-        if v_adjustment.value == v_adjustment.upper - v_adjustment.page_size:
+        if v_adjustment.get_value() == v_adjustment.get_upper() - v_adjustment.get_page_size():
             self.page_next()
             return
-        if v_adjustment.value < v_adjustment.upper - v_adjustment.page_size:
-            new_value = v_adjustment.value + v_adjustment.step_increment
-            if new_value > v_adjustment.upper - v_adjustment.page_size:
-                new_value = v_adjustment.upper - v_adjustment.page_size
-            v_adjustment.value = new_value
+        if v_adjustment.get_value() < v_adjustment.get_upper() - v_adjustment.get_page_size():
+            new_value = v_adjustment.get_value() + v_adjustment.step_increment
+            if new_value > v_adjustment.get_upper() - v_adjustment.get_page_size():
+                new_value = v_adjustment.get_upper() - v_adjustment.get_page_size()
+            v_adjustment.set_value(new_value)
 
     def scroll_up(self):
         v_adjustment = self.scrolled.get_vadjustment()
-        if v_adjustment.value == v_adjustment.lower:
+        if v_adjustment.get_value() == v_adjustment.get_lower():
             self.page_previous()
             return
-        if v_adjustment.value > v_adjustment.lower:
-            new_value = v_adjustment.value - v_adjustment.step_increment
-            if new_value < v_adjustment.lower:
-                new_value = v_adjustment.lower
-            v_adjustment.value = new_value
+        if v_adjustment.get_value() > v_adjustment.get_lower():
+            new_value = v_adjustment.get_value() - v_adjustment.step_increment
+            if new_value < v_adjustment.get_lower():
+                new_value = v_adjustment.get_lower()
+            v_adjustment.set_value(new_value)
 
     def set_current_page(self, page):
         self.current_page = page
-        if _NEW_TOOLBAR_SUPPORT:
-            self.update_nav_buttons()
-        else:
-            self.read_toolbar.update_nav_buttons()
+        self.update_nav_buttons()
         self.page = page
 
     def show_page(self, page_number):
@@ -1143,12 +1035,8 @@ class ReadEtextsActivity(activity.Activity):
             
         self.get_saved_page_number()
         self.show_page(self.page)
-        if _NEW_TOOLBAR_SUPPORT:
-            self.set_total_pages(pagecount + 1)
-            self.set_current_page(self.page)
-        else:
-            self.read_toolbar.set_total_pages(pagecount + 1)
-            self.read_toolbar.set_current_page(self.page)
+        self.set_total_pages(pagecount + 1)
+        self.set_current_page(self.page)
         self.edit_toolbar.enable_search(True)
         if filename.endswith(".zip"):
             os.remove(current_file_name)
@@ -1252,7 +1140,7 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller_visible = False
         self.book_selected = False
         self.ls.clear()
-        search_tuple = search_text.lower().split()
+        search_tuple = search_text.get_lower()().split()
         if len(search_tuple) == 0:
             self.alert(_('Error'), _('You must enter at least one search word.'))
             self.books_toolbar.search_entry.grab_focus()
@@ -1262,7 +1150,7 @@ class ReadEtextsActivity(activity.Activity):
             line = unicode(f.readline(), "iso-8859-1")
             if not line:
                 break
-            line_lower = line.lower()
+            line_lower = line.get_lower()()
             i = 0
             words_found = 0
             while i < len(search_tuple):
@@ -1284,13 +1172,13 @@ class ReadEtextsActivity(activity.Activity):
         self.books_toolbar.enable_button(False)
         self.list_scroller.props.sensitive = False
         if self.selected_path.startswith('PGA'):
-            gobject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  \
+            GObject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  \
                              self.get_book_result_cb)
         elif self.selected_path.startswith('/etext'):
-            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  \
+            GObject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  \
                              self.get_old_book_result_cb)
         else:
-            gobject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  \
+            GObject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  \
                              self.get_iso_book_result_cb)
         
     def download_book(self,  url,  result_cb):
@@ -1340,10 +1228,10 @@ class ReadEtextsActivity(activity.Activity):
                           bytes_downloaded)
         total = self.download_content_length
         self.set_downloaded_bytes(bytes_downloaded,  total)
-        gtk.gdk.threads_enter()
-        while gtk.events_pending():
-            gtk.main_iteration()
-        gtk.gdk.threads_leave()
+        Gdk.threads_enter()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        Gdk.threads_leave()
 
     def set_downloaded_bytes(self, bytes,  total):
         fraction = float(bytes) / float(total)
@@ -1397,10 +1285,7 @@ class ReadEtextsActivity(activity.Activity):
             self.current_found_item = 0
         current_found_tuple = self.found_records[self.current_found_item]
         self.page = current_found_tuple[0]
-        if _NEW_TOOLBAR_SUPPORT:
-            self.set_current_page(self.page)
-        else:
-            self.read_toolbar.set_current_page(self.page)
+        self.set_current_page(self.page)
         self.show_found_page(current_found_tuple)
 
     def find_next(self):
@@ -1409,10 +1294,7 @@ class ReadEtextsActivity(activity.Activity):
             self.current_found_item = len(self.found_records) - 1
         current_found_tuple = self.found_records[self.current_found_item]
         self.page = current_found_tuple[0]
-        if _NEW_TOOLBAR_SUPPORT:
-            self.set_current_page(self.page)
-        else:
-            self.read_toolbar.set_current_page(self.page)
+        self.set_current_page(self.page)
         self.show_found_page(current_found_tuple)
     
     def can_find_previous(self):
@@ -1439,7 +1321,7 @@ class ReadEtextsActivity(activity.Activity):
                 break
             line_increment = (len(line) / 80) + 1
             linecount = linecount + line_increment
-            positions = self.allindices(line.lower(), search_text.lower())
+            positions = self.allindices(line.get_lower()(), search_text.get_lower()())
             for position in positions:
                 found_pos = charcount + position + 3
                 found_tuple = (pagecount, found_pos, len(search_text) + found_pos)
@@ -1453,10 +1335,7 @@ class ReadEtextsActivity(activity.Activity):
         if self.current_found_item == 0:
             current_found_tuple = self.found_records[self.current_found_item]
             self.page = current_found_tuple[0]
-            if _NEW_TOOLBAR_SUPPORT:
-                self.set_current_page(self.page)
-            else:
-                self.read_toolbar.set_current_page(self.page)
+            self.set_current_page(self.page)
             self.show_found_page(current_found_tuple)
 
     def allindices(self,  line, search, listindex=None,  offset=0):
@@ -1507,10 +1386,10 @@ class ReadEtextsActivity(activity.Activity):
                           bytes_downloaded, tube_id)
         total = self.download_content_length
         self.set_downloaded_bytes(bytes_downloaded,  total)
-        gtk.gdk.threads_enter()
-        while gtk.events_pending():
-            gtk.main_iteration()
-        gtk.gdk.threads_leave()
+        Gdk.threads_enter()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        Gdk.threads_leave()
 
     def download_error_cb(self, getter, err, tube_id):
         self.progressbar.hide()
@@ -1520,12 +1399,12 @@ class ReadEtextsActivity(activity.Activity):
         self.want_document = True
         self.download_content_length = 0
         self.download_content_type = None
-        gobject.idle_add(self.get_document)
+        GObject.idle_add(self.get_document)
 
     def download_document(self, tube_id, path):
         # FIXME: should ideally have the CM listen on a Unix socket
         # instead of IPv4 (might be more compatible with Rainbow)
-        chan = self._shared_activity.telepathy_tubes_chan
+        chan = self.shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         addr = iface.AcceptStreamTube(tube_id,
                 telepathy.SOCKET_ADDRESS_TYPE_IPV4,
@@ -1573,7 +1452,7 @@ class ReadEtextsActivity(activity.Activity):
 
         # Avoid trying to download the document multiple times at once
         self.want_document = False
-        gobject.idle_add(self.download_document, tube_id, path)
+        GObject.idle_add(self.download_document, tube_id, path)
         return False
 
     def joined_cb(self, also_self):
@@ -1582,7 +1461,7 @@ class ReadEtextsActivity(activity.Activity):
         Get the shared document from another participant.
         """
         self.watch_for_tubes()
-        gobject.idle_add(self.get_document)
+        GObject.idle_add(self.get_document)
 
     def share_document(self):
         """Share the document."""
@@ -1594,7 +1473,7 @@ class ReadEtextsActivity(activity.Activity):
             self.tempfile)
 
         # Make a tube for it
-        chan = self._shared_activity.telepathy_tubes_chan
+        chan = self.shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
         self.fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
                 {},
@@ -1604,7 +1483,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def watch_for_tubes(self):
         """Watch for new tubes."""
-        tubes_chan = self._shared_activity.telepathy_tubes_chan
+        tubes_chan = self.shared_activity.telepathy_tubes_chan
 
         tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
             self.new_tube_cb)
@@ -1623,7 +1502,7 @@ class ReadEtextsActivity(activity.Activity):
             self.unused_download_tubes.add(tube_id)
             # if no download is in progress, let's fetch the document
             if self.want_document:
-                gobject.idle_add(self.get_document)
+                GObject.idle_add(self.get_document)
 
     def list_tubes_reply_cb(self, tubes):
         """Callback when new tubes are available."""

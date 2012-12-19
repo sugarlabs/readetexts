@@ -20,24 +20,26 @@ import logging
 from gettext import gettext as _
 import re
 
-import pango
-import gobject
-import gtk
+from gi.repository import Pango
+from gi.repository import GObject
+from gi.repository import Gtk
+from gi.repository import Gdk
 
-from sugar.graphics.toolbutton import ToolButton
-from sugar.graphics.menuitem import MenuItem
-from sugar.graphics.toolcombobox import ToolComboBox
-from sugar.graphics.combobox import ComboBox
-from sugar.activity import activity
-from sugar.graphics.toggletoolbutton import ToggleToolButton
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.graphics.menuitem import MenuItem
+from sugar3.graphics.toolcombobox import ToolComboBox
+from sugar3.graphics.combobox import ComboBox
+from sugar3.activity import activity
+from sugar3.activity import widgets
+from sugar3.graphics.toggletoolbutton import ToggleToolButton
 
 import speech
 
-class ReadToolbar(gtk.Toolbar):
+class ReadToolbar(Gtk.Toolbar):
     __gtype_name__ = 'ReadToolbar'
 
     def __init__(self):
-        gtk.Toolbar.__init__(self)
+        Gtk.Toolbar.__init__(self)
 
         self.back = ToolButton('go-previous')
         self.back.set_tooltip(_('Back'))
@@ -71,9 +73,9 @@ class ReadToolbar(gtk.Toolbar):
         self.insert(self.forward, -1)
         self.forward.show()
 
-        num_page_item = gtk.ToolItem()
+        num_page_item = Gtk.ToolItem()
 
-        self.num_page_entry = gtk.Entry()
+        self.num_page_entry = Gtk.Entry()
         self.num_page_entry.set_text('0')
         self.num_page_entry.set_alignment(1)
         self.num_page_entry.connect('insert-text',
@@ -89,14 +91,10 @@ class ReadToolbar(gtk.Toolbar):
         self.insert(num_page_item, -1)
         num_page_item.show()
 
-        total_page_item = gtk.ToolItem()
+        total_page_item = Gtk.ToolItem()
 
-        self.total_page_label = gtk.Label()
-
-        label_attributes = pango.AttrList()
-        label_attributes.insert(pango.AttrSize(14000, 0, -1))
-        label_attributes.insert(pango.AttrForeground(65535, 65535, 65535, 0, -1))
-        self.total_page_label.set_attributes(label_attributes)
+        self.total_page_label = Gtk.Label()
+        self.total_page_label.set_markup("<span size='14000' foreground='black'>")
 
         self.total_page_label.set_text(' / 0')
         total_page_item.add(self.total_page_label)
@@ -105,11 +103,11 @@ class ReadToolbar(gtk.Toolbar):
         self.insert(total_page_item, -1)
         total_page_item.show()
 
-        spacer = gtk.SeparatorToolItem()
+        spacer = Gtk.SeparatorToolItem()
         self.insert(spacer, -1)
         spacer.show()
   
-        bookmarkitem = gtk.ToolItem()
+        bookmarkitem = Gtk.ToolItem()
         self.bookmarker = ToggleToolButton('emblem-favorite')
         self.bookmarker.set_tooltip(_('Toggle Bookmark'))
         self.bookmarker_handler_id = self.bookmarker.connect('clicked',
@@ -120,7 +118,7 @@ class ReadToolbar(gtk.Toolbar):
         self.insert(bookmarkitem, -1)
         bookmarkitem.show_all()
 
-        underline_item = gtk.ToolItem()
+        underline_item = Gtk.ToolItem()
         self.underline = ToggleToolButton('format-text-underline')
         self.underline.set_tooltip(_('Underline'))
         self.underline.props.sensitive = False
@@ -201,20 +199,20 @@ class ReadToolbar(gtk.Toolbar):
     def update_bookmark_button(self,  state):
         self.setToggleButtonState(self.bookmarker,  state,  self.bookmarker_handler_id)
 
-class ViewToolbar(gtk.Toolbar):
+class ViewToolbar(Gtk.Toolbar):
     __gtype_name__ = 'ViewToolbar'
 
     __gsignals__ = {
-        'needs-update-size': (gobject.SIGNAL_RUN_FIRST,
-                              gobject.TYPE_NONE,
+        'needs-update-size': (GObject.SIGNAL_RUN_FIRST,
+                              GObject.TYPE_NONE,
                               ([])),
-        'go-fullscreen': (gobject.SIGNAL_RUN_FIRST,
-                          gobject.TYPE_NONE,
+        'go-fullscreen': (GObject.SIGNAL_RUN_FIRST,
+                          GObject.TYPE_NONE,
                           ([]))
     }
 
     def __init__(self):
-        gtk.Toolbar.__init__(self)
+        Gtk.Toolbar.__init__(self)
         self.zoom_out = ToolButton('zoom-out')
         self.zoom_out.set_tooltip(_('Zoom out'))
         self.zoom_out.connect('clicked', self.zoom_out_cb)
@@ -227,7 +225,7 @@ class ViewToolbar(gtk.Toolbar):
         self.insert(self.zoom_in, -1)
         self.zoom_in.show()
 
-        spacer = gtk.SeparatorToolItem()
+        spacer = Gtk.SeparatorToolItem()
         spacer.props.draw = False
         self.insert(spacer, -1)
         spacer.show()
@@ -250,23 +248,23 @@ class ViewToolbar(gtk.Toolbar):
     def fullscreen_cb(self, button):
         self.emit('go-fullscreen')
 
-class EditToolbar(activity.EditToolbar):
+class EditToolbar(widgets.EditToolbar):
     __gtype_name__ = 'EditToolbar'
 
     def __init__(self):
-        activity.EditToolbar.__init__(self)
-        separator = gtk.SeparatorToolItem()
+        widgets.EditToolbar.__init__(self)
+        separator = Gtk.SeparatorToolItem()
         separator.set_draw(False)
         separator.set_expand(True)
         self.insert(separator, -1)
         separator.show()
 
-        search_item = gtk.ToolItem()
+        search_item = Gtk.ToolItem()
 
-        self.search_entry = gtk.Entry()
+        self.search_entry = Gtk.Entry()
         self.search_entry.connect('activate', self.search_entry_activate_cb)
 
-        width = int(gtk.gdk.screen_width() / 3)
+        width = int(Gdk.Screen.width() / 3)
         self.search_entry.set_size_request(width, -1)
 
         self.search_entry.props.sensitive = False
@@ -315,18 +313,18 @@ class EditToolbar(activity.EditToolbar):
         self.prev.props.sensitive = self.activity.can_find_previous()
         self.next.props.sensitive = self.activity.can_find_next()
 
-class BooksToolbar(gtk.Toolbar):
+class BooksToolbar(Gtk.Toolbar):
     __gtype_name__ = 'BooksToolbar'
 
     def __init__(self):
-        gtk.Toolbar.__init__(self)
-        book_search_item = gtk.ToolItem()
+        Gtk.Toolbar.__init__(self)
+        book_search_item = Gtk.ToolItem()
 
-        self.search_entry = gtk.Entry()
+        self.search_entry = Gtk.Entry()
         self.search_entry.connect('activate', self.search_entry_activate_cb)
         self.search_entry.connect("key_press_event", self.keypress_cb)
 
-        width = int(gtk.gdk.screen_width() / 2)
+        width = int(Gdk.Screen.width() / 2)
         self.search_entry.set_size_request(width, -1)
 
         book_search_item.add(self.search_entry)
@@ -368,16 +366,16 @@ class BooksToolbar(gtk.Toolbar):
         self.hide_results.props.sensitive = False
     
     def keypress_cb(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = Gdk.keyval_name(event.keyval)
         if keyname == 'Escape':
             self.activity.list_scroller.hide()
             self.hide_results.props.sensitive = False
             return True
 
-class   SpeechToolbar(gtk.Toolbar):
+class   SpeechToolbar(Gtk.Toolbar):
     def __init__(self):
-        gtk.Toolbar.__init__(self)
-        voicebar = gtk.Toolbar()
+        Gtk.Toolbar.__init__(self)
+        voicebar = Gtk.Toolbar()
         self.activity = None
         self.sorted_voices = [i for i in speech.voices()]
         self.sorted_voices.sort(self.compare_voices)
@@ -388,16 +386,16 @@ class   SpeechToolbar(gtk.Toolbar):
             default = default + 1
 
         # Play button Image
-        play_img = gtk.Image()
+        play_img = Gtk.Image()
         play_img.show()
         play_img.set_from_icon_name('media-playback-start',
-                gtk.ICON_SIZE_LARGE_TOOLBAR)
+                Gtk.IconSize.LARGE_TOOLBAR)
 
         # Pause button Image
-        pause_img = gtk.Image()
+        pause_img = Gtk.Image()
         pause_img.show()
         pause_img.set_from_icon_name('media-playback-pause',
-                gtk.ICON_SIZE_LARGE_TOOLBAR)
+                Gtk.IconSize.LARGE_TOOLBAR)
 
         # Play button
         self.play_btn = ToggleToolButton('media-playback-start')
@@ -415,23 +413,23 @@ class   SpeechToolbar(gtk.Toolbar):
         self.insert(combotool, -1)
         combotool.show()
 
-        self.pitchadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
-        pitchbar = gtk.HScale(self.pitchadj)
+        self.pitchadj = Gtk.Adjustment(0, -100, 100, 1, 10, 0)
+        pitchbar = Gtk.HScale()
         pitchbar.set_draw_value(False)
-        pitchbar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
+        # pitchbar.set_update_policy(Gtk.UpdatePolicy.ALWAYS)
         pitchbar.set_size_request(150,15)
-        pitchtool = gtk.ToolItem()
+        pitchtool = Gtk.ToolItem()
         pitchtool.add(pitchbar)
         pitchtool.show()
         self.insert(pitchtool, -1)
         pitchbar.show()
 
-        self.rateadj = gtk.Adjustment(0, -100, 100, 1, 10, 0)
-        ratebar = gtk.HScale(self.rateadj)
+        self.rateadj = Gtk.Adjustment(0, -100, 100, 1, 10, 0)
+        ratebar = Gtk.HScale()
         ratebar.set_draw_value(False)
-        ratebar.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
+        #ratebar.set_update_policy(Gtk.UpdatePolicy.ALWAYS)
         ratebar.set_size_request(150,15)
-        ratetool = gtk.ToolItem()
+        ratetool = Gtk.ToolItem()
         ratetool.add(ratebar)
         ratetool.show()
         self.insert(ratetool, -1)
@@ -440,9 +438,9 @@ class   SpeechToolbar(gtk.Toolbar):
     def compare_voices(self,  a,  b):
         if a[0].lower() == b[0].lower():
             return 0
-        if a[0] .lower()< b[0].lower():
+        if a[0].lower() < b[0].lower():
             return -1
-        if a[0] .lower()> b[0].lower():
+        if a[0].lower() > b[0].lower():
             return 1
         
     def voice_changed_cb(self, combo):

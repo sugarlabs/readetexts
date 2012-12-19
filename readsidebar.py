@@ -19,24 +19,25 @@
 import logging
 import time
 
-import gtk
+from gi.repository import Gtk
+from gi.repository import Gdk
 
-from sugar.graphics.icon import Icon
+from sugar3.graphics.icon import Icon
 
 from gettext import gettext as _
 
 _logger = logging.getLogger('read-activity')
 
-class Sidebar(gtk.EventBox):
+class Sidebar(Gtk.EventBox):
     def __init__(self):
-        gtk.EventBox.__init__(self)
+        Gtk.EventBox.__init__(self)
         self.set_size_request(20, -1)
         # Take care of the background first
-        white = gtk.gdk.color_parse("white")
-        self.modify_bg(gtk.STATE_NORMAL, white)
+        white = Gdk.color_parse("white")
+        self.modify_bg(Gtk.StateType.NORMAL, white)
 
-        self.box = gtk.VButtonBox()
-        self.box.set_layout(gtk.BUTTONBOX_CENTER)
+        self.box = Gtk.VButtonBox()
+        self.box.set_layout(Gtk.ButtonBoxStyle.CENTER)
         self.add(self.box)
 
         self.box.show()
@@ -46,7 +47,7 @@ class Sidebar(gtk.EventBox):
             pixel_size = 18)
         tooltip_text = _('Bookmark') 
         self.bookmark_icon.set_tooltip_text(tooltip_text)
-        self.box.pack_start(self.bookmark_icon ,expand=False,fill=False)
+        self.box.pack_start(self.bookmark_icon, False, False, 0)
 
     def show_bookmark_icon(self, state):
         if state:

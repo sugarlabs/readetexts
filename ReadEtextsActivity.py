@@ -608,7 +608,7 @@ class ReadEtextsActivity(activity.Activity):
     def edit_toolbar_copy_cb(self, button):
         textbuffer = self.textview.get_buffer()
         begin, end = textbuffer.get_selection_bounds()
-        copy_text = textbuffer.get_text(begin, end)
+        copy_text = textbuffer.get_text(begin, end, True)
         self.clipboard.set_text(copy_text)
 
     def view_toolbar_go_fullscreen_cb(self, view_toolbar):
@@ -751,7 +751,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def page_next(self):
         textbuffer = self.annotation_textview.get_buffer()
-        self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter()))
+        self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter(), True))
         self.page = self.page + 1
         if self.page >= len(self.page_index): self.page=len(self.page_index) - 1
         self.show_page(self.page)
@@ -761,7 +761,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def page_previous(self):
         textbuffer = self.annotation_textview.get_buffer()
-        self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter()))
+        self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter(), True))
         self.page=self.page-1
         if self.page < 0: self.page=0
         self.show_page(self.page)
@@ -1096,7 +1096,7 @@ class ReadEtextsActivity(activity.Activity):
         elif self.tempfile:
             if self.close_requested:
                 textbuffer = self.annotation_textview.get_buffer()
-                self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter()))
+                self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter(), True))
                 title = self.metadata.get('title', '')
                 self.annotations.set_title(str(title))
                 self.annotations.save()

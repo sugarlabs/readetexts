@@ -415,6 +415,7 @@ class   SpeechToolbar(Gtk.Toolbar):
 
         self.pitchadj = Gtk.Adjustment(0, -100, 100, 1, 10, 0)
         pitchbar = Gtk.HScale()
+        pitchbar.set_adjustment(self.pitchadj)
         pitchbar.set_draw_value(False)
         # pitchbar.set_update_policy(Gtk.UpdatePolicy.ALWAYS)
         pitchbar.set_size_request(150,15)
@@ -426,6 +427,7 @@ class   SpeechToolbar(Gtk.Toolbar):
 
         self.rateadj = Gtk.Adjustment(0, -100, 100, 1, 10, 0)
         ratebar = Gtk.HScale()
+        ratebar.set_adjustment(self.rateadj)
         ratebar.set_draw_value(False)
         #ratebar.set_update_policy(Gtk.UpdatePolicy.ALWAYS)
         ratebar.set_size_request(150,15)
@@ -449,7 +451,7 @@ class   SpeechToolbar(Gtk.Toolbar):
             speech.say(speech.voice[0])
 
     def pitch_adjusted_cb(self, get):
-        speech.pitch = int(get.value)
+        speech.pitch = int(get.get_value())
         speech.say(_("pitch adjusted"))
         f = open(os.path.join(self.activity.get_activity_root(), 'instance',  'pitch.txt'),  'w')
         try:
@@ -458,7 +460,7 @@ class   SpeechToolbar(Gtk.Toolbar):
             f.close()
 
     def rate_adjusted_cb(self, get):
-        speech.rate = int(get.value)
+        speech.rate = int(get.get_value())
         speech.say(_("rate adjusted"))
         f = open(os.path.join(self.activity.get_activity_root(), 'instance',  'rate.txt'),  'w')
         try:

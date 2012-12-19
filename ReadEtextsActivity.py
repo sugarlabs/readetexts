@@ -1140,7 +1140,7 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller_visible = False
         self.book_selected = False
         self.ls.clear()
-        search_tuple = search_text.get_lower()().split()
+        search_tuple = search_text.lower().split()
         if len(search_tuple) == 0:
             self.alert(_('Error'), _('You must enter at least one search word.'))
             self.books_toolbar.search_entry.grab_focus()
@@ -1150,7 +1150,7 @@ class ReadEtextsActivity(activity.Activity):
             line = unicode(f.readline(), "iso-8859-1")
             if not line:
                 break
-            line_lower = line.get_lower()()
+            line_lower = line.lower()
             i = 0
             words_found = 0
             while i < len(search_tuple):
@@ -1321,7 +1321,7 @@ class ReadEtextsActivity(activity.Activity):
                 break
             line_increment = (len(line) / 80) + 1
             linecount = linecount + line_increment
-            positions = self.allindices(line.get_lower()(), search_text.get_lower()())
+            positions = self.allindices(line.lower(), search_text.lower())
             for position in positions:
                 found_pos = charcount + position + 3
                 found_tuple = (pagecount, found_pos, len(search_text) + found_pos)

@@ -63,7 +63,6 @@ po/sv.po
 po/tpi.po
 po/ko.po
 po/pl.po
-po/ay.po
 po/cs.po
 po/pis.po
 po/nl.po
@@ -163,8 +162,6 @@ locale/zh_CN/activity.linfo
 locale/zh_CN/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 locale/ff/activity.linfo
 locale/ff/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
-locale/ay/activity.linfo
-locale/ay/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 locale/bn_IN/activity.linfo
 locale/bn_IN/LC_MESSAGES/org.laptop.sugar.ReadEtextsActivity.mo
 locale/mr/activity.linfo

@@ -59,7 +59,7 @@ COLUMN_AUTHOR = 1
 COLUMN_PATH = 2
 
 logger = logging.getLogger('read-etexts-activity')
-logger.setLevel(logging.DEBUG)
+# logger.setLevel(logging.DEBUG)
 
 class Annotations():
     
@@ -1179,11 +1179,11 @@ class ReadEtextsActivity(activity.Activity):
             GObject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  \
                              self.get_book_result_cb)
         elif self.selected_path.startswith('/etext'):
-            logger.debug("http://www.knowledgerush.com/gutenberg/" + self.selected_path + "108.zip")
+            logger.debug("http://www.gutenberg.org/dirs" + self.selected_path + "108.zip")
             GObject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  \
                              self.get_old_book_result_cb)
         else:
-            logger.debug("http://www.knowledgerush.com/gutenberg/" + self.selected_path + "-8.zip")
+            logger.debug("http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip")
             GObject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  \
                              self.get_iso_book_result_cb)
         

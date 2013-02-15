@@ -10,6 +10,7 @@ xopower.py
 setup.py
 gutextract.py
 ausextract.py
+network.py
 help.txt
 NEWS
 activity/read-etexts.svg

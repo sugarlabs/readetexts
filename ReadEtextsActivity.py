@@ -26,7 +26,7 @@ from gi.repository import Gdk
 from sugar3.graphics import style
 from sugar3 import profile
 from sugar3.activity import activity
-from sugar3 import network
+# from sugar3 import network
 from sugar3.datastore import datastore
 from sugar3.graphics.alert import NotifyAlert
 from sugar3.graphics.toolbarbox import ToolbarBox
@@ -49,6 +49,7 @@ import speech
 import xopower
 import rtfconvert
 import pgconvert
+import network
 
 PAGE_SIZE = 38
 TOOLBAR_READ = 2
@@ -58,6 +59,7 @@ COLUMN_AUTHOR = 1
 COLUMN_PATH = 2
 
 logger = logging.getLogger('read-etexts-activity')
+logger.setLevel(logging.DEBUG)
 
 class Annotations():
     
@@ -1173,12 +1175,15 @@ class ReadEtextsActivity(activity.Activity):
         self.books_toolbar.enable_button(False)
         self.list_scroller.props.sensitive = False
         if self.selected_path.startswith('PGA'):
+            logger.debug(self.selected_path.replace('PGA', 'http://gutenberg.net.au'))
             GObject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  \
                              self.get_book_result_cb)
         elif self.selected_path.startswith('/etext'):
+            logger.debug("http://www.knowledgerush.com/gutenberg/" + self.selected_path + "108.zip")
             GObject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  \
                              self.get_old_book_result_cb)
         else:
+            logger.debug("http://www.knowledgerush.com/gutenberg/" + self.selected_path + "-8.zip")
             GObject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  \
                              self.get_iso_book_result_cb)
         

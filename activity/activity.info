@@ -7,4 +7,4 @@ show_launcher = yes
 activity_version = 25
 mime_types = text/plain;application/zip;application/rtf
 license = GPLv2+
-summary = Download and read thousands of free e-books in plasin text format from Project Gutenberg!
+summary = Download and read thousands of free e-books in plain text format from Project Gutenberg!

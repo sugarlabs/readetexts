@@ -38,9 +38,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2011-12-22 01:48+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"POT-Creation-Date: 2013-02-17 00:30-0500\n"
+"PO-Revision-Date: 2013-02-19 04:35+0200\n"
+"Last-Translator: lite <litekok@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -49,148 +49,141 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "Read ETexts"
 msgstr "文本阅读"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Download and read thousands of free e-books in plasin text format from "
+"Project Gutenberg!"
+msgstr "下载并阅读Gutenberg项目中上千本plasin格式的免费电子书！"
+
+#: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
 msgstr "后退"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+#: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
 msgstr "上一页"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+#: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
 msgstr "上一个书签"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
+#: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
 msgstr "向前"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+#: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
 msgstr "下一页"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+#: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
 msgstr "下一个书签"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+#: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
 msgstr "切换书签"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+#: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
 msgstr "下划线"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
-msgid "Zoom out"
-msgstr "缩小"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
-msgid "Zoom in"
-msgstr "放大"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
-msgid "Fullscreen"
-msgstr "全屏显示"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
-msgid "Previous"
-msgstr "上一个"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
-msgid "Next"
-msgstr "下一个"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
-msgid "Get Book"
-msgstr "获取书籍"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
-msgid "Remove Results List"
-msgstr "删除结果列表"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
-msgid "Play / Pause"
-msgstr "播放/暂停"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
-msgid "pitch adjusted"
-msgstr "音高调整"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
-msgid "rate adjusted"
-msgstr "语速调整"
-
-#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
-msgid "Bookmark"
-msgstr "书签"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
-msgid "Edit"
-msgstr "编辑"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
-msgid "Read"
-msgstr "阅读"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
-msgid "Books"
-msgstr "书籍"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
-msgid "View"
-msgstr "查看"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
-msgid "Speech"
-msgstr "言语"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
+#: ReadEtextsActivity.py:1253
 msgid "Error"
 msgstr "错误"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: ReadEtextsActivity.py:1148
 msgid "You must enter at least one search word."
 msgstr "请至少输入一个搜索词。"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: ReadEtextsActivity.py:1201
 msgid "Connection timed out for "
 msgstr "连接超时 "
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid "Could not download "
 msgstr "不能下载 "
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid " path in catalog may be incorrect."
 msgstr " 目录中的路径可能不正确。"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid "Success"
 msgstr "成功"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid " added to Journal."
 msgstr " 已添加到日志。"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Failure"
 msgstr "失败"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Error getting document from tube"
 msgstr "从管道获取文档出错"
+
+#: readsidebar.py:48
+msgid "Bookmark"
+msgstr "书签"
+
+#: readtoolbar.py:217
+msgid "Zoom out"
+msgstr "缩小"
+
+#: readtoolbar.py:223
+msgid "Zoom in"
+msgstr "放大"
+
+#: readtoolbar.py:234
+msgid "Fullscreen"
+msgstr "全屏显示"
+
+#: readtoolbar.py:279
+msgid "Previous"
+msgstr "上一个"
+
+#: readtoolbar.py:286
+msgid "Next"
+msgstr "下一个"
+
+#: readtoolbar.py:338
+msgid "Get Book"
+msgstr "获取书籍"
+
+#: readtoolbar.py:345
+msgid "Remove Results List"
+msgstr "删除结果列表"
+
+#: readtoolbar.py:405
+msgid "Play / Pause"
+msgstr "播放/暂停"
+
+#: readtoolbar.py:455
+msgid "pitch adjusted"
+msgstr "音高调整"
+
+#: readtoolbar.py:464
+msgid "rate adjusted"
+msgstr "语速调整"
+
+#~ msgid "Edit"
+#~ msgstr "编辑"
+
+#~ msgid "Read"
+#~ msgstr "阅读"
+
+#~ msgid "Books"
+#~ msgstr "书籍"
+
+#~ msgid "View"
+#~ msgstr "查看"
+
+#~ msgid "Speech"
+#~ msgstr "言语"

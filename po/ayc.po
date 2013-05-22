@@ -6,177 +6,172 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2012-09-21 19:56+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"POT-Creation-Date: 2013-02-19 00:31-0500\n"
+"PO-Revision-Date: 2013-05-22 01:08+0200\n"
+"Last-Translator: EdgarQuispeChambi <quispedgar@yahoo.es>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: aym\n"
+"Language: ayc\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "Read ETexts"
 msgstr "ETexts Ullaña"
 
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Download and read thousands of free e-books in plain text format from "
+"Project Gutenberg!"
+msgstr ""
+"¡Internet taypina inaki ullaña pankanaka apaqma ukata ullma uka Proyecto "
+"Gutenberg qillqatanaka wakichatampi!"
+
 #  "Volver"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
+#: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
 msgstr "Alaxa pacha pata"
 
 #  "Página anterior"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+#: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
 msgstr "Qutir laphi"
 
 #  "Anterior marcador"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+#: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
 msgstr "Qutir chimtata"
 
 #  "Avanzar"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
+#: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
 msgstr "Sartawi"
 
 #  "Página siguiente"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+#: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
 msgstr "Jutiri laphi"
 
 #  "Siguiente marcador"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+#: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
 msgstr "Jutiri chimtaña"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+#: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
 msgstr "Chimpuña qhantayaña jani ukaxa jiwayaña"
 
 #  "Subrayar"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+#: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
 msgstr "Sich'ita qillqanaka"
 
-#  "Reducir"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
-msgid "Zoom out"
-msgstr "Jisk'aptayaña"
-
-#  "Ampliar"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
-msgid "Zoom in"
-msgstr "Jach'aptayaña"
-
-#  "Pantalla completa"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
-msgid "Fullscreen"
-msgstr "Maypacha uñtawi"
-
-#  "Anterior"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
-msgid "Previous"
-msgstr "Nayrankiri"
-
-#  "Siguiente"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
-msgid "Next"
-msgstr "Jutiri"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
-msgid "Get Book"
-msgstr "Panka alaña"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
-msgid "Remove Results List"
-msgstr "Wakichatanaka sutinakapa siqi chhaqtayaña"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
-msgid "Play / Pause"
-msgstr "Qhanayaña / Suyt'ayaña"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
-msgid "pitch adjusted"
-msgstr "suma ist'asiñapataki wakichata"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
-msgid "rate adjusted"
-msgstr "tantiyu sarañapataki wakichata"
-
-#  "Marcador"
-#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
-msgid "Bookmark"
-msgstr "Chimpuñataki wakichata"
-
-#  "Editar"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
-msgid "Edit"
-msgstr "Wakichata Chiqachaña"
-
-#  "Leer"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
-msgid "Read"
-msgstr "Ullaña"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
-msgid "Books"
-msgstr "Pankanaka"
-
-#  "Ver"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
-msgid "View"
-msgstr "Unjaña"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
-msgid "Speech"
-msgstr "Arsunma"
-
 #  "Error"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
+#: ReadEtextsActivity.py:1253
 msgid "Error"
 msgstr "Pantjata"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: ReadEtextsActivity.py:1148
 msgid "You must enter at least one search word."
 msgstr "Thaqañatakixa maya sapa aruksa qillqantañamawa."
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: ReadEtextsActivity.py:1201
 msgid "Connection timed out for "
 msgstr "Wakichañanaka luräwinakampi qallantaña tukuyata "
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid "Could not download "
 msgstr "Apaqañaxa janiwa phuqasiti "
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid " path in catalog may be incorrect."
 msgstr ""
 " wakichatanaka sutinakapa qillqata pankana thaqaña thakixa pantjataspawa."
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid "Success"
 msgstr "Jallalla"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid " added to Journal."
 msgstr " sapüru luräwinaka qillqataru yapxatata."
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Failure"
 msgstr "Pantjata"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Error getting document from tube"
 msgstr "Tubo sutini qillqata wakichata thaqañana pantjata"
+
+#  "Marcador"
+#: readsidebar.py:48
+msgid "Bookmark"
+msgstr "Chimpuñataki wakichata"
+
+#  "Reducir"
+#: readtoolbar.py:217
+msgid "Zoom out"
+msgstr "Jisk'aptayaña"
+
+#  "Ampliar"
+#: readtoolbar.py:223
+msgid "Zoom in"
+msgstr "Jach'aptayaña"
+
+#  "Pantalla completa"
+#: readtoolbar.py:234
+msgid "Fullscreen"
+msgstr "Maypacha uñtawi"
+
+#  "Anterior"
+#: readtoolbar.py:279
+msgid "Previous"
+msgstr "Nayrankiri"
+
+#  "Siguiente"
+#: readtoolbar.py:286
+msgid "Next"
+msgstr "Jutiri"
+
+#: readtoolbar.py:338
+msgid "Get Book"
+msgstr "Panka alaña"
+
+#: readtoolbar.py:345
+msgid "Remove Results List"
+msgstr "Wakichatanaka sutinakapa siqi chhaqtayaña"
+
+#: readtoolbar.py:405
+msgid "Play / Pause"
+msgstr "Qhanayaña / Suyt'ayaña"
+
+#: readtoolbar.py:455
+msgid "pitch adjusted"
+msgstr "suma ist'asiñapataki wakichata"
+
+#: readtoolbar.py:464
+msgid "rate adjusted"
+msgstr "tantiyu sarañapataki wakichata"
+
+#  "Editar"
+#~ msgid "Edit"
+#~ msgstr "Wakichata Chiqachaña"
+
+#  "Leer"
+#~ msgid "Read"
+#~ msgstr "Ullaña"
+
+#~ msgid "Books"
+#~ msgstr "Pankanaka"
+
+#  "Ver"
+#~ msgid "View"
+#~ msgstr "Unjaña"
+
+#~ msgid "Speech"
+#~ msgstr "Arsunma"

@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"POT-Creation-Date: 2013-02-19 00:31-0500\n"
 "PO-Revision-Date: 2012-04-14 08:26+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: Portuguese\n"
@@ -45,151 +45,144 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "Read ETexts"
 msgstr "Ler Textos Eletrónicos"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Download and read thousands of free e-books in plain text format from "
+"Project Gutenberg!"
+msgstr ""
+
+#: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
 msgstr "Voltar"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+#: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
 msgstr "Página anterior"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+#: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
 msgstr "Marcador anterior"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
+#: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
 msgstr "Avançar"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+#: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
 msgstr "Página seguinte"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+#: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
 msgstr "Marcador seguinte"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+#: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
 msgstr "Adicionar / Remover Marcador"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+#: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
 msgstr "Sublinhar"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
-msgid "Zoom out"
-msgstr "Afastar zoom"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
-msgid "Zoom in"
-msgstr "Aproximar zoom"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
-msgid "Fullscreen"
-msgstr "Ecrã Inteiro"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
-msgid "Previous"
-msgstr "Anterior"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
-msgid "Next"
-msgstr "Seguinte"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
-msgid "Get Book"
-msgstr "Obter Livro"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
-msgid "Remove Results List"
-msgstr "Remover Lista de Resultados"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
-msgid "Play / Pause"
-msgstr "Tocar / Pausar"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
-msgid "pitch adjusted"
-msgstr "altura ajustada"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
-msgid "rate adjusted"
-msgstr "velocidade ajustada"
-
-#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
-msgid "Bookmark"
-msgstr "Marcador"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
-msgid "Edit"
-msgstr "Editar"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
-msgid "Read"
-msgstr "Ler"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
-msgid "Books"
-msgstr "Livros"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
-msgid "View"
-msgstr "Ver"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
-msgid "Speech"
-msgstr "Fala"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
+#: ReadEtextsActivity.py:1253
 msgid "Error"
 msgstr "Erro"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: ReadEtextsActivity.py:1148
 msgid "You must enter at least one search word."
 msgstr "Deves inserir pelo menos uma palavra de pesquisa."
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: ReadEtextsActivity.py:1201
 msgid "Connection timed out for "
 msgstr "A ligação expirou o limite de tempo para "
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid "Could not download "
 msgstr "Não foi possível transferir "
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid " path in catalog may be incorrect."
 msgstr " caminho no catálogo pode estar incorreto."
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid "Success"
 msgstr "Sucesso"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid " added to Journal."
 msgstr " adicionado ao Diário."
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Failure"
 msgstr "Falha"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Error getting document from tube"
 msgstr "Erro em obter o documento do \"tube\""
+
+#: readsidebar.py:48
+msgid "Bookmark"
+msgstr "Marcador"
+
+#: readtoolbar.py:217
+msgid "Zoom out"
+msgstr "Afastar zoom"
+
+#: readtoolbar.py:223
+msgid "Zoom in"
+msgstr "Aproximar zoom"
+
+#: readtoolbar.py:234
+msgid "Fullscreen"
+msgstr "Ecrã Inteiro"
+
+#: readtoolbar.py:279
+msgid "Previous"
+msgstr "Anterior"
+
+#: readtoolbar.py:286
+msgid "Next"
+msgstr "Seguinte"
+
+#: readtoolbar.py:338
+msgid "Get Book"
+msgstr "Obter Livro"
+
+#: readtoolbar.py:345
+msgid "Remove Results List"
+msgstr "Remover Lista de Resultados"
+
+#: readtoolbar.py:405
+msgid "Play / Pause"
+msgstr "Tocar / Pausar"
+
+#: readtoolbar.py:455
+msgid "pitch adjusted"
+msgstr "altura ajustada"
+
+#: readtoolbar.py:464
+msgid "rate adjusted"
+msgstr "velocidade ajustada"
+
+#~ msgid "Edit"
+#~ msgstr "Editar"
+
+#~ msgid "Read"
+#~ msgstr "Ler"
+
+#~ msgid "Books"
+#~ msgstr "Livros"
+
+#~ msgid "View"
+#~ msgstr "Ver"
+
+#~ msgid "Speech"
+#~ msgstr "Fala"
 
 #~ msgid "Choose document"
 #~ msgstr "Abrir um documento para o ler"

@@ -38,8 +38,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-17 00:30-0500\n"
-"PO-Revision-Date: 2013-02-19 04:35+0200\n"
+"POT-Creation-Date: 2013-02-19 00:31-0500\n"
+"PO-Revision-Date: 2013-02-22 14:58+0200\n"
 "Last-Translator: lite <litekok@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: zh_CN\n"
@@ -56,9 +56,9 @@ msgstr "文本阅读"
 #. TRANS: "summary" option from activity.info file
 #. TRANS: "description" option from activity.info file
 msgid ""
-"Download and read thousands of free e-books in plasin text format from "
+"Download and read thousands of free e-books in plain text format from "
 "Project Gutenberg!"
-msgstr "下载并阅读Gutenberg项目中上千本plasin格式的免费电子书！"
+msgstr "下载并阅读Gutenberg项目中上千本纯文本格式的免费电子书！"
 
 #: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"

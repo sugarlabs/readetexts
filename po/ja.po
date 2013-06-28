@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"POT-Creation-Date: 2013-02-19 00:31-0500\n"
 "PO-Revision-Date: 2011-12-16 06:06+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,148 +45,141 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "Read ETexts"
 msgstr "Read ETexts"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Download and read thousands of free e-books in plain text format from "
+"Project Gutenberg!"
+msgstr ""
+
+#: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
 msgstr "戻る"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+#: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
 msgstr "前ページ"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+#: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
 msgstr "前のブックマーク"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
+#: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
 msgstr "進む"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+#: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
 msgstr "次ページ"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+#: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
 msgstr "次のブックマーク"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+#: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
 msgstr "ブックマークを切り替える"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+#: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
 msgstr "下線"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
-msgid "Zoom out"
-msgstr "縮小表示"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
-msgid "Zoom in"
-msgstr "拡大表示"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
-msgid "Fullscreen"
-msgstr "全画面"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
-msgid "Previous"
-msgstr "前へ"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
-msgid "Next"
-msgstr "次へ"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
-msgid "Get Book"
-msgstr "本を取得"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
-msgid "Remove Results List"
-msgstr "結果リストを削除"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
-msgid "Play / Pause"
-msgstr "再生/停止"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
-msgid "pitch adjusted"
-msgstr "ピッチを調整しました"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
-msgid "rate adjusted"
-msgstr "スピードを調整しました"
-
-#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
-msgid "Bookmark"
-msgstr "ブックマーク"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
-msgid "Edit"
-msgstr "編集"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
-msgid "Read"
-msgstr "読む"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
-msgid "Books"
-msgstr "本"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
-msgid "View"
-msgstr "表示"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
-msgid "Speech"
-msgstr "読み上げ"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
+#: ReadEtextsActivity.py:1253
 msgid "Error"
 msgstr "エラー"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: ReadEtextsActivity.py:1148
 msgid "You must enter at least one search word."
 msgstr "最低1語検索する単語を入力してください"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: ReadEtextsActivity.py:1201
 msgid "Connection timed out for "
 msgstr "接続タイムアウト "
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid "Could not download "
 msgstr "ダウンロードできませんでした "
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid " path in catalog may be incorrect."
 msgstr " カタログの中のパスが正しくないかもしれません"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid "Success"
 msgstr "成功"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid " added to Journal."
 msgstr " ジャーナルに追加しました。"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Failure"
 msgstr "失敗"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Error getting document from tube"
 msgstr "tubeからの文書取得がエラー"
+
+#: readsidebar.py:48
+msgid "Bookmark"
+msgstr "ブックマーク"
+
+#: readtoolbar.py:217
+msgid "Zoom out"
+msgstr "縮小表示"
+
+#: readtoolbar.py:223
+msgid "Zoom in"
+msgstr "拡大表示"
+
+#: readtoolbar.py:234
+msgid "Fullscreen"
+msgstr "全画面"
+
+#: readtoolbar.py:279
+msgid "Previous"
+msgstr "前へ"
+
+#: readtoolbar.py:286
+msgid "Next"
+msgstr "次へ"
+
+#: readtoolbar.py:338
+msgid "Get Book"
+msgstr "本を取得"
+
+#: readtoolbar.py:345
+msgid "Remove Results List"
+msgstr "結果リストを削除"
+
+#: readtoolbar.py:405
+msgid "Play / Pause"
+msgstr "再生/停止"
+
+#: readtoolbar.py:455
+msgid "pitch adjusted"
+msgstr "ピッチを調整しました"
+
+#: readtoolbar.py:464
+msgid "rate adjusted"
+msgstr "スピードを調整しました"
+
+#~ msgid "Edit"
+#~ msgstr "編集"
+
+#~ msgid "Read"
+#~ msgstr "読む"
+
+#~ msgid "Books"
+#~ msgstr "本"
+
+#~ msgid "View"
+#~ msgstr "表示"
+
+#~ msgid "Speech"
+#~ msgstr "読み上げ"

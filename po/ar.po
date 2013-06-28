@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"POT-Creation-Date: 2013-02-19 00:31-0500\n"
 "PO-Revision-Date: 2010-02-19 18:36+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -23,148 +23,141 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 "X-Generator: Virtaal 0.5.2\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "Read ETexts"
 msgstr "اقرأ النصوص"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Download and read thousands of free e-books in plain text format from "
+"Project Gutenberg!"
+msgstr ""
+
+#: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
 msgstr "إلى الخلف"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+#: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
 msgstr "الصفحة السابقة"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+#: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
 msgstr "العلامة السابقة"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
+#: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
 msgstr "إلى الأمام"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+#: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
 msgstr "الصفحة التالية"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+#: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
 msgstr "العلامة التالية"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+#: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
 msgstr "بدّل العلامة"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+#: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
 msgstr "تسطير"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
-msgid "Zoom out"
-msgstr "بعّد"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
-msgid "Zoom in"
-msgstr "قرّب"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
-msgid "Fullscreen"
-msgstr "ملء الشاشة"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
-msgid "Previous"
-msgstr "السابق"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
-msgid "Next"
-msgstr "التالي"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
-msgid "Get Book"
-msgstr "احصل على الكتاب"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
-msgid "Remove Results List"
-msgstr "احذف النتائج من القائمة"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
-msgid "Play / Pause"
-msgstr "شغّل / ألبِث"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
-msgid "pitch adjusted"
-msgstr "صححت الشدة"
-
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
-msgid "rate adjusted"
-msgstr "صححت السرعة"
-
-#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
-msgid "Bookmark"
-msgstr "علّم"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
-msgid "Edit"
-msgstr "حرر"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
-msgid "Read"
-msgstr "اقرأ"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
-msgid "Books"
-msgstr "كتب"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
-msgid "View"
-msgstr "عرض"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
-msgid "Speech"
-msgstr "نطق"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
+#: ReadEtextsActivity.py:1253
 msgid "Error"
 msgstr "خطأ"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
+#: ReadEtextsActivity.py:1148
 msgid "You must enter at least one search word."
 msgstr "عليك أن تدخل كلمة للبحث."
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
+#: ReadEtextsActivity.py:1201
 msgid "Connection timed out for "
 msgstr "انتهت مهلة الاتصال"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid "Could not download "
 msgstr "تعذّر التنزيل"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
+#: ReadEtextsActivity.py:1253
 msgid " path in catalog may be incorrect."
 msgstr " المسار في الفهرس قد يكون غير صحيح."
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid "Success"
 msgstr "نجاح"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
+#: ReadEtextsActivity.py:1286
 msgid " added to Journal."
 msgstr " أضيف إلى الدفتر"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Failure"
 msgstr "فشل"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
+#: ReadEtextsActivity.py:1404
 msgid "Error getting document from tube"
 msgstr "فشل الحصول على الملف من القناة"
+
+#: readsidebar.py:48
+msgid "Bookmark"
+msgstr "علّم"
+
+#: readtoolbar.py:217
+msgid "Zoom out"
+msgstr "بعّد"
+
+#: readtoolbar.py:223
+msgid "Zoom in"
+msgstr "قرّب"
+
+#: readtoolbar.py:234
+msgid "Fullscreen"
+msgstr "ملء الشاشة"
+
+#: readtoolbar.py:279
+msgid "Previous"
+msgstr "السابق"
+
+#: readtoolbar.py:286
+msgid "Next"
+msgstr "التالي"
+
+#: readtoolbar.py:338
+msgid "Get Book"
+msgstr "احصل على الكتاب"
+
+#: readtoolbar.py:345
+msgid "Remove Results List"
+msgstr "احذف النتائج من القائمة"
+
+#: readtoolbar.py:405
+msgid "Play / Pause"
+msgstr "شغّل / ألبِث"
+
+#: readtoolbar.py:455
+msgid "pitch adjusted"
+msgstr "صححت الشدة"
+
+#: readtoolbar.py:464
+msgid "rate adjusted"
+msgstr "صححت السرعة"
+
+#~ msgid "Edit"
+#~ msgstr "حرر"
+
+#~ msgid "Read"
+#~ msgstr "اقرأ"
+
+#~ msgid "Books"
+#~ msgstr "كتب"
+
+#~ msgid "View"
+#~ msgstr "عرض"
+
+#~ msgid "Speech"
+#~ msgstr "نطق"

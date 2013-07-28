@@ -38,7 +38,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: honey VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-06 15:51-0500\n"
+"POT-Creation-Date: 2013-02-19 00:31-0500\n"
 "PO-Revision-Date: 2009-06-24 16:14-0800\n"
 "Last-Translator: Loba Yeasmeen <loba@ankur.org.bd>\n"
 "Language-Team: Bengali <ankur-bd-l10n@googlegroups.com>\n"
@@ -47,153 +47,143 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 #, fuzzy
 msgid "Read ETexts"
 msgstr "ই-বই পড়ো"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Download and read thousands of free e-books in plain text format from "
+"Project Gutenberg!"
+msgstr ""
+
+#: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
 msgstr "পিছনে যাও"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+#: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+#: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
+#: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
 msgstr "সামনে যাও"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+#: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+#: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+#: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+#: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
+#: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
+#: ReadEtextsActivity.py:1253
+msgid "Error"
+msgstr ""
+
+#: ReadEtextsActivity.py:1148
+msgid "You must enter at least one search word."
+msgstr ""
+
+#: ReadEtextsActivity.py:1201
+msgid "Connection timed out for "
+msgstr ""
+
+#: ReadEtextsActivity.py:1253
+msgid "Could not download "
+msgstr ""
+
+#: ReadEtextsActivity.py:1253
+msgid " path in catalog may be incorrect."
+msgstr ""
+
+#: ReadEtextsActivity.py:1286
+msgid "Success"
+msgstr ""
+
+#: ReadEtextsActivity.py:1286
+msgid " added to Journal."
+msgstr ""
+
+#: ReadEtextsActivity.py:1404
+msgid "Failure"
+msgstr ""
+
+#: ReadEtextsActivity.py:1404
+msgid "Error getting document from tube"
+msgstr ""
+
+#: readsidebar.py:48
+msgid "Bookmark"
+msgstr ""
+
+#: readtoolbar.py:217
 msgid "Zoom out"
 msgstr "ছোট করে দেখো"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
+#: readtoolbar.py:223
 msgid "Zoom in"
 msgstr "বড় করে দেখো"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
+#: readtoolbar.py:234
 msgid "Fullscreen"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
+#: readtoolbar.py:279
 msgid "Previous"
 msgstr "পূর্বের"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
+#: readtoolbar.py:286
 msgid "Next"
 msgstr "পরের"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
+#: readtoolbar.py:338
 msgid "Get Book"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
+#: readtoolbar.py:345
 msgid "Remove Results List"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
+#: readtoolbar.py:405
 msgid "Play / Pause"
 msgstr ""
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
+#: readtoolbar.py:455
 #, fuzzy
 msgid "pitch adjusted"
 msgstr "পিচ মানানসই করা হয়েছে"
 
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
+#: readtoolbar.py:464
 msgid "rate adjusted"
 msgstr "রেট মানানসই করা হয়েছে"
 
-#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
-msgid "Bookmark"
-msgstr ""
+#~ msgid "Edit"
+#~ msgstr "সম্পাদনা করো"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
-msgid "Edit"
-msgstr "সম্পাদনা করো"
+#~ msgid "Read"
+#~ msgstr "পড়ো"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
-msgid "Read"
-msgstr "পড়ো"
+#~ msgid "View"
+#~ msgstr "দেখাও"
 
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
-msgid "Books"
-msgstr ""
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
-msgid "View"
-msgstr "দেখাও"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
-msgid "Speech"
-msgstr "বক্তৃতা"
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
-msgid "Error"
-msgstr ""
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
-msgid "You must enter at least one search word."
-msgstr ""
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
-msgid "Connection timed out for "
-msgstr ""
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
-msgid "Could not download "
-msgstr ""
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
-msgid " path in catalog may be incorrect."
-msgstr ""
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
-msgid "Success"
-msgstr ""
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
-msgid " added to Journal."
-msgstr ""
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
-msgid "Failure"
-msgstr ""
-
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
-msgid "Error getting document from tube"
-msgstr ""
+#~ msgid "Speech"
+#~ msgstr "বক্তৃতা"
 
 #~ msgid "Choose document"
 #~ msgstr "নথি বেছে নাও"

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-06 15:51-0500\n"
-"PO-Revision-Date: 2012-11-15 06:55+0200\n"
+"POT-Creation-Date: 2013-02-19 00:31-0500\n"
+"PO-Revision-Date: 2012-11-18 21:32+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: quz\n"
@@ -18,182 +18,175 @@ msgstr ""
 "X-Generator: Pootle 2.0.5\n"
 
 #  [ES] "Leer ETexts"
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "Read ETexts"
 msgstr "ETexts nisqata ñawichay"
 
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Download and read thousands of free e-books in plain text format from "
+"Project Gutenberg!"
+msgstr ""
+
 #  "Volver"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:43
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:451
+#: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
 msgstr "Kutichiy"
 
 #  "Página anterior"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:46
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:454
+#: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
 msgstr "Ñawpa raphi"
 
 #  "Anterior marcador"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:49
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:457
+#: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
 msgstr "Ñawpa qillqachisqa"
 
 #  "Avanzar"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:59
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:467
+#: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
 msgstr "Ñawpay"
 
 #  "Página siguiente"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:62
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:470
+#: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
 msgstr "Hamuq raphi"
 
 #  "Siguiente marcador"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:65
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:473
+#: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
 msgstr "Hamuq qillqachisqa"
 
 #  [ES] "Activar o desactivar marcador"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:114
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:517
+#: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
 msgstr "T'upsichiqta rikuchiy utaq pakay"
 
 #  "Subrayar"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:125
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:528
+#: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
 msgstr "Ura siq'isqa"
 
+#  "Error"
+#: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
+#: ReadEtextsActivity.py:1253
+msgid "Error"
+msgstr "Pantay"
+
+#  [ES] "Debes introducir al menos una palabra en la búsqueda."
+#: ReadEtextsActivity.py:1148
+msgid "You must enter at least one search word."
+msgstr "Machkhananpaqqa, ch'ulla simillatapas churaruwaq."
+
+#  [ES] "Intento de coneccion terminado para "
+#: ReadEtextsActivity.py:1201
+msgid "Connection timed out for "
+msgstr "Kayman tinkuchiyqa tukurunña "
+
+#  [ES] "No se pudo descargar "
+#: ReadEtextsActivity.py:1253
+msgid "Could not download "
+msgstr "Manam uyachikuytaqa atikunchu "
+
+#  [ES] " ruta en el catálogo puede ser incorrecta."
+#: ReadEtextsActivity.py:1253
+msgid " path in catalog may be incorrect."
+msgstr " chayanapaq ñanqa, manapaschá allinchu kachkhan."
+
+#  [ES] "Éxito"
+#: ReadEtextsActivity.py:1286
+msgid "Success"
+msgstr "Llalliy"
+
+#  [ES] " añadido al Diario."
+#: ReadEtextsActivity.py:1286
+msgid " added to Journal."
+msgstr " P'anqaman yapasqa."
+
+#  [ES] "Error"
+#: ReadEtextsActivity.py:1404
+msgid "Failure"
+msgstr "Pantay"
+
+#  [ES] "Error al obtener el documento de tubo"
+#: ReadEtextsActivity.py:1404
+msgid "Error getting document from tube"
+msgstr "Qillqa-khipu chaskiypi pantay rikurin"
+
+#  "Marcador"
+#: readsidebar.py:48
+msgid "Bookmark"
+msgstr "T'upsichiq"
+
 #  "Reducir"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:219
+#: readtoolbar.py:217
 msgid "Zoom out"
 msgstr "Kharuykachaspa huch'uyachiq"
 
 #  "Ampliar"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:225
+#: readtoolbar.py:223
 msgid "Zoom in"
 msgstr "Achuykachaspa hatunyachiq"
 
 #  "Pantalla completa"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:236
+#: readtoolbar.py:234
 msgid "Fullscreen"
 msgstr "Hunt'asqa pantalla"
 
 #  "Anterior"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:281
+#: readtoolbar.py:279
 msgid "Previous"
 msgstr "Ñawpaq"
 
 #  "Siguiente"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:288
+#: readtoolbar.py:286
 msgid "Next"
 msgstr "Jamuq"
 
 #  [ES] "Obtener Libro"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:340
+#: readtoolbar.py:338
 msgid "Get Book"
 msgstr "P'anqata hap'iy"
 
 #  [ES] "Eliminar lista de resultados"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:347
+#: readtoolbar.py:345
 msgid "Remove Results List"
 msgstr "Machkhasqakunamanta sinri kaqta chinkachiy"
 
 #  "Reproducir / Pausa"
 #  [ES] "Reproducir / Pausa"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:407
+#: readtoolbar.py:405
 msgid "Play / Pause"
 msgstr "Purichiy / Utichiy"
 
 #  [ES] "tono ajustado"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:455
+#: readtoolbar.py:455
 msgid "pitch adjusted"
 msgstr "Kunka mat'isqa"
 
 #  [ES] "velocidad ajustada"
-#: /home/jim/olpc/readetexts/mainline/readtoolbar.py:464
+#: readtoolbar.py:464
 msgid "rate adjusted"
 msgstr "Utqaynin mat'isqa"
 
-#  "Marcador"
-#: /home/jim/olpc/readetexts/mainline/readsidebar.py:47
-msgid "Bookmark"
-msgstr "T'upsichiq"
-
 #  "Editar"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:364
-msgid "Edit"
-msgstr "Allinchay"
+#~ msgid "Edit"
+#~ msgstr "Allinchay"
 
 #  "Leer"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:369
-msgid "Read"
-msgstr "Ñawichay"
+#~ msgid "Read"
+#~ msgstr "Ñawichay"
 
 #  [ES] "Libros"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:375
-msgid "Books"
-msgstr "P'anqakuna"
+#~ msgid "Books"
+#~ msgstr "P'anqakuna"
 
 #  "Ver"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:380
-msgid "View"
-msgstr "Qhaway"
+#~ msgid "View"
+#~ msgstr "Qhaway"
 
 #  [ES] "Habla"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:388
-msgid "Speech"
-msgstr "Rimay"
-
-#  "Error"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
-msgid "Error"
-msgstr "Pantay"
-
-#  [ES] "Debes introducir al menos una palabra en la búsqueda."
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1256
-msgid "You must enter at least one search word."
-msgstr "Machkhananpaqqa, ch'ulla simillatapas churaruwaq."
-
-#  [ES] "Intento de coneccion terminado para "
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1306
-msgid "Connection timed out for "
-msgstr "Kayman tinkuchiyqa tukurunña "
-
-#  [ES] "No se pudo descargar "
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
-msgid "Could not download "
-msgstr "Manam uyachikuytaqa atikunchu "
-
-#  [ES] " ruta en el catálogo puede ser incorrecta."
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1358
-msgid " path in catalog may be incorrect."
-msgstr " chayanapaq ñanqa, manapaschá allinchu kachkhan."
-
-#  [ES] "Éxito"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
-msgid "Success"
-msgstr "Llalliy"
-
-#  [ES] " añadido al Diario."
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1391
-msgid " added to Journal."
-msgstr " P'anqaman yapasqa."
-
-#  [ES] "Error"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
-msgid "Failure"
-msgstr "Pantay"
-
-#  [ES] "Error al obtener el documento de tubo"
-#: /home/jim/olpc/readetexts/mainline/ReadEtextsActivity.py:1518
-msgid "Error getting document from tube"
-msgstr "Qillqa-khipu chaskiypi pantay rikurin"
+#~ msgid "Speech"
+#~ msgstr "Niy"

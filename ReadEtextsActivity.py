@@ -282,7 +282,7 @@ class ReadEtextsActivity(activity.Activity):
         self.normal_tag.set_property('weight',  Pango.Weight.NORMAL)
 
         self.underline_tag = textbuffer.create_tag()
-        self.underline_tag.set_property('underline', 1)
+        self.underline_tag.set_property('underline', Pango.Underline.SINGLE)
         self.underline_tag.set_property( 'foreground', 'black')
         self.underline_tag.set_property( 'background', 'yellow')
 

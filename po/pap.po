@@ -1,49 +1,42 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Wenchi <linguares@yahoo.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-19 00:31-0500\n"
-"PO-Revision-Date: 2010-02-25 20:42+0200\n"
+"PO-Revision-Date: 2013-09-24 01:32+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Suares\n"
 "Language: pap\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.1\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #. TRANS: "name" option from activity.info file
 msgid "Read ETexts"
@@ -55,6 +48,8 @@ msgid ""
 "Download and read thousands of free e-books in plain text format from "
 "Project Gutenberg!"
 msgstr ""
+"Baha i lesa miles di e-book grátis den format di teksto simpel for di "
+"Project Gutenberg!"
 
 #: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
@@ -66,7 +61,7 @@ msgstr "Página anterior"
 
 #: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
-msgstr "Bookmark anterior"
+msgstr "Markabuki anterior"
 
 #: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
@@ -74,44 +69,44 @@ msgstr "Padilanti"
 
 #: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
-msgstr "Página siguiente"
+msgstr "Siguiente página"
 
 #: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
-msgstr "Bookmark siguiente"
+msgstr "Siguiente markabuki"
 
 #: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
-msgstr "Toggle Bookmark"
+msgstr "Aktivá Markabuki"
 
 #: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
-msgstr "Liña abou"
+msgstr "Suprayá"
 
 #: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
 #: ReadEtextsActivity.py:1253
 msgid "Error"
-msgstr "Eròr"
+msgstr "Eror"
 
 #: ReadEtextsActivity.py:1148
 msgid "You must enter at least one search word."
-msgstr "Bo mester yena por lo menos un palabra buska."
+msgstr "Bo mester yena por lo ménos un palabra di buskeda."
 
 #: ReadEtextsActivity.py:1201
 msgid "Connection timed out for "
-msgstr "Konekshon timed out pa "
+msgstr "Konekshon a kaduká pa "
 
 #: ReadEtextsActivity.py:1253
 msgid "Could not download "
-msgstr "Download no a logra "
+msgstr "No a logra download "
 
 #: ReadEtextsActivity.py:1253
 msgid " path in catalog may be incorrect."
-msgstr " kaminda den katalòk por ta inkorekto."
+msgstr " ruta den katalòk por ta inkorekto."
 
 #: ReadEtextsActivity.py:1286
 msgid "Success"
-msgstr "Éksito"
+msgstr "Eksito"
 
 #: ReadEtextsActivity.py:1286
 msgid " added to Journal."
@@ -123,15 +118,15 @@ msgstr "Interupshon"
 
 #: ReadEtextsActivity.py:1404
 msgid "Error getting document from tube"
-msgstr "Eròr kohe dokumento for di tubo"
+msgstr "Eror ora di kue dokumento for di tubu"
 
 #: readsidebar.py:48
 msgid "Bookmark"
-msgstr "Bookmark"
+msgstr "Markabuki"
 
 #: readtoolbar.py:217
 msgid "Zoom out"
-msgstr "Hala leu"
+msgstr "Hala afó"
 
 #: readtoolbar.py:223
 msgid "Zoom in"
@@ -139,7 +134,7 @@ msgstr "Hala serka"
 
 #: readtoolbar.py:234
 msgid "Fullscreen"
-msgstr "Pantaya kompleto"
+msgstr "Pantaya kompletu"
 
 #: readtoolbar.py:279
 msgid "Previous"
@@ -151,11 +146,11 @@ msgstr "Siguiente"
 
 #: readtoolbar.py:338
 msgid "Get Book"
-msgstr "Kohe buki"
+msgstr "Kue buki"
 
 #: readtoolbar.py:345
 msgid "Remove Results List"
-msgstr "Kita Resultadonan Lista"
+msgstr "Kita Lista Resultadonan"
 
 #: readtoolbar.py:405
 msgid "Play / Pause"
@@ -163,7 +158,7 @@ msgstr "Start / Pousa"
 
 #: readtoolbar.py:455
 msgid "pitch adjusted"
-msgstr "luga adaptá"
+msgstr "pitch adaptá"
 
 #: readtoolbar.py:464
 msgid "rate adjusted"

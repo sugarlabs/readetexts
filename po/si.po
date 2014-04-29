@@ -35,8 +35,8 @@ msgstr ""
 "Project-Id-Version: olpc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-19 00:31-0500\n"
-"PO-Revision-Date: 2011-09-28 08:28+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"PO-Revision-Date: 2014-04-10 04:11+0200\n"
+"Last-Translator: pkavinda <pkavinda@gmail.com>\n"
 "Language-Team: sinhala <LL@li.org>\n"
 "Language: si\n"
 "MIME-Version: 1.0\n"
@@ -60,11 +60,11 @@ msgstr ""
 
 #: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
-msgstr "පසුපසට"
+msgstr "ආපසු"
 
 #: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
-msgstr ""
+msgstr "පෙර පිටුව"
 
 #: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
@@ -76,7 +76,7 @@ msgstr "ඉදිරියට"
 
 #: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
-msgstr ""
+msgstr "ඊළඟ පිටුව"
 
 #: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"

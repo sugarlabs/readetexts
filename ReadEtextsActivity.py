@@ -26,7 +26,6 @@ from gi.repository import Gdk
 from sugar3.graphics import style
 from sugar3 import profile
 from sugar3.activity import activity
-# from sugar3 import network
 from sugar3.datastore import datastore
 from sugar3.graphics.alert import NotifyAlert
 from sugar3.graphics.toolbarbox import ToolbarBox
@@ -227,7 +226,7 @@ class ReadEtextsActivity(activity.Activity):
         self.scrolled.add(self.textview)
         self.textview.show()
         self.scrolled.show()
-        v_adjustment = self.scrolled.get_vadjustment()
+        # v_adjustment = self.scrolled.get_vadjustment()
         self.clipboard = Gtk.Clipboard()
         self.page = 0
         self.textview.grab_focus()
@@ -897,7 +896,7 @@ class ReadEtextsActivity(activity.Activity):
         label_text = label_text + '\n\n\n'
         textbuffer = self.textview.get_buffer()
         tag = textbuffer.create_tag()
-        tag.set_property('weight', pango.WEIGHT_BOLD)
+        tag.set_property('weight', Pango.WEIGHT_BOLD)
         tag.set_property( 'foreground', "white")
         tag.set_property( 'background', "black")
         textbuffer.set_text(label_text)

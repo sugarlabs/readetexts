@@ -18,22 +18,21 @@
 import logging
 
 _logger = logging.getLogger('read-etexts-activity')
-
+_logger.setLevel(logging.INFO)
 supported = True
 
+import gi
+gi.require_version('Gst', '1.0')
+
 try:
-    import gst
-    gst.element_factory_make('espeak')
+    from gi.repository import Gst
+    Gst.init(None)
+    Gst.ElementFactory.make('espeak')
     from speech_gst import *
     _logger.info('use gst-plugins-espeak')
 except Exception, e:
     _logger.info('disable gst-plugins-espeak: %s' % e)
-    try:
-        from speech_dispatcher import *
-        _logger.info('use speech-dispatcher')
-    except Exception, e:
-        supported = False
-        _logger.info('disable speech: %s' % e)
+    supported = False
 
 voice = None
 pitch = 0

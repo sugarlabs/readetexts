@@ -14,30 +14,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import gst
-import logging
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst
+Gst.init(None)
 
 import speech
 
-_logger = logging.getLogger('read-etexts-activity')
-
 def _message_cb(bus, message, pipe):
-    if message.type in (gst.MESSAGE_EOS, gst.MESSAGE_ERROR):
-        pipe.set_state(gst.STATE_NULL)
+    if message.type in (Gst.MessageType.EOS, Gst.MessageType.ERROR):
+        pipe.set_state(Gst.State.NULL)
         if pipe is play_speaker[1]:
             speech.reset_cb()
-    elif message.type == gst.MESSAGE_ELEMENT and \
-            message.structure.get_name() == 'espeak-mark':
-        mark = message.structure['mark']
+    elif message.type == Gst.MessageType.ELEMENT and \
+            message.get_structure().get_name() == 'espeak-mark':
+        mark = message.get_structure().get_value('mark')
         speech.highlight_cb(int(mark))
 
 def _create_pipe():
-    pipe = gst.Pipeline('pipeline')
+    pipe = Gst.Pipeline()
 
-    source = gst.element_factory_make('espeak', 'source')
+    source = Gst.ElementFactory.make('espeak', 'source')
     pipe.add(source)
 
-    sink = gst.element_factory_make('autoaudiosink', 'sink')
+    sink = Gst.ElementFactory.make('autoaudiosink', 'sink')
     pipe.add(sink)
     source.link(sink)
 
@@ -52,8 +52,8 @@ def _speech(speaker, words):
     speaker[0].props.rate = speech.rate
     speaker[0].props.voice = speech.voice[1]
     speaker[0].props.text = words;
-    speaker[1].set_state(gst.STATE_NULL)
-    speaker[1].set_state(gst.STATE_PLAYING)
+    speaker[1].set_state(Gst.State.NULL)
+    speaker[1].set_state(Gst.State.PLAYING)
 
 info_speaker = _create_pipe()
 play_speaker = _create_pipe()
@@ -69,10 +69,10 @@ def play(words):
     _speech(play_speaker, words)
 
 def is_stopped():
-    for i in play_speaker[1].get_state():
-        if isinstance(i, gst.State) and i == gst.STATE_NULL:
+    for i in play_speaker[1].get_state(Gst.CLOCK_TIME_NONE):
+        if isinstance(i, Gst.State) and i == Gst.State.NULL:
             return True
     return False
 
 def stop():
-    play_speaker[1].set_state(gst.STATE_NULL)
+    play_speaker[1].set_state(Gst.State.NULL)

@@ -27,7 +27,7 @@ gi.require_version('Gst', '1.0')
 try:
     from gi.repository import Gst
     Gst.init(None)
-    Gst.ElementFactory.make('espeak')
+    Gst.ElementFactory.make('espeak', 'source')
     from speech_gst import *
     _logger.info('use gst-plugins-espeak')
 except Exception, e:

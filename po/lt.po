@@ -7,16 +7,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-19 00:31-0500\n"
-"PO-Revision-Date: 2011-04-08 06:21+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"PO-Revision-Date: 2015-06-21 21:54+0000\n"
+"Last-Translator: Moo <hazap@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
-"100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Pootle 2.0.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1434923646.000000\n"
 
 #. TRANS: "name" option from activity.info file
 msgid "Read ETexts"
@@ -35,7 +36,7 @@ msgstr ""
 
 #: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
-msgstr ""
+msgstr "Ankstesnis puslapis"
 
 #: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
@@ -47,7 +48,7 @@ msgstr ""
 
 #: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
-msgstr ""
+msgstr "Kitas puslapis"
 
 #: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"

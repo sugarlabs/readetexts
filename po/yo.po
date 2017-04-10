@@ -2,23 +2,25 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-19 00:31-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2016-09-23 23:47+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: yo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1474674454.000000\n"
 
 #. TRANS: "name" option from activity.info file
 msgid "Read ETexts"
-msgstr ""
+msgstr "Ka itanna ọrọ"
 
 #. TRANS: "summary" option from activity.info file
 #. TRANS: "description" option from activity.info file
@@ -26,116 +28,118 @@ msgid ""
 "Download and read thousands of free e-books in plain text format from "
 "Project Gutenberg!"
 msgstr ""
+"Gba lati ayelujara ati ka egbegberun ṣ'ofo itanna iwe ni itele ti ọrọ kika "
+"lati idawọle!"
 
 #: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
-msgstr ""
+msgstr "Padà"
 
 #: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
-msgstr ""
+msgstr "Ti tẹlẹ iwe"
 
 #: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
-msgstr ""
+msgstr "Ti tẹlẹ bukumaaki"
 
 #: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
-msgstr ""
+msgstr "Iwájú"
 
 #: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
-msgstr ""
+msgstr "Tókàn iwe"
 
 #: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
-msgstr ""
+msgstr "Tókàn bukumaaki"
 
 #: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
-msgstr ""
+msgstr "Tẹ bukumaaki"
 
 #: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
-msgstr ""
+msgstr "Aami"
 
 #: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
 #: ReadEtextsActivity.py:1253
 msgid "Error"
-msgstr ""
+msgstr "Aṣiṣe"
 
 #: ReadEtextsActivity.py:1148
 msgid "You must enter at least one search word."
-msgstr ""
+msgstr "O gbọdọ tẹ ni o kere kan awọn àwárí ọrọ."
 
 #: ReadEtextsActivity.py:1201
 msgid "Connection timed out for "
-msgstr ""
+msgstr "Asopọ akoko pari "
 
 #: ReadEtextsActivity.py:1253
 msgid "Could not download "
-msgstr ""
+msgstr "Ko le gba "
 
 #: ReadEtextsActivity.py:1253
 msgid " path in catalog may be incorrect."
-msgstr ""
+msgstr " ona ni katalogi le jẹ ti ko tọ."
 
 #: ReadEtextsActivity.py:1286
 msgid "Success"
-msgstr ""
+msgstr "Aseyori"
 
 #: ReadEtextsActivity.py:1286
 msgid " added to Journal."
-msgstr ""
+msgstr " kun si Akosile Awon."
 
 #: ReadEtextsActivity.py:1404
 msgid "Failure"
-msgstr ""
+msgstr "Ikuna"
 
 #: ReadEtextsActivity.py:1404
 msgid "Error getting document from tube"
-msgstr ""
+msgstr "Aṣiṣe si sunmọ ni iwe-ipamọ lati tube"
 
 #: readsidebar.py:48
 msgid "Bookmark"
-msgstr ""
+msgstr "Bukumaaki"
 
 #: readtoolbar.py:217
 msgid "Zoom out"
-msgstr ""
+msgstr "Fẹ̀ẹ́ Síta"
 
 #: readtoolbar.py:223
 msgid "Zoom in"
-msgstr ""
+msgstr "Fẹ̀ẹ́ Sinú"
 
 #: readtoolbar.py:234
 msgid "Fullscreen"
-msgstr ""
+msgstr "Gbogbo sikirini"
 
 #: readtoolbar.py:279
 msgid "Previous"
-msgstr ""
+msgstr "Ti tẹlẹ"
 
 #: readtoolbar.py:286
 msgid "Next"
-msgstr ""
+msgstr "Itele"
 
 #: readtoolbar.py:338
 msgid "Get Book"
-msgstr ""
+msgstr "Gba iwe"
 
 #: readtoolbar.py:345
 msgid "Remove Results List"
-msgstr ""
+msgstr "Yọ awọn esi Akojọ awọn"
 
 #: readtoolbar.py:405
 msgid "Play / Pause"
-msgstr ""
+msgstr "Mu ṣiṣẹ / duro"
 
 #: readtoolbar.py:455
 msgid "pitch adjusted"
-msgstr ""
+msgstr "ipolowo ni titunse"
 
 #: readtoolbar.py:464
 msgid "rate adjusted"
-msgstr ""
+msgstr "oṣuwọn ni titunse"

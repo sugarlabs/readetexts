@@ -6,6 +6,6 @@ exec = sugar-activity ReadEtextsActivity.ReadEtextsActivity
 show_launcher = yes
 activity_version = 27
 mime_types = text/plain;application/zip;application/rtf
-license = GPLv2+
+license = GPLv2+ and LGPLv2
 summary = Download and read thousands of free e-books in plain text format from Project Gutenberg!
 repository = git@github.com:sugarlabs/readetexts.git

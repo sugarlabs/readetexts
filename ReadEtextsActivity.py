@@ -21,6 +21,8 @@ import re
 import logging
 import time
 import zipfile
+import gi
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
 from sugar3.graphics import style

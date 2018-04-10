@@ -30,12 +30,11 @@ from sugar3.datastore import datastore
 from sugar3.graphics.alert import NotifyAlert
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.toolbarbox import ToolbarButton
-from sugar3.activity.widgets import StopButton
+from sugar3.activity.widgets import ActivityToolbarButton, StopButton
 from readtoolbar import ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.menuitem import MenuItem
 from sugar3.graphics.toggletoolbutton import ToggleToolButton
-from mybutton import MyActivityToolbarButton
 from readsidebar import Sidebar
 from gettext import gettext as _
 from gi.repository import Pango
@@ -339,7 +338,7 @@ class ReadEtextsActivity(activity.Activity):
     def create_new_toolbar(self):
         toolbar_box = ToolbarBox()
 
-        activity_button = MyActivityToolbarButton(self)
+        activity_button = ActivityToolbarButton(self)
         toolbar_box.toolbar.insert(activity_button, 0)
         activity_button.show()
 

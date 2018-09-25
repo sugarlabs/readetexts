@@ -19,22 +19,25 @@
 import getopt
 import sys
 
-# This is a script to take the a file in RTF format and convert it to a text file readable by Read Etexts.
+# This is a script to take the a file in RTF format and convert it to a text
+# file readable by Read Etexts.
+
 
 def check(file_path):
 
-    rtf_file = open(file_path,"r")
+    rtf_file = open(file_path, "r")
     line = rtf_file.readline()
     rtf_file.close()
-    
+
     if line.startswith('{\\rtf1'):
         return True
     else:
         return False
 
-def convert(file_path,  output_path):
 
-    rtf_file = open(file_path,"r")
+def convert(file_path, output_path):
+
+    rtf_file = open(file_path, "r")
     out = open(output_path, 'w')
     out.write('\t\t\t\t\r\n')
     brace_count = 0
@@ -61,7 +64,8 @@ def convert(file_path,  output_path):
     rtf_file.close()
     out.close()
     print "All done!"
-    
+
+
 def strip_tags(string):
     index = 0
     copy = True
@@ -71,11 +75,12 @@ def strip_tags(string):
             copy = False
         if string[index] == ' ':
             copy = True
-        if copy == True:
+        if copy is True:
             output = output + string[index]
         index = index + 1
     return output
-    
+
+
 def count_braces(string):
     index = 0
     count = 0
@@ -87,12 +92,13 @@ def count_braces(string):
         index = index + 1
     return count
 
+
 if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "")
         if check(args[0]):
             print 'It is an RTF file'
-            convert(args[0],  args[1])
+            convert(args[0], args[1])
         else:
             print 'It is NOT an RTF file'
     except getopt.error, msg:

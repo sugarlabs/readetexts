@@ -19,15 +19,17 @@
 import getopt
 import sys
 
-# This is a script to take the file GUTINDEX.AUS, the offline book catalog of Project Gutenberg Australia, 
-# and reformat it for use by Read Etexts.  After the file ausoutput.txt is created it should be combined 
-# with the output of gutextract.py and sorted to create bookcatalog.txt.
+# This is a script to take the file GUTINDEX.AUS, the offline book catalog of
+# Project Gutenberg Australia, and reformat it for use by Read Etexts.
+# After the file ausoutput.txt is created it should be combined with the
+# output of gutextract.py and sorted to create bookcatalog.txt.
+
 
 def main(file_path):
 
-    gut_file = open(file_path,"r")
+    gut_file = open(file_path, "r")
     out = open("ausoutput.txt", 'w')
-    
+
     while gut_file:
         line = gut_file.readline()
         if not line:
@@ -49,6 +51,7 @@ def main(file_path):
     gut_file.close()
     out.close()
     print "All done!"
+
 
 if __name__ == "__main__":
     try:

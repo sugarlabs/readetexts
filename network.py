@@ -15,7 +15,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
-# James Simmons   February 14, 2013   Changed user agent string used by urllib so that we can
+# James Simmons February 14, 2013
+# Changed user agent string used by urllib so that we can
 # download text files from Project Gutenberg again.
 
 import os
@@ -191,11 +192,11 @@ class GlibURLDownloader(GObject.GObject):
 
     __gsignals__ = {
         'finished': (GObject.SignalFlags.RUN_FIRST, None,
-            ([GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT])),
+                    ([GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT])),
         'error': (GObject.SignalFlags.RUN_FIRST, None,
-            ([GObject.TYPE_PYOBJECT])),
+                 ([GObject.TYPE_PYOBJECT])),
         'progress': (GObject.SignalFlags.RUN_FIRST, None,
-            ([GObject.TYPE_PYOBJECT])),
+                    ([GObject.TYPE_PYOBJECT])),
     }
 
     CHUNK_SIZE = 4096

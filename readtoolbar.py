@@ -16,11 +16,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os
-import logging
 from gettext import gettext as _
 import re
 
-from gi.repository import Pango
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -45,11 +43,11 @@ class ReadToolbar(Gtk.Toolbar):
         self.back.set_tooltip(_('Back'))
         self.back.props.sensitive = False
         palette = self.back.get_palette()
-        self.prev_page = MenuItem(text_label= _("Previous page"))
-        palette.menu.append(self.prev_page) 
-        self.prev_page.show_all()        
-        self.prev_bookmark = MenuItem(text_label= _("Previous bookmark"))
-        palette.menu.append(self.prev_bookmark) 
+        self.prev_page = MenuItem(text_label=_("Previous page"))
+        palette.menu.append(self.prev_page)
+        self.prev_page.show_all()
+        self.prev_bookmark = MenuItem(text_label=_("Previous bookmark"))
+        palette.menu.append(self.prev_bookmark)
         self.prev_bookmark.show_all()
         self.back.connect('clicked', self.go_back_cb)
         self.prev_page.connect('activate', self.go_back_cb)
@@ -61,11 +59,11 @@ class ReadToolbar(Gtk.Toolbar):
         self.forward.set_tooltip(_('Forward'))
         self.forward.props.sensitive = False
         palette = self.forward.get_palette()
-        self.next_page = MenuItem(text_label= _("Next page"))
-        palette.menu.append(self.next_page) 
-        self.next_page.show_all()        
-        self.next_bookmark = MenuItem(text_label= _("Next bookmark"))
-        palette.menu.append(self.next_bookmark) 
+        self.next_page = MenuItem(text_label=_("Next page"))
+        palette.menu.append(self.next_page)
+        self.next_page.show_all()
+        self.next_bookmark = MenuItem(text_label=_("Next bookmark"))
+        palette.menu.append(self.next_bookmark)
         self.next_bookmark.show_all()
         self.forward.connect('clicked', self.go_forward_cb)
         self.next_page.connect('activate', self.go_forward_cb)
@@ -79,9 +77,9 @@ class ReadToolbar(Gtk.Toolbar):
         self.num_page_entry.set_text('0')
         self.num_page_entry.set_alignment(1)
         self.num_page_entry.connect('insert-text',
-                                     self.num_page_entry_insert_text_cb)
+                                    self.num_page_entry_insert_text_cb)
         self.num_page_entry.connect('activate',
-                                     self.num_page_entry_activate_cb)
+                                    self.num_page_entry_activate_cb)
 
         self.num_page_entry.set_width_chars(4)
 
@@ -94,7 +92,8 @@ class ReadToolbar(Gtk.Toolbar):
         total_page_item = Gtk.ToolItem()
 
         self.total_page_label = Gtk.Label()
-        self.total_page_label.set_markup("<span size='14000' foreground='black'>")
+        self.total_page_label.set_markup(
+            "<span size='14000' foreground='black'>")
 
         self.total_page_label.set_text(' / 0')
         total_page_item.add(self.total_page_label)
@@ -106,13 +105,14 @@ class ReadToolbar(Gtk.Toolbar):
         spacer = Gtk.SeparatorToolItem()
         self.insert(spacer, -1)
         spacer.show()
-  
+
         bookmarkitem = Gtk.ToolItem()
         self.bookmarker = ToggleToolButton('emblem-favorite')
         self.bookmarker.set_tooltip(_('Toggle Bookmark'))
-        self.bookmarker_handler_id = self.bookmarker.connect('clicked',
-                                      self.bookmarker_clicked_cb)
-  
+        self.bookmarker_handler_id = self.bookmarker.connect(
+            'clicked',
+            self.bookmarker_clicked_cb)
+
         bookmarkitem.add(self.bookmarker)
 
         self.insert(bookmarkitem, -1)
@@ -122,7 +122,8 @@ class ReadToolbar(Gtk.Toolbar):
         self.underline = ToggleToolButton('format-text-underline')
         self.underline.set_tooltip(_('Underline'))
         self.underline.props.sensitive = False
-        self.underline_id = self.underline.connect('clicked', self.underline_cb)
+        self.underline_id = self.underline.connect('clicked',
+                                                   self.underline_cb)
         underline_item.add(self.underline)
         self.insert(underline_item, -1)
         underline_item.show_all()
@@ -149,55 +150,58 @@ class ReadToolbar(Gtk.Toolbar):
         self.activity.show_page(page)
         entry.props.text = str(page + 1)
         self.update_nav_buttons()
-        
+
     def go_back_cb(self, button):
         self.activity.page_previous()
-    
+
     def go_forward_cb(self, button):
         self.activity.page_next()
-    
+
     def update_nav_buttons(self):
         current_page = self.current_page
         self.back.props.sensitive = current_page > 0
         self.forward.props.sensitive = \
             current_page < self.total_pages - 1
-        
+
         self.num_page_entry.props.text = str(current_page + 1)
         self.total_page_label.props.label = \
             ' / ' + str(self.total_pages)
 
     def set_total_pages(self, pages):
         self.total_pages = pages
-        
+
     def set_current_page(self, page):
         self.current_page = page
         self.update_nav_buttons()
-        
+
     def set_activity(self, activity):
         self.activity = activity
 
     def prev_bookmark_activate_cb(self, menuitem):
         self.activity.prev_bookmark()
- 
+
     def next_bookmark_activate_cb(self, menuitem):
         self.activity.next_bookmark()
-        
+
     def bookmarker_clicked_cb(self, button):
         self.activity.bookmarker_clicked(button)
 
     def underline_cb(self, button):
         self.activity.underline_clicked(button)
 
-    def setToggleButtonState(self,button,b,id):
+    def setToggleButtonState(self, button, b, id):
         button.handler_block(id)
         button.set_active(b)
         button.handler_unblock(id)
-        
-    def update_underline_button(self,  state):
-        self.setToggleButtonState(self.underline,  state,  self.underline_id)
 
-    def update_bookmark_button(self,  state):
-        self.setToggleButtonState(self.bookmarker,  state,  self.bookmarker_handler_id)
+    def update_underline_button(self, state):
+        self.setToggleButtonState(self.underline, state, self.underline_id)
+
+    def update_bookmark_button(self, state):
+        self.setToggleButtonState(self.bookmarker,
+                                  state,
+                                  self.bookmarker_handler_id)
+
 
 class ViewToolbar(Gtk.Toolbar):
     __gtype_name__ = 'ViewToolbar'
@@ -238,7 +242,7 @@ class ViewToolbar(Gtk.Toolbar):
 
     def zoom_in_cb(self, button):
         self.activity.font_increase()
-    
+
     def zoom_out_cb(self, button):
         self.activity.font_decrease()
 
@@ -247,6 +251,7 @@ class ViewToolbar(Gtk.Toolbar):
 
     def fullscreen_cb(self, button):
         self.emit('go-fullscreen')
+
 
 class EditToolbar(widgets.EditToolbar):
     __gtype_name__ = 'EditToolbar'
@@ -268,7 +273,7 @@ class EditToolbar(widgets.EditToolbar):
         self.search_entry.set_size_request(width, -1)
 
         self.search_entry.props.sensitive = False
-        
+
         search_item.add(self.search_entry)
         self.search_entry.show()
 
@@ -292,7 +297,7 @@ class EditToolbar(widgets.EditToolbar):
     def set_activity(self, activity):
         self.activity = activity
 
-    def enable_search(self,  state):
+    def enable_search(self, state):
         self.search_entry.props.sensitive = state
 
     def search_entry_activate_cb(self, entry):
@@ -302,16 +307,17 @@ class EditToolbar(widgets.EditToolbar):
 
     def find_changed_cb(self, page, spec):
         self.update_find_buttons()
-        
+
     def find_prev_cb(self, button):
         self.activity.find_previous()
-    
+
     def find_next_cb(self, button):
         self.activity.find_next()
 
     def update_find_buttons(self):
         self.prev.props.sensitive = self.activity.can_find_previous()
         self.next.props.sensitive = self.activity.can_find_next()
+
 
 class BooksToolbar(Gtk.Toolbar):
     __gtype_name__ = 'BooksToolbar'
@@ -357,20 +363,21 @@ class BooksToolbar(Gtk.Toolbar):
 
     def get_book_cb(self, button):
         self.activity.get_book()
- 
-    def enable_button(self,  state):
+
+    def enable_button(self, state):
         self.download.props.sensitive = state
- 
-    def hide_results_cb(self,  button):
+
+    def hide_results_cb(self, button):
         self.activity.list_scroller.hide()
         self.hide_results.props.sensitive = False
-    
+
     def keypress_cb(self, widget, event):
         keyname = Gdk.keyval_name(event.keyval)
         if keyname == 'Escape':
             self.activity.list_scroller.hide()
             self.hide_results.props.sensitive = False
             return True
+
 
 class SpeechToolbar(Gtk.Toolbar):
 
@@ -404,18 +411,20 @@ class SpeechToolbar(Gtk.Toolbar):
         play_img = Gtk.Image()
         play_img.show()
         play_img.set_from_icon_name('media-playback-start',
-                Gtk.IconSize.LARGE_TOOLBAR)
+                                    Gtk.IconSize.LARGE_TOOLBAR)
 
         # Pause button Image
         pause_img = Gtk.Image()
         pause_img.show()
         pause_img.set_from_icon_name('media-playback-pause',
-                Gtk.IconSize.LARGE_TOOLBAR)
+                                     Gtk.IconSize.LARGE_TOOLBAR)
 
         # Play button
         self.play_button = ToggleToolButton('media-playback-start')
         self.play_button.show()
-        self.play_button.connect('toggled', self._play_toggle_cb, [play_img, pause_img])
+        self.play_button.connect('toggled',
+                                 self._play_toggled_cb,
+                                 [play_img, pause_img])
         self.insert(self.play_button, -1)
         self.play_button.set_tooltip(_('Play / Pause'))
 
@@ -439,7 +448,7 @@ class SpeechToolbar(Gtk.Toolbar):
         pitchbar.set_adjustment(self.pitchadj)
         pitchbar.set_draw_value(False)
         # pitchbar.set_update_policy(Gtk.UpdatePolicy.ALWAYS)
-        pitchbar.set_size_request(150,15)
+        pitchbar.set_size_request(150, 15)
         pitchtool = Gtk.ToolItem()
         pitchtool.add(pitchbar)
         pitchtool.show()
@@ -450,22 +459,21 @@ class SpeechToolbar(Gtk.Toolbar):
         ratebar = Gtk.HScale()
         ratebar.set_adjustment(self.rateadj)
         ratebar.set_draw_value(False)
-        #ratebar.set_update_policy(Gtk.UpdatePolicy.ALWAYS)
-        ratebar.set_size_request(150,15)
+        ratebar.set_size_request(150, 15)
         ratetool = Gtk.ToolItem()
         ratetool.add(ratebar)
         ratetool.show()
         self.insert(ratetool, -1)
         ratebar.show()
 
-    def _compare_voice(self,  a,  b):
+    def _compare_voice(self, a, b):
         if a[1].lower() == b[1].lower():
             return 0
         if a[1].lower() < b[1].lower():
             return -1
         if a[1].lower() > b[1].lower():
             return 1
-        
+
     def _voice_changed_cb(self, combo):
         self._voice = combo.props.value
         self._speech.say_text(self._voices[self._voice])
@@ -473,7 +481,10 @@ class SpeechToolbar(Gtk.Toolbar):
     def pitch_adjusted_cb(self, get):
         self._speech.set_pitch(int(get.get_value()))
         self._speech.say_text(_("pitch adjusted"))
-        f = open(os.path.join(self.activity.get_activity_root(), 'instance',  'pitch.txt'),  'w')
+        f = open(os.path.join(self.activity.get_activity_root(),
+                             'instance',
+                             'pitch.txt'),
+                             'w')
         try:
             f.write(str(self._speech.get_pitch()))
         finally:
@@ -482,23 +493,35 @@ class SpeechToolbar(Gtk.Toolbar):
     def rate_adjusted_cb(self, get):
         self._speech.set_rate(int(get.get_value()))
         self._speech.say_text(_("rate adjusted"))
-        f = open(os.path.join(self.activity.get_activity_root(), 'instance',  'rate.txt'),  'w')
+        f = open(os.path.join(self.activity.get_activity_root(),
+                              'instance',
+                              'rate.txt'),
+                              'w')
         try:
             f.write(str(self._speech.get_rate()))
         finally:
             f.close()
-      
+
     def set_activity(self, activity):
         self.activity = activity
-        if os.path.exists(os.path.join(activity.get_activity_root(), 'instance',  'pitch.txt')):
-            f = open(os.path.join(activity.get_activity_root(), 'instance',  'pitch.txt'),  'r')
+        if os.path.exists(os.path.join(activity.get_activity_root(),
+                                       'instance',
+                                       'pitch.txt')):
+            f = open(os.path.join(activity.get_activity_root(),
+                                  'instance', 'pitch.txt'),
+                                  'r')
             line = f.readline()
             pitch = int(line.strip())
             self.pitchadj.set_value(pitch)
             self._speech.set_pitch(pitch)
             f.close()
-        if os.path.exists(os.path.join(activity.get_activity_root(), 'instance',  'rate.txt')):
-            f = open(os.path.join(activity.get_activity_root(), 'instance',  'rate.txt'),  'r')
+        if os.path.exists(os.path.join(activity.get_activity_root(),
+                                       'instance',
+                                       'rate.txt')):
+            f = open(os.path.join(activity.get_activity_root(),
+                                  'instance',
+                                  'rate.txt'),
+                                  'r')
             line = f.readline()
             rate = int(line.strip())
             self.rateadj.set_value(rate)
@@ -506,8 +529,8 @@ class SpeechToolbar(Gtk.Toolbar):
             f.close()
         self.pitchadj.connect("value_changed", self.pitch_adjusted_cb)
         self.rateadj.connect("value_changed", self.rate_adjusted_cb)
-    
-    def _play_toggle_cb(self, widget, images):
+
+    def _play_toggled_cb(self, widget, images):
         widget.set_icon_widget(images[int(widget.get_active())])
         if widget.get_active():
             self.play_button.set_icon_name('media-playback-pause')

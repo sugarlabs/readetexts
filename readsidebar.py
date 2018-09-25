@@ -17,7 +17,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import logging
-import time
 
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -27,6 +26,7 @@ from sugar3.graphics.icon import Icon
 from gettext import gettext as _
 
 _logger = logging.getLogger('read-activity')
+
 
 class Sidebar(Gtk.EventBox):
     def __init__(self):
@@ -43,9 +43,9 @@ class Sidebar(Gtk.EventBox):
         self.box.show()
         self.show()
 
-        self.bookmark_icon = Icon(icon_name = 'emblem-favorite', \
-            pixel_size = 18)
-        tooltip_text = _('Bookmark') 
+        self.bookmark_icon = Icon(icon_name='emblem-favorite',
+                                  pixel_size=18)
+        tooltip_text = _('Bookmark')
         self.bookmark_icon.set_tooltip_text(tooltip_text)
         self.box.pack_start(self.bookmark_icon, False, False, 0)
 
@@ -54,4 +54,3 @@ class Sidebar(Gtk.EventBox):
             self.bookmark_icon.show_all()
         else:
             self.bookmark_icon.hide()
-

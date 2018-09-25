@@ -33,7 +33,6 @@ from sugar3.graphics.alert import NotifyAlert
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.toolbarbox import ToolbarButton
 from sugar3.activity.widgets import ActivityToolbarButton, StopButton
-from readtoolbar import ViewToolbar, EditToolbar,  BooksToolbar,  SpeechToolbar
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.menuitem import MenuItem
 from sugar3.graphics.toggletoolbutton import ToggleToolButton
@@ -49,7 +48,7 @@ import xopower
 import rtfconvert
 import pgconvert
 import network
-from readtoolbar import SpeechToolbar
+from readtoolbar import ViewToolbar, EditToolbar, BooksToolbar, SpeechToolbar
 
 PAGE_SIZE = 38
 TOOLBAR_READ = 2
@@ -61,69 +60,70 @@ COLUMN_PATH = 2
 logger = logging.getLogger('read-etexts-activity')
 # logger.setLevel(logging.DEBUG)
 
+
 class Annotations():
-    
-    def __init__(self,  pickle_file_name):
+
+    def __init__(self, pickle_file_name):
         self.title = ''
-        self.notes = {0:''}
+        self.notes = {0: ''}
         self.bookmarks = []
-        self.highlights = {0:  [] }
+        self.highlights = {0: []}
         self.pickle_file_name = pickle_file_name
 
     def get_title(self):
         return self.title
-        
-    def set_title(self,  title):
+
+    def set_title(self, title):
         self.title = title
-    
+
     def get_notes(self):
         return self.notes
-        
-    def get_note(self,  page):
+
+    def get_note(self, page):
         try:
             return self.notes[page]
         except KeyError:
             return ''
-        
-    def add_note(self,  page,  text):
+
+    def add_note(self, page, text):
         self.notes[page] = text
         if text == '':
             del self.notes[page]
 
-    def is_bookmarked(self,  page):
+    def is_bookmarked(self, page):
         bookmark = self.bookmarks.count(page)
         if bookmark > 0:
             return True
         else:
             return False
 
-    def add_bookmark(self,  page):
+    def add_bookmark(self, page):
         self.bookmarks.append(page)
-        
-    def remove_bookmark(self,  page):
+
+    def remove_bookmark(self, page):
         try:
             self.bookmarks.remove(page)
         except ValueError:
-            print 'page already not bookmarked',  page
+            print 'page already not bookmarked', page
 
     def get_bookmarks(self):
         self.bookmarks.sort()
         return self.bookmarks
-        
-    def get_highlights(self,  page):
+
+    def get_highlights(self, page):
         try:
             return self.highlights[page]
         except KeyError:
             return []
-            
-    def set_highlights(self,  page,  tuples_list):
+
+    def set_highlights(self, page, tuples_list):
         self.highlights[page] = tuples_list
         if tuples_list == []:
             del self.highlights[page]
-        
+
     def restore(self):
         if os.path.exists(self.pickle_file_name):
-            pickle_input = open(self.pickle_file_name,  'rb')
+            pickle_input = open(self.pickle_file_name, 'rb')
             self.title = pickle.load(pickle_input)
             self.bookmarks = pickle.load(pickle_input)
             self.notes = pickle.load(pickle_input)
@@ -131,12 +131,13 @@ class Annotations():
             pickle_input.close()
 
     def save(self):
-        pickle_output = open(self.pickle_file_name,  'wb')
-        pickle.dump(self.title,  pickle_output)
-        pickle.dump(self.bookmarks,  pickle_output)
-        pickle.dump(self.notes,  pickle_output)
-        pickle.dump(self.highlights,  pickle_output)
+        pickle_output = open(self.pickle_file_name, 'wb')
+        pickle.dump(self.title, pickle_output)
+        pickle.dump(self.bookmarks, pickle_output)
+        pickle.dump(self.notes, pickle_output)
+        pickle.dump(self.highlights, pickle_output)
         pickle_output.close()
+
 
 class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
     """HTTP Request Handler for transferring document while collaborating.
@@ -177,7 +178,9 @@ class ReadURLDownloader(network.GlibURLDownloader):
             return self._info.headers.get('Content-type')
         return None
 
+
 READ_STREAM_SERVICE = 'read-activity-http'
+
 
 class ReadEtextsActivity(activity.Activity):
     def __init__(self, handle):
@@ -185,18 +188,18 @@ class ReadEtextsActivity(activity.Activity):
         Gdk.threads_init()
         self.current_word = 0
         self.word_tuples = []
-        
+
         activity.Activity.__init__(self, handle)
 
         self.fileserver = None
         self.object_id = handle.object_id
         self.extra_journal_entry = None
-        self.page_index = [ 0 ]
         self.etext_file = None
-       
+
         self.create_new_toolbar()
         self.scrolled = Gtk.ScrolledWindow()
-        self.scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.scrolled.set_policy(Gtk.PolicyType.NEVER,
+                                 Gtk.PolicyType.AUTOMATIC)
 
         self.textview = Gtk.TextView()
         self.textview.set_editable(False)
@@ -211,16 +214,22 @@ class ReadEtextsActivity(activity.Activity):
         self.annotation_textview.set_right_margin(50)
         self.annotation_textview.set_wrap_mode(Gtk.WrapMode.WORD)
 
-        if os.path.exists(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt')):
-            f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'r')
+        if os.path.exists(os.path.join(self.get_activity_root(),
+                                       'instance',
+                                       'fontsize.txt')):
+            f = open(os.path.join(self.get_activity_root(),
+                                  'instance',
+                                  'fontsize.txt'),
+                                  'r')
             line = f.readline()
             fontsize = int(line.strip())
-            self.font_desc = Pango.FontDescription("monospace %d" % style.zoom(fontsize))
-            # self.font_desc = Pango.FontDescription("sans %d" % style.zoom(fontsize))
+            self.font_desc = Pango.FontDescription(
+                "monospace %d" % style.zoom(fontsize))
             f.close()
         else:
             print 'no font size found'
-            self.font_desc = Pango.FontDescription("monospace %d" % style.zoom(10))
+            self.font_desc = Pango.FontDescription(
+                "monospace %d" % style.zoom(10))
         buffer = self.textview.get_buffer()
         self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
         self.textview.modify_font(self.font_desc)
@@ -233,7 +242,9 @@ class ReadEtextsActivity(activity.Activity):
         self.page = 0
         self.textview.grab_focus()
 
-        self.ls = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_STRING)
+        self.ls = Gtk.ListStore(GObject.TYPE_STRING,
+                                GObject.TYPE_STRING,
+                                GObject.TYPE_STRING)
         tv = Gtk.TreeView(self.ls)
         tv.set_rules_hint(True)
         tv.set_search_column(COLUMN_TITLE)
@@ -244,24 +255,26 @@ class ReadEtextsActivity(activity.Activity):
         col = Gtk.TreeViewColumn('Title', renderer, text=COLUMN_TITLE)
         col.set_sort_column_id(COLUMN_TITLE)
         tv.append_column(col)
-    
+
         renderer = Gtk.CellRendererText()
         col = Gtk.TreeViewColumn('Author', renderer, text=COLUMN_AUTHOR)
         col.set_sort_column_id(COLUMN_AUTHOR)
         tv.append_column(col)
 
-        self.list_scroller = Gtk.ScrolledWindow(hadjustment=None, vadjustment=None)
-        self.list_scroller.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        self.list_scroller = Gtk.ScrolledWindow(hadjustment=None,
+                                                vadjustment=None)
+        self.list_scroller.set_policy(Gtk.PolicyType.AUTOMATIC,
+                                      Gtk.PolicyType.AUTOMATIC)
         self.list_scroller.add(tv)
-        
+
         self.progressbar = Gtk.ProgressBar()
         self.progressbar.set_fraction(0.0)
-        
+
         vbox = Gtk.VBox()
-        vbox.pack_start(self.progressbar,  False,  False,  10)
+        vbox.pack_start(self.progressbar, False, False, 10)
         vbox.pack_start(self.scrolled, True, True, 0)
         vbox.pack_end(self.list_scroller, True, True, 0)
-        vbox.pack_end(self.annotation_textview,  False,  False,  10)
+        vbox.pack_end(self.annotation_textview, False, False, 10)
         tv.show()
         vbox.show()
         self.list_scroller.hide()
@@ -280,24 +293,28 @@ class ReadEtextsActivity(activity.Activity):
         self.tag = textbuffer.create_tag()
         self.tag.set_property('weight', Pango.Weight.BOLD)
         self.normal_tag = textbuffer.create_tag()
-        self.normal_tag.set_property('weight',  Pango.Weight.NORMAL)
+        self.normal_tag.set_property('weight', Pango.Weight.NORMAL)
 
         self.underline_tag = textbuffer.create_tag()
         self.underline_tag.set_property('underline', Pango.Underline.SINGLE)
-        self.underline_tag.set_property( 'foreground', 'black')
-        self.underline_tag.set_property( 'background', 'yellow')
+        self.underline_tag.set_property('foreground', 'black')
+        self.underline_tag.set_property('background', 'yellow')
 
-        self.pickle_file_temp = os.path.join(self.get_activity_root(),  'instance', 'pkl%i' % time.time())
+        self.pickle_file_temp = os.path.join(self.get_activity_root(),
+                                             'instance',
+                                             'pkl%i' % time.time())
         self.annotations = Annotations(self.pickle_file_temp)
 
         xopower.setup_idle_timeout()
         if xopower.service_activated:
-            self.scrolled.props.vadjustment.connect("value-changed", self.user_action_cb)
-            self.scrolled.props.hadjustment.connect("value-changed", self.user_action_cb)
+            self.scrolled.props.vadjustment.connect("value-changed",
+                                                    self.user_action_cb)
+            self.scrolled.props.hadjustment.connect("value-changed",
+                                                    self.user_action_cb)
             self.connect("focus-in-event", self.focus_in_event_cb)
             self.connect("focus-out-event", self.focus_out_event_cb)
             self.connect("notify::active", self.now_active_cb)
-    
+
         self.unused_download_tubes = set()
         self.want_document = True
         self.download_content_length = 0
@@ -310,8 +327,8 @@ class ReadEtextsActivity(activity.Activity):
         self.port = 1024 + (h % 64511)
 
         self.is_received_document = False
-        
-        if self.shared_activity and handle.object_id == None:
+
+        if self.shared_activity and handle.object_id is None:
             # We're joining, and we don't already have the document.
             if self.get_shared():
                 # Already joined for some reason, just get the document
@@ -321,7 +338,7 @@ class ReadEtextsActivity(activity.Activity):
                 self.connect("joined", self.joined_cb)
         elif self.object_id is None:
             # Not joining, not resuming
-            f = open("help.txt","r")
+            f = open("help.txt", "r")
             line = ''
             label_text = ''
             while True:
@@ -329,14 +346,18 @@ class ReadEtextsActivity(activity.Activity):
                 if not line:
                     break
                 else:
-                    label_text = label_text + unicode(line,  "iso-8859-1")
+                    label_text = label_text + unicode(line, "iso-8859-1")
             textbuffer = self.textview.get_buffer()
             textbuffer.set_text(label_text)
             self.prepare_highlighting(label_text)
             f.close()
 
-        # self.highlight_cb = self.highlight_next_word
-        # self.reset_cb = self.reset_play_button
+        self.highlight_cb = self.highlight_next_word
+        self.reset_cb = self.reset_play_button
+
+    def close(self, **kwargs):
+        self.speech_toolbar._speech.stop()
+        activity.Activity.close(self, **kwargs)
 
     def create_new_toolbar(self):
         toolbar_box = ToolbarBox()
@@ -365,13 +386,14 @@ class ReadEtextsActivity(activity.Activity):
             self.books_toolbar = BooksToolbar()
             self.books_toolbar.set_activity(self)
             self.books_toolbar.show()
-            books_toolbar_button = ToolbarButton(page=self.books_toolbar, icon_name='books')
+            books_toolbar_button = ToolbarButton(page=self.books_toolbar,
+                                                 icon_name='books')
             toolbar_box.toolbar.insert(books_toolbar_button, -1)
             books_toolbar_button.show()
 
         self.view_toolbar = ViewToolbar()
-        self.view_toolbar.connect('go-fullscreen', \
-            self.view_toolbar_go_fullscreen_cb)
+        self.view_toolbar.connect('go-fullscreen',
+                                  self.view_toolbar_go_fullscreen_cb)
         self.view_toolbar.set_activity(self)
         self.view_toolbar.show()
         view_toolbar_button = ToolbarButton(
@@ -383,7 +405,8 @@ class ReadEtextsActivity(activity.Activity):
         self.speech_toolbar = SpeechToolbar()
         self.speech_toolbar.set_activity(self)
         self.speech_toolbar.show()
-        speech_toolbar_button = ToolbarButton(page=self.speech_toolbar,  icon_name='speech')
+        speech_toolbar_button = ToolbarButton(page=self.speech_toolbar,
+                                              icon_name='speech')
         toolbar_box.toolbar.insert(speech_toolbar_button, -1)
         speech_toolbar_button.show()
 
@@ -391,11 +414,11 @@ class ReadEtextsActivity(activity.Activity):
         self.back.set_tooltip(_('Back'))
         self.back.props.sensitive = False
         palette = self.back.get_palette()
-        self.prev_page = MenuItem(text_label= _("Previous page"))
-        palette.menu.append(self.prev_page) 
-        self.prev_page.show_all()        
-        self.prev_bookmark = MenuItem(text_label= _("Previous bookmark"))
-        palette.menu.append(self.prev_bookmark) 
+        self.prev_page = MenuItem(text_label=_("Previous page"))
+        palette.menu.append(self.prev_page)
+        self.prev_page.show_all()
+        self.prev_bookmark = MenuItem(text_label=_("Previous bookmark"))
+        palette.menu.append(self.prev_bookmark)
         self.prev_bookmark.show_all()
         self.back.connect('clicked', self.go_back_cb)
         self.prev_page.connect('activate', self.go_back_cb)
@@ -407,11 +430,11 @@ class ReadEtextsActivity(activity.Activity):
         self.forward.set_tooltip(_('Forward'))
         self.forward.props.sensitive = False
         palette = self.forward.get_palette()
-        self.next_page = MenuItem(text_label= _("Next page"))
-        palette.menu.append(self.next_page) 
-        self.next_page.show_all()        
-        self.next_bookmark = MenuItem(text_label= _("Next bookmark"))
-        palette.menu.append(self.next_bookmark) 
+        self.next_page = MenuItem(text_label=_("Next page"))
+        palette.menu.append(self.next_page)
+        self.next_page.show_all()
+        self.next_bookmark = MenuItem(text_label=_("Next bookmark"))
+        palette.menu.append(self.next_bookmark)
         self.next_bookmark.show_all()
         self.forward.connect('clicked', self.go_forward_cb)
         self.next_page.connect('activate', self.go_forward_cb)
@@ -424,9 +447,9 @@ class ReadEtextsActivity(activity.Activity):
         self.num_page_entry.set_text('0')
         self.num_page_entry.set_alignment(1)
         self.num_page_entry.connect('insert-text',
-                               self.__new_num_page_entry_insert_text_cb)
+                                    self.__new_num_page_entry_insert_text_cb)
         self.num_page_entry.connect('activate',
-                               self.__new_num_page_entry_activate_cb)
+                                    self.__new_num_page_entry_activate_cb)
         self.num_page_entry.set_width_chars(4)
         num_page_item.add(self.num_page_entry)
         self.num_page_entry.show()
@@ -435,7 +458,8 @@ class ReadEtextsActivity(activity.Activity):
 
         total_page_item = Gtk.ToolItem()
         self.total_page_label = Gtk.Label()
-        self.total_page_label.set_markup("<span foreground='black' size='14000'>")
+        self.total_page_label.set_markup(
+            "<span foreground='black' size='14000'>")
 
         self.total_page_label.set_text(' / 0')
         total_page_item.add(self.total_page_label)
@@ -446,13 +470,14 @@ class ReadEtextsActivity(activity.Activity):
         spacer = Gtk.SeparatorToolItem()
         toolbar_box.toolbar.insert(spacer, -1)
         spacer.show()
-  
+
         bookmarkitem = Gtk.ToolItem()
         self.bookmarker = ToggleToolButton('emblem-favorite')
         self.bookmarker.set_tooltip(_('Toggle Bookmark'))
-        self.bookmarker_handler_id = self.bookmarker.connect('clicked',
-                                      self.bookmarker_clicked_cb)
-  
+        self.bookmarker_handler_id = self.bookmarker.connect(
+            'clicked',
+            self.bookmarker_clicked_cb)
+
         bookmarkitem.add(self.bookmarker)
 
         toolbar_box.toolbar.insert(bookmarkitem, -1)
@@ -462,7 +487,8 @@ class ReadEtextsActivity(activity.Activity):
         self.underline = ToggleToolButton('format-text-underline')
         self.underline.set_tooltip(_('Underline'))
         self.underline.props.sensitive = False
-        self.underline_id = self.underline.connect('clicked', self.underline_cb)
+        self.underline_id = self.underline.connect('clicked',
+                                                   self.underline_cb)
         underline_item.add(self.underline)
         toolbar_box.toolbar.insert(underline_item, -1)
         underline_item.show_all()
@@ -509,16 +535,16 @@ class ReadEtextsActivity(activity.Activity):
 
     def go_back_cb(self, button):
         self.page_previous()
-    
+
     def go_forward_cb(self, button):
         self.page_next()
-    
+
     def update_nav_buttons(self):
         current_page = self.current_page
         self.back.props.sensitive = current_page > 0
         self.forward.props.sensitive = \
             current_page < self.total_pages - 1
-        
+
         self.num_page_entry.props.text = str(current_page + 1)
         self.total_page_label.props.label = \
             ' / ' + str(self.total_pages)
@@ -528,44 +554,46 @@ class ReadEtextsActivity(activity.Activity):
 
     def prev_bookmark_activate_cb(self, menuitem):
         self.prev_bookmark()
- 
+
     def next_bookmark_activate_cb(self, menuitem):
         self.next_bookmark()
-        
+
     def bookmarker_clicked_cb(self, button):
         self.bookmarker_clicked(button)
 
     def underline_cb(self, button):
         self.underline_clicked(button)
 
-    def setToggleButtonState(self,button,b,id):
+    def setToggleButtonState(self, button, b, id):
         button.handler_block(id)
         button.set_active(b)
         button.handler_unblock(id)
-        
-    def update_underline_button(self,  state):
-        self.setToggleButtonState(self.underline,  state,  self.underline_id)
 
-    def update_bookmark_button(self,  state):
-        self.setToggleButtonState(self.bookmarker,  state,  self.bookmarker_handler_id)
+    def update_underline_button(self, state):
+        self.setToggleButtonState(self.underline, state, self.underline_id)
+
+    def update_bookmark_button(self, state):
+        self.setToggleButtonState(self.bookmarker,
+                                  state, self.bookmarker_handler_id)
 
     def reset_current_word(self):
         self.current_word = 0
-        
+
     def reset_play_button(self):
         self.reset_current_word()
         play = self.speech_toolbar.play_button
         play.set_active(False)
         self.textview.grab_focus()
 
-    def highlight_next_word(self,  word_count):
-        if word_count < len(self.word_tuples) :
+    def highlight_next_word(self, word_count):
+        print 'word_count', word_count
+        if word_count < len(self.word_tuples):
             word_tuple = self.word_tuples[word_count]
             textbuffer = self.textview.get_buffer()
             iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
             iterEnd = textbuffer.get_iter_at_offset(word_tuple[1])
             bounds = textbuffer.get_bounds()
-            textbuffer.apply_tag(self.normal_tag,  bounds[0], iterStart)
+            textbuffer.apply_tag(self.normal_tag, bounds[0], iterStart)
             textbuffer.apply_tag(self.tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
             max = v_adjustment.get_upper() - v_adjustment.get_page_size()
@@ -576,21 +604,22 @@ class ReadEtextsActivity(activity.Activity):
         return True
 
     def mark_set_cb(self, textbuffer, iter, textmark):
-        self.update_underline_button(False) 
-        
+        self.update_underline_button(False)
+
         if textbuffer.get_has_selection():
             begin, end = textbuffer.get_selection_bounds()
-            underline_tuple = [begin.get_offset(),  end.get_offset()]
-            tuples_list =  self.annotations.get_highlights(self.page)
+            underline_tuple = [begin.get_offset(), end.get_offset()]
+            tuples_list = self.annotations.get_highlights(self.page)
             count = 0
-            while count < len(tuples_list) :
+            while count < len(tuples_list):
                 compare_tuple = tuples_list[count]
-                if underline_tuple[0] >= compare_tuple[0] and underline_tuple[1] <= compare_tuple[1]:
-                    self.update_underline_button(True) 
+                if underline_tuple[0] >= compare_tuple[0] and\
+                        underline_tuple[1] <= compare_tuple[1]:
+                    self.update_underline_button(True)
                     textbuffer.handler_block(self.markset_id)
                     iterStart = textbuffer.get_iter_at_offset(compare_tuple[0])
                     iterEnd = textbuffer.get_iter_at_offset(compare_tuple[1])
-                    textbuffer.select_range(iterStart,  iterEnd)
+                    textbuffer.select_range(iterStart, iterEnd)
                     textbuffer.handler_unblock(self.markset_id)
                     break
                 count = count + 1
@@ -648,7 +677,7 @@ class ReadEtextsActivity(activity.Activity):
         if keyname == 'KP_Left':
             self.scroll_up()
             return True
-        if keyname == 'Page_Down' :
+        if keyname == 'Page_Down':
             self.page_next()
             return True
         if keyname == 'Up'or keyname == 'KP_Up':
@@ -658,8 +687,8 @@ class ReadEtextsActivity(activity.Activity):
             self.scroll_down()
             return True
         return False
-        
-    def bookmarker_clicked(self,  button):
+
+    def bookmarker_clicked(self, button):
         if button.get_active():
             self.annotations.add_bookmark(self.page)
         else:
@@ -674,41 +703,43 @@ class ReadEtextsActivity(activity.Activity):
         else:
             self.sidebar.show_bookmark_icon(False)
             self.update_bookmark_button(False)
-    def underline_clicked(self,  button):
-        tuples_list =  self.annotations.get_highlights(self.page)
+
+    def underline_clicked(self, button):
+        tuples_list = self.annotations.get_highlights(self.page)
         buffer = self.textview.get_buffer()
         begin, end = buffer.get_selection_bounds()
-        underline_tuple = [begin.get_offset(),  end.get_offset()]
+        underline_tuple = [begin.get_offset(), end.get_offset()]
 
         if button.get_active():
             tuples_list.append(underline_tuple)
-            self.annotations.set_highlights(self.page,  tuples_list)
+            self.annotations.set_highlights(self.page, tuples_list)
         else:
             begin, end = buffer.get_selection_bounds()
-            underline_tuple = [begin.get_offset(),  end.get_offset()]
-            tuples_list =  self.annotations.get_highlights(self.page)
+            underline_tuple = [begin.get_offset(), end.get_offset()]
+            tuples_list = self.annotations.get_highlights(self.page)
             count = 0
-            while count < len(tuples_list) :
+            while count < len(tuples_list):
                 compare_tuple = tuples_list[count]
-                if underline_tuple[0] >= compare_tuple[0] and underline_tuple[1] <= compare_tuple[1]:
+                if underline_tuple[0] >= compare_tuple[0] and\
+                        underline_tuple[1] <= compare_tuple[1]:
                     tuples_list.remove(compare_tuple)
-                    self.annotations.set_highlights(self.page,  tuples_list)
+                    self.annotations.set_highlights(self.page, tuples_list)
                     break
                 count = count + 1
         iterStart = buffer.get_iter_at_offset(0)
         iterEnd = buffer.get_iter_at_offset(0)
         buffer.handler_block(self.markset_id)
-        buffer.select_range(iterStart,  iterEnd)
+        buffer.select_range(iterStart, iterEnd)
         buffer.handler_unblock(self.markset_id)
         self.show_underlines()
 
     def show_underlines(self):
-        tuples_list =  self.annotations.get_highlights(self.page)
+        tuples_list = self.annotations.get_highlights(self.page)
         textbuffer = self.textview.get_buffer()
         bounds = textbuffer.get_bounds()
         textbuffer.remove_all_tags(bounds[0], bounds[1])
         count = 0
-        while count < len(tuples_list) :
+        while count < len(tuples_list):
             underline_tuple = tuples_list[count]
             iterStart = textbuffer.get_iter_at_offset(underline_tuple[0])
             iterEnd = textbuffer.get_iter_at_offset(underline_tuple[1])
@@ -730,6 +761,7 @@ class ReadEtextsActivity(activity.Activity):
             self.page = bookmarks[len(bookmarks) - 1]
             self.show_page(self.page)
             self.set_current_page(self.page)
+
     def next_bookmark(self):
         bookmarks = self.annotations.get_bookmarks()
         count = 0
@@ -748,9 +780,14 @@ class ReadEtextsActivity(activity.Activity):
 
     def page_next(self):
         textbuffer = self.annotation_textview.get_buffer()
-        self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter(), True))
+        self.annotations.add_note(
+            self.page,
+            textbuffer.get_text(textbuffer.get_start_iter(),
+                                textbuffer.get_end_iter(),
+                                True))
         self.page = self.page + 1
-        if self.page >= len(self.page_index): self.page=len(self.page_index) - 1
+        if self.page >= len(self.page_index):
+            self.page = len(self.page_index) - 1
         self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
         v_adjustment.set_value(v_adjustment.get_lower())
@@ -758,12 +795,17 @@ class ReadEtextsActivity(activity.Activity):
 
     def page_previous(self):
         textbuffer = self.annotation_textview.get_buffer()
-        self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter(), True))
-        self.page=self.page-1
-        if self.page < 0: self.page=0
+        self.annotations.add_note(
+            self.page,
+            textbuffer.get_text(textbuffer.get_start_iter(),
+                                textbuffer.get_end_iter(),
+                                True))
+        self.page = self.page - 1
+        if self.page < 0:
+            self.page = 0
         self.show_page(self.page)
         v_adjustment = self.scrolled.get_vadjustment()
-        v_adjustment.set_value(v_adjustment.get_upper() - \
+        v_adjustment.set_value(v_adjustment.get_upper() -
                                v_adjustment.get_page_size())
         self.set_current_page(self.page)
 
@@ -775,7 +817,8 @@ class ReadEtextsActivity(activity.Activity):
         self.font_desc.set_size(font_size * 1024)
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
-        f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'w')
+        f = open(os.path.join(self.get_activity_root(),
+                              'instance', 'fontsize.txt'), 'w')
         try:
             f.write(str(font_size))
         finally:
@@ -787,12 +830,14 @@ class ReadEtextsActivity(activity.Activity):
         self.font_desc.set_size(font_size * 1024)
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
-        f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'w')
+        f = open(os.path.join(self.get_activity_root(),
+                              'instance',
+                              'fontsize.txt'), 'w')
         try:
             f.write(str(font_size))
         finally:
             f.close()
-            
+
     def scroll_down(self):
         v_adjustment = self.scrolled.get_vadjustment()
         if v_adjustment.get_value() == v_adjustment.get_upper() - v_adjustment.get_page_size():
@@ -832,7 +877,7 @@ class ReadEtextsActivity(activity.Activity):
             if not line:
                 break
             else:
-                label_text = label_text + unicode(line,  "iso-8859-1")
+                label_text = label_text + unicode(line, "iso-8859-1")
             line_increment = (len(line) / 80) + 1
             linecount = linecount + line_increment
         textbuffer = self.textview.get_buffer()
@@ -848,18 +893,20 @@ class ReadEtextsActivity(activity.Activity):
         j = 0
         word_begin = 0
         word_end = 0
-        ignore_chars = [' ',  '\n',  u'\r',  '_',  '[', '{', ']', '}', '|',  '<',  '>',  '*',  '+',  '/',  '\\' ]
+        ignore_chars = [' ', '\n', u'\r', '_', '[', '{', ']', '}',
+                        '|', '<', '>', '*', '+', '/', '\\']
         ignore_set = set(ignore_chars)
         self.word_tuples = []
         while i < len(label_text):
             if label_text[i] not in ignore_set:
                 word_begin = i
                 j = i
-                while  j < len(label_text) and label_text[j] not in ignore_set:
+                while j < len(label_text) and label_text[j] not in ignore_set:
                     j = j + 1
                     word_end = j
                     i = j
-                word_tuple = (word_begin, word_end, label_text[word_begin: word_end])
+                word_tuple = (word_begin, word_end,
+                              label_text[word_begin: word_end])
                 if word_tuple[2] != u'\r':
                     self.word_tuples.append(word_tuple)
             i = i + 1
@@ -867,10 +914,11 @@ class ReadEtextsActivity(activity.Activity):
     def add_word_marks(self):
         "Adds a mark between each word of text."
         i = self.current_word
-        marked_up_text  = '<speak> '
+        marked_up_text = '<speak> '
         while i < len(self.word_tuples):
             word_tuple = self.word_tuples[i]
-            marked_up_text = marked_up_text + '<mark name="' + str(i) + '"/>' + word_tuple[2]
+            marked_up_text = marked_up_text + '<mark name="' + str(i) + '"/>'\
+                + word_tuple[2]
             i = i + 1
         print marked_up_text
         return marked_up_text + '</speak>'
@@ -884,7 +932,7 @@ class ReadEtextsActivity(activity.Activity):
         while linecount < PAGE_SIZE:
             line = self.etext_file.readline()
             if not line:
-               break
+                break
             else:
                 label_text = label_text + unicode(line, "iso-8859-1")
                 line_increment = (len(line) / 80) + 1
@@ -893,8 +941,8 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer = self.textview.get_buffer()
         tag = textbuffer.create_tag()
         tag.set_property('weight', Pango.WEIGHT_BOLD)
-        tag.set_property( 'foreground', "white")
-        tag.set_property( 'background', "black")
+        tag.set_property('foreground', "white")
+        tag.set_property('background', "black")
         textbuffer.set_text(label_text)
         annotation_textbuffer = self.annotation_textview.get_buffer()
         annotation_textbuffer.set_text(self.annotations.get_note(self.page))
@@ -911,7 +959,8 @@ class ReadEtextsActivity(activity.Activity):
         outfn = self.make_new_filename(filename)
         if (outfn == ''):
             return False
-        f = open(os.path.join(self.get_activity_root(), 'instance',  outfn),  'w')
+        f = open(os.path.join(self.get_activity_root(),
+                              'instance', outfn), 'w')
         try:
             f.write(filebytes)
         finally:
@@ -922,7 +971,7 @@ class ReadEtextsActivity(activity.Activity):
         try:
             self.zf.getinfo('annotations.pkl')
             filebytes = self.zf.read('annotations.pkl')
-            f = open(self.pickle_file_temp,  'wb')
+            f = open(self.pickle_file_temp, 'wb')
             try:
                 f.write(filebytes)
             finally:
@@ -934,8 +983,9 @@ class ReadEtextsActivity(activity.Activity):
     def read_file(self, file_path):
         """Load a file from the datastore on activity start"""
         logger.debug('ReadEtextsActivity.read_file: %s', file_path)
-        tempfile = os.path.join(self.get_activity_root(),  'instance', 'tmp%i' % time.time())
-        os.link(file_path,  tempfile)
+        tempfile = os.path.join(self.get_activity_root(),
+                                'instance', 'tmp%i' % time.time())
+        os.link(file_path, tempfile)
         self.tempfile = tempfile
         self.load_document(self.tempfile)
 
@@ -945,7 +995,7 @@ class ReadEtextsActivity(activity.Activity):
 
     def get_saved_page_number(self):
         title = self.metadata.get('title', '')
-        if title == ''  or not title[len(title)- 1].isdigit():
+        if title == '' or not title[len(title) - 1].isdigit():
             self.page = 0
         else:
             i = len(title) - 1
@@ -958,11 +1008,11 @@ class ReadEtextsActivity(activity.Activity):
             else:
                 # not a page number; maybe a volume number.
                 self.page = 0
-        
+
     def save_page_number(self):
         title = self.metadata.get('title', '')
-        if title == ''  or not title[len(title)- 1].isdigit():
-            title = title + ' P' +  str(self.page + 1)
+        if title == '' or not title[len(title) - 1].isdigit():
+            title = title + ' P' + str(self.page + 1)
         else:
             i = len(title) - 1
             while (title[i].isdigit() and i > 0):
@@ -982,9 +1032,11 @@ class ReadEtextsActivity(activity.Activity):
             current_file_name = 'no file'
             while (i < len(self.book_files)):
                 if (self.book_files[i] != 'annotations.pkl'):
-                    self.save_extracted_file(self.zf, self.book_files[i]) 
-                    current_file_name = os.path.join(self.get_activity_root(), 'instance',  \
-                                                     self.make_new_filename(self.book_files[i]))
+                    self.save_extracted_file(self.zf, self.book_files[i])
+                    current_file_name = os.path.join(self.get_activity_root(),
+                                                     'instance',
+                                                     self.make_new_filename(
+                                                         self.book_files[i]))
                 else:
                     self.extract_pickle_file()
                 i = i + 1
@@ -992,16 +1044,18 @@ class ReadEtextsActivity(activity.Activity):
             current_file_name = filename
 
         if rtfconvert.check(current_file_name):
-            converted_file_name = os.path.join(self.get_activity_root(), 'instance',
-                    'convert%i' % time.time()) 
-            rtfconvert.convert(current_file_name,  converted_file_name)
+            converted_file_name = os.path.join(self.get_activity_root(),
+                                               'instance',
+                                               'convert%i' % time.time())
+            rtfconvert.convert(current_file_name, converted_file_name)
             os.remove(current_file_name)
             current_file_name = converted_file_name
             self.tempfile = converted_file_name
         else:
-            converted_file_name = os.path.join(self.get_activity_root(), 'instance',
-                    'convert%i' % time.time()) 
-            success = pgconvert.convert(current_file_name,  converted_file_name)
+            converted_file_name = os.path.join(self.get_activity_root(),
+                                              'instance', 'convert%i' % time.time())
+            success = pgconvert.convert(
+                current_file_name, converted_file_name)
             if success:
                 os.remove(current_file_name)
                 current_file_name = converted_file_name
@@ -1009,8 +1063,9 @@ class ReadEtextsActivity(activity.Activity):
             else:
                 os.remove(converted_file_name)
 
-        self.etext_file = open(current_file_name,"r")
-        
+        self.etext_file = open(current_file_name, "r")
+
+        self.page_index = [0]
         pagecount = 0
         linecount = 0
         while self.etext_file:
@@ -1029,7 +1084,7 @@ class ReadEtextsActivity(activity.Activity):
         if self.is_received_document:
             self.metadata['title'] = self.annotations.get_title()
             self.metadata['title_set_by_user'] = '1'
-            
+
         self.get_saved_page_number()
         self.show_page(self.page)
         self.set_total_pages(pagecount + 1)
@@ -1037,7 +1092,7 @@ class ReadEtextsActivity(activity.Activity):
         self.edit_toolbar.enable_search(True)
         if filename.endswith(".zip"):
             os.remove(current_file_name)
-            
+
         # We've got the document, so if we're a shared activity, offer it
         if self.get_shared():
             self.watch_for_tubes()
@@ -1046,7 +1101,7 @@ class ReadEtextsActivity(activity.Activity):
     def rewrite_zip(self):
         if zipfile.is_zipfile(self.tempfile):
             new_zipfile = os.path.join(self.get_activity_root(), 'instance',
-                    'rewrite%i' % time.time())
+                                       'rewrite%i' % time.time())
             zf_new = zipfile.ZipFile(new_zipfile, 'w')
             zf_old = zipfile.ZipFile(self.tempfile, 'r')
             book_files = self.zf.namelist()
@@ -1055,23 +1110,24 @@ class ReadEtextsActivity(activity.Activity):
                 if (book_files[i] != 'annotations.pkl'):
                     self.save_extracted_file(zf_old, book_files[i])
                     outfn = self.make_new_filename(book_files[i])
-                    fname = os.path.join(self.get_activity_root(), 'instance',  outfn)
-                    zf_new.write(fname.encode( "utf-8" ),  outfn.encode( "utf-8" ))
+                    fname = os.path.join(self.get_activity_root(),
+                                         'instance', outfn)
+                    zf_new.write(fname.encode("utf-8"), outfn.encode("utf-8"))
                     os.remove(fname)
                 i = i + 1
-            zf_new.write(self.pickle_file_temp,  'annotations.pkl')
-        
+            zf_new.write(self.pickle_file_temp, 'annotations.pkl')
+
             zf_old.close()
             zf_new.close()
             os.remove(self.tempfile)
             self.tempfile = new_zipfile
         else:
             new_zipfile = os.path.join(self.get_activity_root(), 'instance',
-                    'rewrite%i' % time.time())
+                                       'rewrite%i' % time.time())
             zf_new = zipfile.ZipFile(new_zipfile, 'w')
             outfn = self.make_new_filename(self.tempfile)
-            zf_new.write(self.tempfile,  outfn)
-            zf_new.write(self.pickle_file_temp,  'annotations.pkl')
+            zf_new.write(self.tempfile, outfn)
+            zf_new.write(self.pickle_file_temp, 'annotations.pkl')
             zf_new.close()
             os.remove(self.tempfile)
             self.tempfile = new_zipfile
@@ -1092,13 +1148,17 @@ class ReadEtextsActivity(activity.Activity):
         elif self.tempfile:
             if self.close_requested:
                 textbuffer = self.annotation_textview.get_buffer()
-                self.annotations.add_note(self.page,  textbuffer.get_text(textbuffer.get_start_iter(),  textbuffer.get_end_iter(), True))
+                self.annotations.add_note(self.page,
+                    textbuffer.get_text(textbuffer.get_start_iter(),
+                    textbuffer.get_end_iter(),
+                    True))
                 title = self.metadata.get('title', '')
                 self.annotations.set_title(str(title))
                 self.annotations.save()
                 self.rewrite_zip()
-                os.link(self.tempfile,  filename)
-                logger.debug("Removing temp file %s because we will close", self.tempfile)
+                os.link(self.tempfile, filename)
+                logger.debug(
+                    "Removing temp file %s because we will close", self.tempfile)
                 os.unlink(self.tempfile)
                 os.remove(self.pickle_file_temp)
                 self.tempfile = None
@@ -1106,8 +1166,9 @@ class ReadEtextsActivity(activity.Activity):
         else:
             # skip saving empty file
             raise NotImplementedError
-        # The last book we downloaded has 2 journal entries.  Delete the other one.
-        if self.extra_journal_entry != None and self.close_requested:
+        # The last book we downloaded has 2 journal entries.
+        # Delete the other one.
+        if self.extra_journal_entry is not None and self.close_requested:
             datastore.delete(self.extra_journal_entry.object_id)
 
         self.metadata['activity'] = self.get_bundle_id()
@@ -1125,9 +1186,9 @@ class ReadEtextsActivity(activity.Activity):
         sel = selection.get_selected()
         if sel:
             model, iter = sel
-            self.selected_title = model.get_value(iter,COLUMN_TITLE)
-            self.selected_author = model.get_value(iter,COLUMN_AUTHOR)
-            self.selected_path = model.get_value(iter,COLUMN_PATH)
+            self.selected_title = model.get_value(iter, COLUMN_TITLE)
+            self.selected_author = model.get_value(iter, COLUMN_AUTHOR)
+            self.selected_path = model.get_value(iter, COLUMN_PATH)
             self.books_toolbar.enable_button(True)
 
     def find_books(self, search_text):
@@ -1139,7 +1200,9 @@ class ReadEtextsActivity(activity.Activity):
         self.ls.clear()
         search_tuple = search_text.lower().split()
         if len(search_tuple) == 0:
-            self.alert(_('Error'), _('You must enter at least one search word.'))
+            self.alert(
+                _('Error'),
+                _('You must enter at least one search word.'))
             self.books_toolbar.search_entry.grab_focus()
             return
         f = open('bookcatalog.txt', 'r')
@@ -1151,35 +1214,46 @@ class ReadEtextsActivity(activity.Activity):
             i = 0
             words_found = 0
             while i < len(search_tuple):
-                text_index = line_lower.find(search_tuple[i]) 
+                text_index = line_lower.find(search_tuple[i])
                 if text_index > -1:
                     words_found = words_found + 1
                 i = i + 1
             if words_found == len(search_tuple):
                 iter = self.ls.append()
                 book_tuple = line.split('|')
-                self.ls.set(iter, COLUMN_TITLE, book_tuple[0],  COLUMN_AUTHOR, book_tuple[1],  COLUMN_PATH, \
+                self.ls.set(iter,
+                            COLUMN_TITLE, book_tuple[0],
+                            COLUMN_AUTHOR, book_tuple[1], COLUMN_PATH,
                             book_tuple[2].rstrip())
         f.close()
         self.list_scroller.show()
         self.list_scroller_visible = True
-     
+
     def get_book(self):
         self.progressbar.show()
         self.books_toolbar.enable_button(False)
         self.list_scroller.props.sensitive = False
         if self.selected_path.startswith('PGA'):
-            logger.debug(self.selected_path.replace('PGA', 'http://gutenberg.net.au'))
-            GObject.idle_add(self.download_book,  self.selected_path.replace('PGA', 'http://gutenberg.net.au'),  \
-                             self.get_book_result_cb)
+            logger.debug(self.selected_path.replace(
+                'PGA', 'http://gutenberg.net.au'))
+            GObject.idle_add(
+                self.download_book,
+                self.selected_path.replace('PGA', 'http://gutenberg.net.au'),
+                self.get_book_result_cb)
         elif self.selected_path.startswith('/etext'):
-            logger.debug("http://www.gutenberg.org/dirs" + self.selected_path + "108.zip")
-            GObject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",  \
-                             self.get_old_book_result_cb)
+            logger.debug(
+                "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip")
+            GObject.idle_add(
+                self.download_book,
+                "http://www.gutenberg.org/dirs" + self.selected_path + "108.zip",
+                self.get_old_book_result_cb)
         else:
-            logger.debug("http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip")
-            GObject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",  \
-                             self.get_iso_book_result_cb)
+            logger.debug(
+                "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip")
+            GObject.idle_add(
+                self.download_book,
+                "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",
+                self.get_iso_book_result_cb)
         
     def download_book(self,  url,  result_cb):
         path = os.path.join(self.get_activity_root(), 'instance',
@@ -1191,9 +1265,11 @@ class ReadEtextsActivity(activity.Activity):
         logger.debug("Starting download to %s...", path)
         try:
             getter.start(path)
-        except:
-            self.alert(_('Error'), _('Connection timed out for ') + self.selected_title)
-           
+        except BaseException:
+            self.alert(
+                _('Error'),
+                _('Connection timed out for ') + self.selected_title)
+
         self.download_content_length = getter.get_content_length()
         self.download_content_type = getter.get_content_type()
         self.textview.grab_focus()
@@ -1201,42 +1277,46 @@ class ReadEtextsActivity(activity.Activity):
     def get_iso_book_result_cb(self, getter, tempfile, suggested_name):
         if self.download_content_type.startswith('text/html'):
             # got an error page instead
-            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + ".zip",  self.get_book_result_cb)
+            self.download_book(
+                "http://www.gutenberg.org/dirs" + self.selected_path + ".zip",
+                self.get_book_result_cb)
             return
-        self.process_downloaded_book(tempfile,  suggested_name)
+        self.process_downloaded_book(tempfile, suggested_name)
 
     def get_old_book_result_cb(self, getter, tempfile, suggested_name):
         if self.download_content_type.startswith('text/html'):
             # got an error page instead
-            self.download_book("http://www.gutenberg.org/dirs" + self.selected_path + "10.zip",  self.get_book_result_cb)
+            self.download_book(
+                "http://www.gutenberg.org/dirs" + self.selected_path + "10.zip",
+                self.get_book_result_cb)
             return
-        self.process_downloaded_book(tempfile,  suggested_name)
+        self.process_downloaded_book(tempfile, suggested_name)
 
     def get_book_result_cb(self, getter, tempfile, suggested_name):
         if self.download_content_type.startswith('text/html'):
             # got an error page instead
             self.get_book_error_cb(getter, 'HTTP Error')
             return
-        self.process_downloaded_book(tempfile,  suggested_name)
+        self.process_downloaded_book(tempfile, suggested_name)
 
     def get_book_progress_cb(self, getter, bytes_downloaded):
         if self.download_content_length > 0:
             logger.debug("Downloaded %u of %u bytes...",
-                          bytes_downloaded, self.download_content_length)
+                         bytes_downloaded, self.download_content_length)
         else:
             logger.debug("Downloaded %u bytes...",
-                          bytes_downloaded)
+                         bytes_downloaded)
         total = self.download_content_length
-        self.set_downloaded_bytes(bytes_downloaded,  total)
+        self.set_downloaded_bytes(bytes_downloaded, total)
         Gdk.threads_enter()
         while Gtk.events_pending():
             Gtk.main_iteration()
         Gdk.threads_leave()
 
-    def set_downloaded_bytes(self, bytes,  total):
+    def set_downloaded_bytes(self, bytes, total):
         fraction = float(bytes) / float(total)
         self.progressbar.set_fraction(fraction)
-        
+
     def clear_downloaded_bytes(self):
         self.progressbar.set_fraction(0.0)
 
@@ -1244,26 +1324,29 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller.props.sensitive = True
         self.progressbar.hide()
         logger.debug("Error getting document: %s", err)
-        self.alert(_('Error'), _('Could not download ') + self.selected_title + _(' path in catalog may be incorrect.'))
+        self.alert(
+            _('Error'),
+            _('Could not download ') + self.selected_title +
+            _(' path in catalog may be incorrect.'))
         self.download_content_length = 0
         self.download_content_type = None
 
-    def process_downloaded_book(self,  tempfile,  suggested_name):
+    def process_downloaded_book(self, tempfile, suggested_name):
         self.list_scroller.props.sensitive = True
         self.tempfile = tempfile
         file_path = os.path.join(self.get_activity_root(), 'instance',
-                                    '%i' % time.time())
+                                 '%i' % time.time())
         os.link(tempfile, file_path)
         logger.debug("Got document %s (%s)", tempfile, suggested_name)
         self.create_journal_entry(tempfile)
         self.load_document(tempfile)
 
-    def create_journal_entry(self,  tempfile):
+    def create_journal_entry(self, tempfile):
         self.progressbar.hide()
         journal_entry = datastore.create()
         journal_title = self.selected_title
         if self.selected_author != ' ':
-            journal_title = journal_title  + ', by ' + self.selected_author
+            journal_title = journal_title + ', by ' + self.selected_author
         journal_entry.metadata['title'] = journal_title
         self.metadata['title'] = journal_title
         journal_entry.metadata['title_set_by_user'] = '1'
@@ -1296,17 +1379,17 @@ class ReadEtextsActivity(activity.Activity):
         self.page = current_found_tuple[0]
         self.set_current_page(self.page)
         self.show_found_page(current_found_tuple)
-    
+
     def can_find_previous(self):
         if self.current_found_item == 0:
             return False
         return True
-    
+
     def can_find_next(self):
         if self.current_found_item >= len(self.found_records) - 1:
             return False
         return True
-    
+
     def find_begin(self, search_text):
         pagecount = 0
         linecount = 0
@@ -1324,10 +1407,11 @@ class ReadEtextsActivity(activity.Activity):
             positions = self.allindices(line.lower(), search_text.lower())
             for position in positions:
                 found_pos = charcount + position + 3
-                found_tuple = (pagecount, found_pos, len(search_text) + found_pos)
+                found_tuple = (pagecount, found_pos,
+                               len(search_text) + found_pos)
                 self.found_records.append(found_tuple)
                 self.current_found_item = 0
-            charcount = charcount + line_length  
+            charcount = charcount + line_length
             if linecount >= PAGE_SIZE:
                 linecount = 0
                 charcount = 0
@@ -1338,17 +1422,17 @@ class ReadEtextsActivity(activity.Activity):
             self.set_current_page(self.page)
             self.show_found_page(current_found_tuple)
 
-    def allindices(self,  line, search, listindex=None,  offset=0):
-        if listindex is None:   
-            listindex = [] 
+    def allindices(self, line, search, listindex=None, offset=0):
+        if listindex is None:
+            listindex = []
         if (line.find(search) == -1):
-            return listindex 
-        else: 
-            offset = line.index(search)+offset 
-            listindex.append(offset) 
-            line = line[(line.index(search)+1):] 
-            return self.allindices(line, search, listindex, offset+1)
-    
+            return listindex
+        else:
+            offset = line.index(search) + offset
+            listindex.append(offset)
+            line = line[(line.index(search) + 1):]
+            return self.allindices(line, search, listindex, offset + 1)
+
     def get_current_page(self):
         return self.page
 
@@ -1363,14 +1447,14 @@ class ReadEtextsActivity(activity.Activity):
 
         self.tempfile = tempfile
         file_path = os.path.join(self.get_activity_root(), 'instance',
-                                    '%i' % time.time())
+                                 '%i' % time.time())
         logger.debug("Saving file %s to datastore...", file_path)
         os.link(tempfile, file_path)
         self._jobject.file_path = file_path
         datastore.write(self._jobject, transfer_ownership=True)
 
         logger.debug("Got document %s (%s) from tube %u",
-                      tempfile, suggested_name, tube_id)
+                     tempfile, suggested_name, tube_id)
         self.is_received_document = True
         self.load_document(tempfile)
         self.save()
@@ -1379,13 +1463,13 @@ class ReadEtextsActivity(activity.Activity):
     def download_progress_cb(self, getter, bytes_downloaded, tube_id):
         if self.download_content_length > 0:
             logger.debug("Downloaded %u of %u bytes from tube %u...",
-                          bytes_downloaded, self.download_content_length, 
-                          tube_id)
+                         bytes_downloaded, self.download_content_length, 
+                         tube_id)
         else:
             logger.debug("Downloaded %u bytes from tube %u...",
-                          bytes_downloaded, tube_id)
+                         bytes_downloaded, tube_id)
         total = self.download_content_length
-        self.set_downloaded_bytes(bytes_downloaded,  total)
+        self.set_downloaded_bytes(bytes_downloaded, total)
         Gdk.threads_enter()
         while Gtk.events_pending():
             Gtk.main_iteration()
@@ -1394,7 +1478,7 @@ class ReadEtextsActivity(activity.Activity):
     def download_error_cb(self, getter, err, tube_id):
         self.progressbar.hide()
         logger.debug("Error getting document from tube %u: %s",
-                      tube_id, err)
+                     tube_id, err)
         self.alert(_('Failure'), _('Error getting document from tube'))
         self.want_document = True
         self.download_content_length = 0
@@ -1406,10 +1490,11 @@ class ReadEtextsActivity(activity.Activity):
         # instead of IPv4 (might be more compatible with Rainbow)
         chan = self.shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
-        addr = iface.AcceptStreamTube(tube_id,
-                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
-                utf8_strings=True)
+        addr = iface.AcceptStreamTube(
+            tube_id,
+            telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+            telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+            utf8_strings=True)
         logger.debug('Accepted stream tube: listening address is %r', addr)
         # SOCKET_ADDRESS_TYPE_IPV4 is defined to have addresses of type '(sq)'
         assert isinstance(addr, dbus.Struct)
@@ -1421,7 +1506,7 @@ class ReadEtextsActivity(activity.Activity):
 
         self.progressbar.show()
         getter = ReadURLDownloader("http://%s:%d/document"
-                                           % (addr[0], port))
+                                  % (addr[0], port))
         getter.connect("finished", self.download_result_cb, tube_id)
         getter.connect("progress", self.download_progress_cb, tube_id)
         getter.connect("error", self.download_error_cb, tube_id)
@@ -1447,7 +1532,7 @@ class ReadEtextsActivity(activity.Activity):
             tube_id = self.unused_download_tubes.pop()
         except (ValueError, KeyError), e:
             logger.debug('No tubes to get the document from right now: %s',
-                          e)
+                        e)
             return False
 
         # Avoid trying to download the document multiple times at once
@@ -1470,33 +1555,34 @@ class ReadEtextsActivity(activity.Activity):
 
         logger.debug('Starting HTTP server on port %d', self.port)
         self.fileserver = ReadHTTPServer(("", self.port),
-            self.tempfile)
+                                        self.tempfile)
 
         # Make a tube for it
         chan = self.shared_activity.telepathy_tubes_chan
         iface = chan[telepathy.CHANNEL_TYPE_TUBES]
-        self.fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
-                {},
-                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                ('127.0.0.1', dbus.UInt16(self.port)),
-                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
+        self.fileserver_tube_id = iface.OfferStreamTube(
+            READ_STREAM_SERVICE,
+            {},
+            telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+            ('127.0.0.1', dbus.UInt16(self.port)),
+            telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
 
     def watch_for_tubes(self):
         """Watch for new tubes."""
         tubes_chan = self.shared_activity.telepathy_tubes_chan
 
         tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
-            self.new_tube_cb)
+                                                                  self.new_tube_cb)
         tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
             reply_handler=self.list_tubes_reply_cb,
             error_handler=self.list_tubes_error_cb)
 
     def new_tube_cb(self, tube_id, initiator, tube_type, service, params,
-                     state):
+                   state):
         """Callback when a new tube becomes available."""
         logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
-                      'params=%r state=%d', tube_id, initiator, tube_type,
-                      service, params, state)
+                    'params=%r state=%d', tube_id, initiator, tube_type,
+                    service, params, state)
         if service == READ_STREAM_SERVICE:
             logger.debug('I could download from that tube')
             self.unused_download_tubes.add(tube_id)
@@ -1512,7 +1598,7 @@ class ReadEtextsActivity(activity.Activity):
     def list_tubes_error_cb(self, e):
         """Handle ListTubes error by logging."""
         logger.error('ListTubes() failed: %s', e)
- 
+
     def shared_cb(self, activityid):
         """Callback when activity shared.
 
@@ -1560,4 +1646,3 @@ class ReadEtextsActivity(activity.Activity):
     def suspend_cb(self):
         xopower.suspend()
         return False
- 

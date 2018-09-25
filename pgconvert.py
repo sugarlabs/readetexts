@@ -24,12 +24,14 @@ MAX_LINE_LENGTH = 100
 MAX_PARAGRAPH_LINES = 25
 MAX_LENGTH = (LINE_LENGTH * MAX_PARAGRAPH_LINES)
 
-# This is a script to take the a file in PG format and convert it to a text file readable by Read Etexts that do
-# not have newlines at the end of each line.
+# This is a script to take the a file in PG format and convert it to a text
+# file readable by Read Etexts that do not have newlines at the end of each
+# line.
+
 
 def convert(file_path,  output_path):
 
-    pg_file = open(file_path,"r")
+    pg_file = open(file_path, "r")
     out = open(output_path, 'w')
     previous_line_length = 0
     paragraph_length = 0
@@ -40,7 +42,7 @@ def convert(file_path,  output_path):
         outline = ''
         if not line:
             break
-        if len(line) == 2 and not previous_line_length  == 2:
+        if len(line) == 2 and not previous_line_length == 2:
             # Blank line separates paragraphs
             outline = line + '\r\n'
             paragraph_length = 0
@@ -48,7 +50,7 @@ def convert(file_path,  output_path):
             outline = line
             paragraph_length = 0
         elif line[0] == ' ' or (line[0] >= '0' and line[0] <= '9'):
-            outline = '\r\n' + line[0:len(line)-2] 
+            outline = '\r\n' + line[0:len(line)-2]
             paragraph_length = 0
         else:
             outline = line[0:len(line)-2] + ' '
@@ -65,6 +67,7 @@ def convert(file_path,  output_path):
         return False
     else:
         return True
+
 
 if __name__ == "__main__":
     try:

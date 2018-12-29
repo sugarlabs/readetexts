@@ -200,8 +200,8 @@ class ReadEtextsActivity(activity.Activity):
         self.textview = Gtk.TextView()
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
-        self.textview.set_left_margin(50)
-        self.textview.set_right_margin(50)
+        self.textview.set_left_margin(5)
+        self.textview.set_right_margin(5)
         self.textview.set_wrap_mode(Gtk.WrapMode.WORD)
         self.textview.connect("key_press_event", self.keypress_cb)
 

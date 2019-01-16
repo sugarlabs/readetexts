@@ -44,6 +44,7 @@ from gi.repository import GObject
 import telepathy
 import cPickle as pickle
 
+import speech
 import xopower
 import rtfconvert
 import pgconvert
@@ -292,6 +293,8 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
         self.tag.set_property('weight', Pango.Weight.BOLD)
+        self.tag.set_property('background', "black")
+        self.tag.set_property('foreground', "white")
         self.normal_tag = textbuffer.create_tag()
         self.normal_tag.set_property('weight', Pango.Weight.NORMAL)
 
@@ -352,11 +355,11 @@ class ReadEtextsActivity(activity.Activity):
             self.prepare_highlighting(label_text)
             f.close()
 
-        self.highlight_cb = self.highlight_next_word
-        self.reset_cb = self.reset_play_button
+        speech.highlight_cb = self.highlight_next_word
+        speech.reset_cb = self.reset_play_button
 
     def close(self, **kwargs):
-        self.speech_toolbar._speech.stop()
+        self.speech_toolbar.stop()
         activity.Activity.close(self, **kwargs)
 
     def create_new_toolbar(self):
@@ -586,13 +589,13 @@ class ReadEtextsActivity(activity.Activity):
         self.textview.grab_focus()
 
     def highlight_next_word(self, word_count):
-        print 'word_count', word_count
         if word_count < len(self.word_tuples):
             word_tuple = self.word_tuples[word_count]
             textbuffer = self.textview.get_buffer()
             iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
             iterEnd = textbuffer.get_iter_at_offset(word_tuple[1])
             bounds = textbuffer.get_bounds()
+            textbuffer.remove_all_tags(bounds[0], bounds[1])
             textbuffer.apply_tag(self.normal_tag, bounds[0], iterStart)
             textbuffer.apply_tag(self.tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()

@@ -30,7 +30,8 @@ from sugar3.graphics.combobox import ComboBox
 from sugar3.activity import activity
 from sugar3.activity import widgets
 from sugar3.graphics.toggletoolbutton import ToggleToolButton
-from sugar3.speech import SpeechManager
+
+from speech import SpeechManager
 
 
 class ReadToolbar(Gtk.Toolbar):
@@ -545,3 +546,6 @@ class SpeechToolbar(Gtk.Toolbar):
             self._is_paused = True
             self._speech.pause()
             # self.activity.show_underlines()
+
+    def stop(self):
+        self._speech.stop()

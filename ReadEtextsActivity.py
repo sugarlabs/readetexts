@@ -295,8 +295,6 @@ class ReadEtextsActivity(activity.Activity):
         self.tag.set_property('weight', Pango.Weight.BOLD)
         self.tag.set_property('background', "black")
         self.tag.set_property('foreground', "white")
-        self.normal_tag = textbuffer.create_tag()
-        self.normal_tag.set_property('weight', Pango.Weight.NORMAL)
 
         self.underline_tag = textbuffer.create_tag()
         self.underline_tag.set_property('underline', Pango.Underline.SINGLE)
@@ -596,7 +594,6 @@ class ReadEtextsActivity(activity.Activity):
             iterEnd = textbuffer.get_iter_at_offset(word_tuple[1])
             bounds = textbuffer.get_bounds()
             textbuffer.remove_all_tags(bounds[0], bounds[1])
-            textbuffer.apply_tag(self.normal_tag, bounds[0], iterStart)
             textbuffer.apply_tag(self.tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
             max = v_adjustment.get_upper() - v_adjustment.get_page_size()

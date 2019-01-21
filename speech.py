@@ -49,7 +49,6 @@ _SAVE_TIMEOUT = 500
 
 
 highlight_cb = None
-reset_cb = None
 
 # This voice names are use dto allow the translation of the voice names.
 # If espeak add new voices, we need update this list.

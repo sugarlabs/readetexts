@@ -356,7 +356,7 @@ class ReadEtextsActivity(activity.Activity):
             f.close()
 
         speech.highlight_cb = self.highlight_next_word
-        speech.reset_cb = self.reset_play_button
+        self.reset_play_button()
 
     def close(self, **kwargs):
         self.speech_toolbar.stop()

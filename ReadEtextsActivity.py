@@ -354,7 +354,6 @@ class ReadEtextsActivity(activity.Activity):
             f.close()
 
         speech.highlight_cb = self.highlight_next_word
-        self.reset_play_button()
 
     def close(self, **kwargs):
         self.speech_toolbar.stop()
@@ -579,12 +578,6 @@ class ReadEtextsActivity(activity.Activity):
 
     def reset_current_word(self):
         self.current_word = 0
-
-    def reset_play_button(self):
-        self.reset_current_word()
-        play = self.speech_toolbar.play_button
-        play.set_active(False)
-        self.textview.grab_focus()
 
     def highlight_next_word(self, word_count):
         if word_count < len(self.word_tuples):

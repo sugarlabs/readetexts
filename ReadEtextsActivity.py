@@ -1637,5 +1637,5 @@ class ReadEtextsActivity(activity.Activity):
         xopower.reset_sleep_timer()
 
     def suspend_cb(self):
-        xopower.suspend()
+        xopower._suspend()
         return False

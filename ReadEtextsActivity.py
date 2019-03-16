@@ -45,11 +45,11 @@ from gi.repository import GObject
 import telepathy
 import cPickle as pickle
 
-import speech
 import xopower
 import rtfconvert
 import pgconvert
 import network
+from readtoolbar import SpeechToolbar
 
 PAGE_SIZE = 38
 TOOLBAR_READ = 2
@@ -187,7 +187,6 @@ class ReadEtextsActivity(activity.Activity):
         self.word_tuples = []
         
         activity.Activity.__init__(self, handle)
-        self.connect('delete-event', self.delete_cb)
         
         self.fileserver = None
         self.object_id = handle.object_id
@@ -334,8 +333,12 @@ class ReadEtextsActivity(activity.Activity):
             self.prepare_highlighting(label_text)
             f.close()
 
-        speech.highlight_cb = self.highlight_next_word
-        speech.reset_cb = self.reset_play_button
+        #self.highlight_cb = self.highlight_next_word
+        #self.reset_cb = self.reset_play_button
+
+    def close(self, **kwargs):
+        self.speech_toolbar.stop()
+        activity.Activity.close(self, **kwargs)
  
     def create_new_toolbar(self):
         toolbar_box = ToolbarBox()
@@ -379,13 +382,12 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(view_toolbar_button, -1)
         view_toolbar_button.show()
 
-        if speech.supported:
-            self.speech_toolbar = SpeechToolbar()
-            self.speech_toolbar.set_activity(self)
-            self.speech_toolbar.show()
-            speech_toolbar_button = ToolbarButton(page=self.speech_toolbar,  icon_name='speech')
-            toolbar_box.toolbar.insert(speech_toolbar_button, -1)
-            speech_toolbar_button.show()
+        self.speech_toolbar = SpeechToolbar()
+        self.speech_toolbar.set_activity(self)
+        self.speech_toolbar.show()
+        speech_toolbar_button = ToolbarButton(page=self.speech_toolbar,  icon_name='speech')
+        toolbar_box.toolbar.insert(speech_toolbar_button, -1)
+        speech_toolbar_button.show()
 
         self.back = ToolButton('go-previous')
         self.back.set_tooltip(_('Back'))
@@ -554,16 +556,11 @@ class ReadEtextsActivity(activity.Activity):
         
     def reset_play_button(self):
         self.reset_current_word()
-        play = self.speech_toolbar.play_btn
+        play = self.speech_toolbar.play_button
         play.set_active(False)
         self.textview.grab_focus()
 
-    def delete_cb(self, widget, event):
-        speech.stop()
-        return False
-
     def highlight_next_word(self,  word_count):
-        print 'word_count',  word_count
         if word_count < len(self.word_tuples) :
             word_tuple = self.word_tuples[word_count]
             textbuffer = self.textview.get_buffer()
@@ -628,8 +625,8 @@ class ReadEtextsActivity(activity.Activity):
         if xopower.service_activated:
             xopower.reset_sleep_timer()
         keyname = Gdk.keyval_name(event.keyval)
-        if keyname == 'KP_End' and speech.supported:
-            play = self.speech_toolbar.play_btn
+        if keyname == 'KP_End':
+            play = self.speech_toolbar.play_button
             play.set_active(int(not play.get_active()))
             return True
         if keyname == 'plus':
@@ -641,7 +638,7 @@ class ReadEtextsActivity(activity.Activity):
         if keyname == 'Escape':
             self.list_scroller.hide()
             return True
-        if speech.supported and speech.is_stopped() == False:
+        if self.speech_toolbar.is_playing():
             # If speech is in progress, ignore other keys.
             return True
         if keyname == 'KP_Right':

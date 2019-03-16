@@ -32,7 +32,7 @@ from sugar3.graphics.combobox import ComboBox
 from sugar3.activity import activity
 from sugar3.activity import widgets
 from sugar3.graphics.toggletoolbutton import ToggleToolButton
-from sugar3.speech import SpeechManager
+from speech import SpeechManager
 
 
 class ReadToolbar(Gtk.Toolbar):

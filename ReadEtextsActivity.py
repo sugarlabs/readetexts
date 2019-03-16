@@ -45,6 +45,7 @@ from gi.repository import GObject
 import telepathy
 import cPickle as pickle
 
+import speech
 import xopower
 import rtfconvert
 import pgconvert
@@ -277,8 +278,8 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
         self.tag.set_property('weight', Pango.Weight.BOLD)
-        self.normal_tag = textbuffer.create_tag()
-        self.normal_tag.set_property('weight',  Pango.Weight.NORMAL)
+        self.tag.set_property('background', 'black')
+        self.tag.set_property('foreground', 'white')
 
         self.underline_tag = textbuffer.create_tag()
         self.underline_tag.set_property('underline', Pango.Underline.SINGLE)
@@ -333,8 +334,7 @@ class ReadEtextsActivity(activity.Activity):
             self.prepare_highlighting(label_text)
             f.close()
 
-        #self.highlight_cb = self.highlight_next_word
-        #self.reset_cb = self.reset_play_button
+        speech.highlight_cb = self.highlight_next_word
 
     def close(self, **kwargs):
         self.speech_toolbar.stop()
@@ -567,7 +567,7 @@ class ReadEtextsActivity(activity.Activity):
             iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
             iterEnd = textbuffer.get_iter_at_offset(word_tuple[1])
             bounds = textbuffer.get_bounds()
-            textbuffer.apply_tag(self.normal_tag,  bounds[0], iterStart)
+            textbuffer.remove_all_tags(bounds[0], bounds[1])
             textbuffer.apply_tag(self.tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
             max = v_adjustment.get_upper() - v_adjustment.get_page_size()
@@ -1561,6 +1561,6 @@ class ReadEtextsActivity(activity.Activity):
         xopower.reset_sleep_timer()
 
     def suspend_cb(self):
-        xopower.suspend()
+        xopower._suspend()
         return False
  

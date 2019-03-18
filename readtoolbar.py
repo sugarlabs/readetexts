@@ -377,7 +377,6 @@ class SpeechToolbar(Gtk.Toolbar):
         Gtk.Toolbar.__init__(self)
         self.activity = None
         self._speech = SpeechManager()
-        self._is_paused = False
         self._voices = self._speech.get_all_voices() # a dictionary
 
         locale = os.environ.get('LANG', '')
@@ -455,7 +454,7 @@ class SpeechToolbar(Gtk.Toolbar):
         self.insert(ratetool, -1)
         ratebar.show()
 
-    def _compare_voices(self,  a,  b):
+    def _compare_voices(self, a, b):
         if a[1].lower() == b[1].lower():
             return 0
         if a[1].lower() < b[1].lower():
@@ -509,15 +508,11 @@ class SpeechToolbar(Gtk.Toolbar):
 
         if widget.get_active():
             self.play_button.set_icon_name('media-playback-pause')
-            if not self._is_paused:
-                self._speech.say_text(
-                    self.activity.add_word_marks(),
-                    lang_code=self._voice)
-            else:
-                self._speech.restart() 
+            self._speech.say_text(
+            self.activity.add_word_marks(),
+                lang_code=self._voice)
         else:
             self.play_button.set_icon_name('media-playback-start')
-            self._is_paused = True
             self._speech.pause()
 
     def is_playing(self):

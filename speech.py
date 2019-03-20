@@ -382,8 +382,11 @@ class _GstSpeechPlayer(GObject.GObject):
         elif message.type is Gst.MessageType.ELEMENT and \
                 message.get_structure().get_name() == 'espeak-mark':
             mark = message.get_structure().get_value('mark')
-            highlight_cb(int(mark))
-
+            try:
+                highlight_cb(int(mark))
+            except TypeError:
+                pass
+  
     def speak(self, pitch, rate, voice_name, text):
         # TODO workaround for http://bugs.sugarlabs.org/ticket/1801
         if not [i for i in text if i.isalnum()]:

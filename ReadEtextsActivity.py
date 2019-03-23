@@ -219,7 +219,7 @@ class ReadEtextsActivity(activity.Activity):
             f.close()
         else:
             print 'no font size found'
-            self.font_desc = Pango.FontDescription("monospace %d" % style.zoom(10))
+            self.font_desc = Pango.FontDescription("monospace %d" % style.zoom(15))
         buffer = self.textview.get_buffer()
         self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
         self.textview.modify_font(self.font_desc)

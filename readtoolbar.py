@@ -32,8 +32,8 @@ from sugar3.graphics.combobox import ComboBox
 from sugar3.activity import activity
 from sugar3.activity import widgets
 from sugar3.graphics.toggletoolbutton import ToggleToolButton
+from speech import SpeechManager
 
-import speech
 
 class ReadToolbar(Gtk.Toolbar):
     __gtype_name__ = 'ReadToolbar'
@@ -372,18 +372,30 @@ class BooksToolbar(Gtk.Toolbar):
             self.hide_results.props.sensitive = False
             return True
 
-class   SpeechToolbar(Gtk.Toolbar):
+class SpeechToolbar(Gtk.Toolbar):
     def __init__(self):
         Gtk.Toolbar.__init__(self)
-        voicebar = Gtk.Toolbar()
         self.activity = None
-        self.sorted_voices = [i for i in speech.voices()]
-        self.sorted_voices.sort(self.compare_voices)
-        default = 0
-        for voice in self.sorted_voices:
-            if voice[0] == 'default':
-                break
-            default = default + 1
+        self._speech = SpeechManager()
+        self._voices = self._speech.get_all_voices() # a dictionary
+
+        locale = os.environ.get('LANG', '')
+        language_location = locale.split('.', 1)[0].lower()
+        language = language_location.split('_')[0]
+        # if the language is es but not es_es default to es_la (latin voice) 
+        if language == 'es' and language_location != 'es_es':
+            language_location = 'es_la'
+
+        self._voice = 'en_us'
+        if language_location in self._voices:
+            self._voice = language_location
+        elif language in self._voices:
+            self._voice = language
+
+        voice_names = []
+        for language, name in self._voices.iteritems():
+            voice_names.append((language, name))
+        voice_names.sort(self._compare_voices)
 
         # Play button Image
         play_img = Gtk.Image()
@@ -398,18 +410,23 @@ class   SpeechToolbar(Gtk.Toolbar):
                 Gtk.IconSize.LARGE_TOOLBAR)
 
         # Play button
-        self.play_btn = ToggleToolButton('media-playback-start')
-        self.play_btn.show()
-        self.play_btn.connect('toggled', self.play_cb, [play_img, pause_img])
-        self.insert(self.play_btn, -1)
-        self.play_btn.set_tooltip(_('Play / Pause'))
+        self.play_button = ToggleToolButton('media-playback-start')
+        self.play_button.show()
+        self.play_button.connect('toggled', self._play_toggled_cb, [play_img, pause_img])
+        self.insert(self.play_button, -1)
+        self.play_button.set_tooltip(_('Play / Pause'))
 
-        self.voice_combo = ComboBox()
-        self.voice_combo.connect('changed', self.voice_changed_cb)
-        for voice in self.sorted_voices:
-            self.voice_combo.append_item(voice, voice[0])
-        self.voice_combo.set_active(default)
-        combotool = ToolComboBox(self.voice_combo)
+        combo = ComboBox()
+        which = 0
+        for pair in voice_names:
+            language, name = pair
+            combo.append_item(language, name)
+            if language == self._voice:
+                combo.set_active(which)
+            which += 1
+
+        combo.connect('changed', self._voice_changed_cb)
+        combotool = ToolComboBox(combo)
         self.insert(combotool, -1)
         combotool.show()
 
@@ -437,34 +454,33 @@ class   SpeechToolbar(Gtk.Toolbar):
         self.insert(ratetool, -1)
         ratebar.show()
 
-    def compare_voices(self,  a,  b):
-        if a[0].lower() == b[0].lower():
+    def _compare_voices(self, a, b):
+        if a[1].lower() == b[1].lower():
             return 0
-        if a[0].lower() < b[0].lower():
+        if a[1].lower() < b[1].lower():
             return -1
-        if a[0].lower() > b[0].lower():
+        if a[1].lower() > b[1].lower():
             return 1
         
-    def voice_changed_cb(self, combo):
-        speech.voice = combo.props.value
-        if self.activity != None:
-            speech.say(speech.voice[0])
+    def _voice_changed_cb(self, combo):
+        self._voice = combo.props.value
+        self._speech.say_text(self._voices[self._voice])
 
     def pitch_adjusted_cb(self, get):
-        speech.pitch = int(get.get_value())
-        speech.say(_("pitch adjusted"))
+        self._speech.set_pitch(int(get.get_value()))
+        self._speech.say_text(_("pitch adjusted"))
         f = open(os.path.join(self.activity.get_activity_root(), 'instance',  'pitch.txt'),  'w')
         try:
-            f.write(str(speech.pitch))
+            f.write(str(self._speech.get_pitch()))
         finally:
             f.close()
 
     def rate_adjusted_cb(self, get):
-        speech.rate = int(get.get_value())
-        speech.say(_("rate adjusted"))
+        self._speech.set_rate(int(get.get_value()))
+        self._speech.say_text(_("rate adjusted"))
         f = open(os.path.join(self.activity.get_activity_root(), 'instance',  'rate.txt'),  'w')
         try:
-            f.write(str(speech.rate))
+            f.write(str(self._speech.get_rate()))
         finally:
             f.close()
       
@@ -475,24 +491,32 @@ class   SpeechToolbar(Gtk.Toolbar):
             line = f.readline()
             pitch = int(line.strip())
             self.pitchadj.set_value(pitch)
-            speech.pitch = pitch
+            self._speech.set_pitch(pitch)
             f.close()
         if os.path.exists(os.path.join(activity.get_activity_root(), 'instance',  'rate.txt')):
             f = open(os.path.join(activity.get_activity_root(), 'instance',  'rate.txt'),  'r')
             line = f.readline()
             rate = int(line.strip())
             self.rateadj.set_value(rate)
-            speech.rate = rate
+            self._speech.set_rate(rate)
             f.close()
         self.pitchadj.connect("value_changed", self.pitch_adjusted_cb)
         self.rateadj.connect("value_changed", self.rate_adjusted_cb)
     
-    def play_cb(self, widget, images):
+    def _play_toggled_cb(self, widget, images):
         widget.set_icon_widget(images[int(widget.get_active())])
 
         if widget.get_active():
-            if speech.is_stopped():
-                speech.play(self.activity.add_word_marks())
+            self.play_button.set_icon_name('media-playback-pause')
+            self._speech.say_text(
+            self.activity.add_word_marks(),
+                lang_code=self._voice)
         else:
-            speech.stop()
-            # self.activity.show_underlines()
+            self.play_button.set_icon_name('media-playback-start')
+            self._speech.pause()
+
+    def is_playing(self):
+        self._speech.get_is_playing()
+
+    def stop(self):
+        self._speech.stop()

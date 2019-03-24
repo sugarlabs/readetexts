@@ -50,6 +50,7 @@ import xopower
 import rtfconvert
 import pgconvert
 import network
+from readtoolbar import SpeechToolbar
 
 PAGE_SIZE = 38
 TOOLBAR_READ = 2
@@ -187,7 +188,6 @@ class ReadEtextsActivity(activity.Activity):
         self.word_tuples = []
         
         activity.Activity.__init__(self, handle)
-        self.connect('delete-event', self.delete_cb)
         
         self.fileserver = None
         self.object_id = handle.object_id
@@ -219,7 +219,7 @@ class ReadEtextsActivity(activity.Activity):
             f.close()
         else:
             print 'no font size found'
-            self.font_desc = Pango.FontDescription("monospace %d" % style.zoom(10))
+            self.font_desc = Pango.FontDescription("monospace %d" % style.zoom(15))
         buffer = self.textview.get_buffer()
         self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
         self.textview.modify_font(self.font_desc)
@@ -278,8 +278,8 @@ class ReadEtextsActivity(activity.Activity):
         textbuffer = self.textview.get_buffer()
         self.tag = textbuffer.create_tag()
         self.tag.set_property('weight', Pango.Weight.BOLD)
-        self.normal_tag = textbuffer.create_tag()
-        self.normal_tag.set_property('weight',  Pango.Weight.NORMAL)
+        self.tag.set_property('background', 'black')
+        self.tag.set_property('foreground', 'white')
 
         self.underline_tag = textbuffer.create_tag()
         self.underline_tag.set_property('underline', Pango.Underline.SINGLE)
@@ -335,7 +335,10 @@ class ReadEtextsActivity(activity.Activity):
             f.close()
 
         speech.highlight_cb = self.highlight_next_word
-        speech.reset_cb = self.reset_play_button
+
+    def close(self, **kwargs):
+        self.speech_toolbar.stop()
+        activity.Activity.close(self, **kwargs)
  
     def create_new_toolbar(self):
         toolbar_box = ToolbarBox()
@@ -379,13 +382,12 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(view_toolbar_button, -1)
         view_toolbar_button.show()
 
-        if speech.supported:
-            self.speech_toolbar = SpeechToolbar()
-            self.speech_toolbar.set_activity(self)
-            self.speech_toolbar.show()
-            speech_toolbar_button = ToolbarButton(page=self.speech_toolbar,  icon_name='speech')
-            toolbar_box.toolbar.insert(speech_toolbar_button, -1)
-            speech_toolbar_button.show()
+        self.speech_toolbar = SpeechToolbar()
+        self.speech_toolbar.set_activity(self)
+        self.speech_toolbar.show()
+        speech_toolbar_button = ToolbarButton(page=self.speech_toolbar,  icon_name='speech')
+        toolbar_box.toolbar.insert(speech_toolbar_button, -1)
+        speech_toolbar_button.show()
 
         self.back = ToolButton('go-previous')
         self.back.set_tooltip(_('Back'))
@@ -554,23 +556,18 @@ class ReadEtextsActivity(activity.Activity):
         
     def reset_play_button(self):
         self.reset_current_word()
-        play = self.speech_toolbar.play_btn
+        play = self.speech_toolbar.play_button
         play.set_active(False)
         self.textview.grab_focus()
 
-    def delete_cb(self, widget, event):
-        speech.stop()
-        return False
-
     def highlight_next_word(self,  word_count):
-        print 'word_count',  word_count
         if word_count < len(self.word_tuples) :
             word_tuple = self.word_tuples[word_count]
             textbuffer = self.textview.get_buffer()
             iterStart = textbuffer.get_iter_at_offset(word_tuple[0])
             iterEnd = textbuffer.get_iter_at_offset(word_tuple[1])
             bounds = textbuffer.get_bounds()
-            textbuffer.apply_tag(self.normal_tag,  bounds[0], iterStart)
+            textbuffer.remove_all_tags(bounds[0], bounds[1])
             textbuffer.apply_tag(self.tag, iterStart, iterEnd)
             v_adjustment = self.scrolled.get_vadjustment()
             max = v_adjustment.get_upper() - v_adjustment.get_page_size()
@@ -628,8 +625,8 @@ class ReadEtextsActivity(activity.Activity):
         if xopower.service_activated:
             xopower.reset_sleep_timer()
         keyname = Gdk.keyval_name(event.keyval)
-        if keyname == 'KP_End' and speech.supported:
-            play = self.speech_toolbar.play_btn
+        if keyname == 'KP_End':
+            play = self.speech_toolbar.play_button
             play.set_active(int(not play.get_active()))
             return True
         if keyname == 'plus':
@@ -641,7 +638,7 @@ class ReadEtextsActivity(activity.Activity):
         if keyname == 'Escape':
             self.list_scroller.hide()
             return True
-        if speech.supported and speech.is_stopped() == False:
+        if self.speech_toolbar.is_playing():
             # If speech is in progress, ignore other keys.
             return True
         if keyname == 'KP_Right':
@@ -1564,6 +1561,6 @@ class ReadEtextsActivity(activity.Activity):
         xopower.reset_sleep_timer()
 
     def suspend_cb(self):
-        xopower.suspend()
+        xopower._suspend()
         return False
  

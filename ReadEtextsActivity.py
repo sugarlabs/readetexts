@@ -42,7 +42,8 @@ from gettext import gettext as _
 from gi.repository import Pango
 import dbus
 from gi.repository import GObject
-import telepathy
+gi.require_version('TelepathyGLib', '0.12')
+from gi.repository import TelepathyGLib
 import cPickle as pickle
 
 import speech
@@ -310,7 +311,7 @@ class ReadEtextsActivity(activity.Activity):
 
         self.is_received_document = False
         
-        if self.shared_activity and handle.object_id == None:
+        if self.get_shared_activity() and handle.object_id == None:
             # We're joining, and we don't already have the document.
             if self.get_shared():
                 # Already joined for some reason, just get the document
@@ -363,7 +364,7 @@ class ReadEtextsActivity(activity.Activity):
         toolbar_box.toolbar.insert(edit_toolbar_button, -1)
         edit_toolbar_button.show()
 
-        if not self.shared_activity and self.object_id is None:
+        if not self.get_shared_activity() and self.object_id is None:
             self.books_toolbar = BooksToolbar()
             self.books_toolbar.set_activity(self)
             self.books_toolbar.show()
@@ -1407,11 +1408,11 @@ class ReadEtextsActivity(activity.Activity):
     def download_document(self, tube_id, path):
         # FIXME: should ideally have the CM listen on a Unix socket
         # instead of IPv4 (might be more compatible with Rainbow)
-        chan = self.shared_activity.telepathy_tubes_chan
-        iface = chan[telepathy.CHANNEL_TYPE_TUBES]
+        chan = self.get_shared_activity().telepathy_tubes_chan
+        iface = chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES]
         addr = iface.AcceptStreamTube(tube_id,
-                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
-                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+                TelepathyGLib.SocketAddressType.IPV4,
+                TelepathyGLib.SocketAccessControl.LOCALHOST, 0,
                 utf8_strings=True)
         logger.debug('Accepted stream tube: listening address is %r', addr)
         # SOCKET_ADDRESS_TYPE_IPV4 is defined to have addresses of type '(sq)'
@@ -1476,21 +1477,21 @@ class ReadEtextsActivity(activity.Activity):
             self.tempfile)
 
         # Make a tube for it
-        chan = self.shared_activity.telepathy_tubes_chan
-        iface = chan[telepathy.CHANNEL_TYPE_TUBES]
+        chan = self.get_shared_activity().telepathy_tubes_chan
+        iface = chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES]
         self.fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
                 {},
-                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                TelepathyGLib.SocketAddressType.IPV4,
                 ('127.0.0.1', dbus.UInt16(self.port)),
-                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
+                TelepathyGLib.SocketAccessControl.LOCALHOST, 0)
 
     def watch_for_tubes(self):
         """Watch for new tubes."""
-        tubes_chan = self.shared_activity.telepathy_tubes_chan
+        tubes_chan = self.get_shared_activity().telepathy_tubes_chan
 
-        tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
+        tubes_chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
             self.new_tube_cb)
-        tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
+        tubes_chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].ListTubes(
             reply_handler=self.list_tubes_reply_cb,
             error_handler=self.list_tubes_error_cb)
 
@@ -1501,7 +1502,7 @@ class ReadEtextsActivity(activity.Activity):
                       'params=%r state=%d', tube_id, initiator, tube_type,
                       service, params, state)
         if service == READ_STREAM_SERVICE and\
-        state == telepathy.TUBE_CHANNEL_STATE_LOCAL_PENDING:
+        state == TelepathyGLib.TubeChannelState.LOCAL_PENDING:
             logger.debug('I could download from that tube')
             self.unused_download_tubes.add(tube_id)
             # if no download is in progress, let's fetch the document

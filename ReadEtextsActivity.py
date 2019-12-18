@@ -875,7 +875,6 @@ class ReadEtextsActivity(activity.Activity):
             word_tuple = self.word_tuples[i]
             marked_up_text = marked_up_text + '<mark name="' + str(i) + '"/>' + word_tuple[2]
             i = i + 1
-        print marked_up_text
         return marked_up_text + '</speak>'
 
     def show_found_page(self, page_tuple):

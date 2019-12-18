@@ -895,7 +895,7 @@ class ReadEtextsActivity(activity.Activity):
         label_text = label_text + '\n\n\n'
         textbuffer = self.textview.get_buffer()
         tag = textbuffer.create_tag()
-        tag.set_property('weight', Pango.WEIGHT_BOLD)
+        tag.set_property('weight', Pango.Weight.BOLD)
         tag.set_property( 'foreground', "white")
         tag.set_property( 'background', "black")
         textbuffer.set_text(label_text)

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # Copyright (C) 2008, 2009, 2010, 2011, 2012 James D. Simmons
 # Copyright (C) 2012 Aneesh Dogra <lionaneesh@gmail.com>

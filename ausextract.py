@@ -25,7 +25,7 @@ import sys
 
 def main(file_path):
 
-    gut_file = open(file_path,"r")
+    gut_file = open(file_path, "r")
     out = open("ausoutput.txt", 'w')
     
     while gut_file:

@@ -282,12 +282,12 @@ class EditToolbar(widgets.EditToolbar):
         self.insert(self.prev, -1)
         self.prev.show()
 
-        self.next = ToolButton('go-next-paired')
-        self.next.set_tooltip(_('Next'))
-        self.next.props.sensitive = False
-        self.next.connect('clicked', self.find_next_cb)
-        self.insert(self.__next__, -1)
-        self.next.show()
+        self.next_button = ToolButton('go-next-paired')
+        self.next_button.set_tooltip(_('Next'))
+        self.next_button.props.sensitive = False
+        self.next_button.connect('clicked', self.find_next_cb)
+        self.insert(self.next_button, -1)
+        self.next_button.show()
 
     def set_activity(self, activity):
         self.activity = activity
@@ -311,7 +311,7 @@ class EditToolbar(widgets.EditToolbar):
 
     def update_find_buttons(self):
         self.prev.props.sensitive = self.activity.can_find_previous()
-        self.next.props.sensitive = self.activity.can_find_next()
+        self.next_button.props.sensitive = self.activity.can_find_next()
 
 class BooksToolbar(Gtk.Toolbar):
     __gtype_name__ = 'BooksToolbar'

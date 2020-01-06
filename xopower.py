@@ -47,7 +47,7 @@ def setup_idle_timeout():
             _service = dbus.Interface(proxy, _HARDWARE_MANAGER_INTERFACE)
             service_activated = True
             logging.debug('Suspend on idle enabled')
-        except dbus.DBusException, e:
+        except dbus.DBusException as e:
             _logger.info('Hardware manager service not found, no idle suspend.')
     else:
         logging.debug('Suspend on idle disabled')

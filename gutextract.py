@@ -66,19 +66,19 @@ def main(file_path):
                     comma_pos = line.rfind(',')
                     if comma_pos > -1:
                         line = line[0:comma_pos] + '|' + line[comma_pos+1:len(line)].lstrip()
-                        print line
+                        print(line)
                     else:
                         line = line + '| '
                 out.write(line + '|' + path + '\n')
     gut_file.close()
     out.close()
-    print "All done!"
+    print("All done!")
 
 if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "")
         main(args[0])
-    except getopt.error, msg:
-        print msg
-        print "This program has no options"
+    except getopt.error as msg:
+        print(msg)
+        print("This program has no options")
         sys.exit(2)

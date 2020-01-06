@@ -60,7 +60,7 @@ def convert(file_path,  output_path):
             out.write(line.lstrip(' '))
     rtf_file.close()
     out.close()
-    print "All done!"
+    print("All done!")
     
 def strip_tags(string):
     index = 0
@@ -91,11 +91,11 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "")
         if check(args[0]):
-            print 'It is an RTF file'
+            print('It is an RTF file')
             convert(args[0],  args[1])
         else:
-            print 'It is NOT an RTF file'
-    except getopt.error, msg:
-        print msg
-        print "This program has no options"
+            print('It is NOT an RTF file')
+    except getopt.error as msg:
+        print(msg)
+        print("This program has no options")
         sys.exit(2)

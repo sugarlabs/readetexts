@@ -48,13 +48,13 @@ def main(file_path):
                 out.write(line + '|' + path + '\n')
     gut_file.close()
     out.close()
-    print "All done!"
+    print("All done!")
 
 if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "")
         main(args[0])
-    except getopt.error, msg:
-        print msg
-        print "This program has no options"
+    except getopt.error as msg:
+        print(msg)
+        print("This program has no options")
         sys.exit(2)

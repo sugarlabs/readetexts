@@ -286,7 +286,7 @@ class EditToolbar(widgets.EditToolbar):
         self.next.set_tooltip(_('Next'))
         self.next.props.sensitive = False
         self.next.connect('clicked', self.find_next_cb)
-        self.insert(self.next, -1)
+        self.insert(self.__next__, -1)
         self.next.show()
 
     def set_activity(self, activity):
@@ -393,7 +393,7 @@ class SpeechToolbar(Gtk.Toolbar):
             self._voice = language
 
         voice_names = []
-        for language, name in self._voices.iteritems():
+        for language, name in self._voices.items():
             voice_names.append((language, name))
         voice_names.sort(self._compare_voices)
 

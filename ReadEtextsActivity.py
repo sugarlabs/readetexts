@@ -44,7 +44,7 @@ import dbus
 from gi.repository import GObject
 gi.require_version('TelepathyGLib', '0.12')
 from gi.repository import TelepathyGLib
-import cPickle as pickle
+import pickle as pickle
 
 import speech
 import xopower
@@ -106,7 +106,7 @@ class Annotations():
         try:
             self.bookmarks.remove(page)
         except ValueError:
-            print 'page already not bookmarked',  page
+            print('page already not bookmarked',  page)
 
     def get_bookmarks(self):
         self.bookmarks.sort()
@@ -219,7 +219,7 @@ class ReadEtextsActivity(activity.Activity):
             # self.font_desc = Pango.FontDescription("sans %d" % style.zoom(fontsize))
             f.close()
         else:
-            print 'no font size found'
+            print('no font size found')
             self.font_desc = Pango.FontDescription("monospace %d" % style.zoom(15))
         buffer = self.textview.get_buffer()
         self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
@@ -329,7 +329,7 @@ class ReadEtextsActivity(activity.Activity):
                 if not line:
                     break
                 else:
-                    label_text = label_text + unicode(line,  "iso-8859-1")
+                    label_text = label_text + str(line,  "iso-8859-1")
             textbuffer = self.textview.get_buffer()
             textbuffer.set_text(label_text)
             self.prepare_highlighting(label_text)
@@ -835,7 +835,7 @@ class ReadEtextsActivity(activity.Activity):
             if not line:
                 break
             else:
-                label_text = label_text + unicode(line,  "iso-8859-1")
+                label_text = label_text + str(line,  "iso-8859-1")
             line_increment = (len(line) / 80) + 1
             linecount = linecount + line_increment
         textbuffer = self.textview.get_buffer()
@@ -851,7 +851,7 @@ class ReadEtextsActivity(activity.Activity):
         j = 0
         word_begin = 0
         word_end = 0
-        ignore_chars = [' ',  '\n',  u'\r',  '_',  '[', '{', ']', '}', '|',  '<',  '>',  '*',  '+',  '/',  '\\' ]
+        ignore_chars = [' ',  '\n',  '\r',  '_',  '[', '{', ']', '}', '|',  '<',  '>',  '*',  '+',  '/',  '\\' ]
         ignore_set = set(ignore_chars)
         self.word_tuples = []
         while i < len(label_text):
@@ -863,7 +863,7 @@ class ReadEtextsActivity(activity.Activity):
                     word_end = j
                     i = j
                 word_tuple = (word_begin, word_end, label_text[word_begin: word_end])
-                if word_tuple[2] != u'\r':
+                if word_tuple[2] != '\r':
                     self.word_tuples.append(word_tuple)
             i = i + 1
 
@@ -888,7 +888,7 @@ class ReadEtextsActivity(activity.Activity):
             if not line:
                break
             else:
-                label_text = label_text + unicode(line, "iso-8859-1")
+                label_text = label_text + str(line, "iso-8859-1")
                 line_increment = (len(line) / 80) + 1
                 linecount = linecount + line_increment
         label_text = label_text + '\n\n\n'
@@ -1086,7 +1086,7 @@ class ReadEtextsActivity(activity.Activity):
             # to save it to the Journal.
             self.etext_file.seek(0)
             filebytes = self.etext_file.read()
-            print 'saving shared document'
+            print('saving shared document')
             f = open(filename, 'wb')
             try:
                 f.write(filebytes)
@@ -1147,7 +1147,7 @@ class ReadEtextsActivity(activity.Activity):
             return
         f = open('bookcatalog.txt', 'r')
         while f:
-            line = unicode(f.readline(), "iso-8859-1")
+            line = str(f.readline(), "iso-8859-1")
             if not line:
                 break
             line_lower = line.lower()
@@ -1318,7 +1318,7 @@ class ReadEtextsActivity(activity.Activity):
         self.current_found_item = -1
         self.etext_file.seek(0)
         while self.etext_file:
-            line = unicode(self.etext_file.readline(), "iso-8859-1")
+            line = str(self.etext_file.readline(), "iso-8859-1")
             line_length = len(line)
             if not line:
                 break
@@ -1418,7 +1418,7 @@ class ReadEtextsActivity(activity.Activity):
         assert isinstance(addr, dbus.Struct)
         assert len(addr) == 2
         assert isinstance(addr[0], str)
-        assert isinstance(addr[1], (int, long))
+        assert isinstance(addr[1], int)
         assert addr[1] > 0 and addr[1] < 65536
         port = int(addr[1])
 
@@ -1448,7 +1448,7 @@ class ReadEtextsActivity(activity.Activity):
         # Pick an arbitrary tube we can try to download the document from
         try:
             tube_id = self.unused_download_tubes.pop()
-        except (ValueError, KeyError), e:
+        except (ValueError, KeyError) as e:
             logger.debug('No tubes to get the document from right now: %s',
                           e)
             return False

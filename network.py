@@ -20,13 +20,13 @@
 
 import os
 import threading
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import fcntl
 import tempfile
 
 from gi.repository import GObject
-import SimpleHTTPServer
-import SocketServer
+import http.server
+import socketserver
 
 
 __authinfos = {}
@@ -44,11 +44,11 @@ def _del_authinfo():
     del __authinfos[threading.currentThread()]
 
 
-class OLPCURLopener(urllib.FancyURLopener):
+class OLPCURLopener(urllib.request.FancyURLopener):
     version = "OLPCReader/1.0; +mailto:nicestep@gmail.com"
 
 
-class GlibTCPServer(SocketServer.TCPServer):
+class GlibTCPServer(socketserver.TCPServer):
     """GlibTCPServer
 
     Integrate socket accept into glib mainloop.
@@ -58,7 +58,7 @@ class GlibTCPServer(SocketServer.TCPServer):
     request_queue_size = 20
 
     def __init__(self, server_address, RequestHandlerClass):
-        SocketServer.TCPServer.__init__(self, server_address,
+        socketserver.TCPServer.__init__(self, server_address,
                                         RequestHandlerClass)
         self.socket.setblocking(0)  # Set nonblocking
 
@@ -85,7 +85,7 @@ class GlibTCPServer(SocketServer.TCPServer):
         pass
 
 
-class ChunkedGlibHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class ChunkedGlibHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     """RequestHandler class that integrates with Glib mainloop.  It writes
        the specified file to the client in chunks, returning control to the
        mainloop between chunks.
@@ -96,7 +96,7 @@ class ChunkedGlibHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def __init__(self, request, client_address, server):
         self._file = None
         self._srcid = 0
-        SimpleHTTPServer.SimpleHTTPRequestHandler.__init__(
+        http.server.SimpleHTTPRequestHandler.__init__(
                                         self, request, client_address, server)
 
     def log_request(self, code='-', size='-'):
@@ -214,8 +214,8 @@ class GlibURLDownloader(GObject.GObject):
         GObject.GObject.__init__(self)
 
     def start(self, destfile=None, destfd=None):
-        urllib._urlopener = OLPCURLopener()
-        self._info = urllib.urlopen(self._url)
+        urllib.request._urlopener = OLPCURLopener()
+        self._info = urllib.request.urlopen(self._url)
         self._outf = None
         self._fname = None
         if destfd and not destfile:
@@ -229,14 +229,14 @@ class GlibURLDownloader(GObject.GObject):
                 self._outf = destfd
             else:
                 self._outf = os.open(self._fname, os.O_RDWR |
-                                     os.O_TRUNC | os.O_CREAT, 0644)
+                                     os.O_TRUNC | os.O_CREAT, 0o644)
         else:
             fname = self._get_filename_from_headers(self._info.headers)
             self._suggested_fname = fname
-            garbage_, path = urllib.splittype(self._url)
-            garbage_, path = urllib.splithost(path or "")
-            path, garbage_ = urllib.splitquery(path or "")
-            path, garbage_ = urllib.splitattr(path or "")
+            garbage_, path = urllib.parse.splittype(self._url)
+            garbage_, path = urllib.parse.splithost(path or "")
+            path, garbage_ = urllib.parse.splitquery(path or "")
+            path, garbage_ = urllib.parse.splitattr(path or "")
             suffix = os.path.splitext(path)[1]
             (self._outf, self._fname) = tempfile.mkstemp(suffix=suffix,
                                                          dir=self._destdir)
@@ -294,7 +294,7 @@ class GlibURLDownloader(GObject.GObject):
                 self.cleanup()
                 self.emit('finished', self._fname, self._suggested_fname)
                 return False
-        except Exception, err:
+        except Exception as err:
             self.cleanup(remove=True)
             self.emit('error', 'Error downloading file: %r' % err)
             return False

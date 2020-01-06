@@ -60,7 +60,7 @@ def convert(file_path,  output_path):
             break
     pg_file.close()
     out.close()
-    print "All done!"
+    print("All done!")
     if conversion_rejected:
         return False
     else:
@@ -70,12 +70,12 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "")
         if check(args[0]):
-            print 'It has NOT been converted yet.'
+            print('It has NOT been converted yet.')
             success = convert(args[0],  args[1])
-            print 'Success', success
+            print('Success', success)
         else:
-            print 'It is ALREADY converted.'
-    except getopt.error, msg:
-        print msg
-        print "This program has no options"
+            print('It is ALREADY converted.')
+    except getopt.error as msg:
+        print(msg)
+        print("This program has no options")
         sys.exit(2)

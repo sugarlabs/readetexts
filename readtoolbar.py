@@ -395,7 +395,7 @@ class SpeechToolbar(Gtk.Toolbar):
         voice_names = []
         for language, name in self._voices.items():
             voice_names.append((language, name))
-        voice_names.sort(self._compare_voices)
+        voice_names.sort()
 
         # Play button Image
         play_img = Gtk.Image()

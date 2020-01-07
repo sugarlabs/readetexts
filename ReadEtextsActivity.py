@@ -201,8 +201,8 @@ class ReadEtextsActivity(activity.Activity):
         self.textview = Gtk.TextView()
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
-        self.textview.set_left_margin(5)
-        self.textview.set_right_margin(5)
+        self.textview.set_left_margin(20)
+        self.textview.set_right_margin(20)
         self.textview.set_wrap_mode(Gtk.WrapMode.WORD)
         self.textview.connect("key_press_event", self.keypress_cb)
 
@@ -329,7 +329,7 @@ class ReadEtextsActivity(activity.Activity):
                 if not line:
                     break
                 else:
-                    label_text = label_text + str(line,  "iso-8859-1")
+                    label_text = label_text + str(line)
             textbuffer = self.textview.get_buffer()
             textbuffer.set_text(label_text)
             self.prepare_highlighting(label_text)
@@ -578,10 +578,10 @@ class ReadEtextsActivity(activity.Activity):
             self.current_word = word_count
         return True
 
-    def mark_set_cb(self, textbuffer, iter, textmark):
+    def mark_set_cb(self, textbuffer, _iter, textmark):
         self.update_underline_button(False) 
         
-        if textbuffer.get_has_selection():
+        if textbuffer.get_has_selection() and textbuffer.get_selection_bounds():
             begin, end = textbuffer.get_selection_bounds()
             underline_tuple = [begin.get_offset(),  end.get_offset()]
             tuples_list =  self.annotations.get_highlights(self.page)
@@ -771,11 +771,11 @@ class ReadEtextsActivity(activity.Activity):
         self.set_current_page(self.page)
 
     def font_decrease(self):
-        font_size = self.font_desc.get_size() / 1024
+        font_size = self.font_desc.get_size() // Gdk.Screen.width()
         font_size = font_size - 1
         if font_size < 1:
             font_size = 1
-        self.font_desc.set_size(font_size * 1024)
+        self.font_desc.set_size(font_size * Gdk.Screen.width())
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
         f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'w')
@@ -785,9 +785,10 @@ class ReadEtextsActivity(activity.Activity):
             f.close()
 
     def font_increase(self):
-        font_size = self.font_desc.get_size() / 1024
+        font_size = self.font_desc.get_size() // Gdk.Screen.width()
         font_size = font_size + 1
-        self.font_desc.set_size(font_size * 1024)
+        print(font_size)
+        self.font_desc.set_size(font_size * Gdk.Screen.width())
         self.textview.modify_font(self.font_desc)
         self.annotation_textview.modify_font(self.font_desc)
         f = open(os.path.join(self.get_activity_root(), 'instance',  'fontsize.txt'),  'w')
@@ -831,11 +832,11 @@ class ReadEtextsActivity(activity.Activity):
         linecount = 0
         label_text = '\n\n\n'
         while linecount < PAGE_SIZE:
-            line = self.etext_file.readline()
+            line = self.etext_file.readline().decode('iso-8859-1')
             if not line:
                 break
             else:
-                label_text = label_text + str(line,  "iso-8859-1")
+                label_text = label_text + str(line)
             line_increment = (len(line) / 80) + 1
             linecount = linecount + line_increment
         textbuffer = self.textview.get_buffer()
@@ -888,7 +889,7 @@ class ReadEtextsActivity(activity.Activity):
             if not line:
                break
             else:
-                label_text = label_text + str(line, "iso-8859-1")
+                label_text = label_text + str(line)
                 line_increment = (len(line) / 80) + 1
                 linecount = linecount + line_increment
         label_text = label_text + '\n\n\n'
@@ -913,7 +914,7 @@ class ReadEtextsActivity(activity.Activity):
         outfn = self.make_new_filename(filename)
         if (outfn == ''):
             return False
-        f = open(os.path.join(self.get_activity_root(), 'instance',  outfn),  'w')
+        f = open(os.path.join(self.get_activity_root(), 'instance',  outfn),  'wb')
         try:
             f.write(filebytes)
         finally:
@@ -1011,13 +1012,13 @@ class ReadEtextsActivity(activity.Activity):
             else:
                 os.remove(converted_file_name)
 
-        self.etext_file = open(current_file_name,"r")
+        self.etext_file = open(current_file_name,"rb")
         
         self.page_index = [ 0 ]
         pagecount = 0
         linecount = 0
         while self.etext_file:
-            line = self.etext_file.readline()
+            line = self.etext_file.readline().decode('iso-8859-1')
             if not line:
                 break
             line_increment = (len(line) / 80) + 1
@@ -1059,7 +1060,7 @@ class ReadEtextsActivity(activity.Activity):
                     self.save_extracted_file(zf_old, book_files[i])
                     outfn = self.make_new_filename(book_files[i])
                     fname = os.path.join(self.get_activity_root(), 'instance',  outfn)
-                    zf_new.write(fname.encode( "utf-8" ),  outfn.encode( "utf-8" ))
+                    zf_new.write(fname,  outfn)
                     os.remove(fname)
                 i = i + 1
             zf_new.write(self.pickle_file_temp,  'annotations.pkl')
@@ -1126,11 +1127,12 @@ class ReadEtextsActivity(activity.Activity):
         tv = selection.get_tree_view()
         model = tv.get_model()
         sel = selection.get_selected()
+        print(sel)
         if sel:
-            model, iter = sel
-            self.selected_title = model.get_value(iter,COLUMN_TITLE)
-            self.selected_author = model.get_value(iter,COLUMN_AUTHOR)
-            self.selected_path = model.get_value(iter,COLUMN_PATH)
+            model, _iter = sel
+            self.selected_title = model.get_value(_iter,COLUMN_TITLE)
+            self.selected_author = model.get_value(_iter,COLUMN_AUTHOR)
+            self.selected_path = model.get_value(_iter,COLUMN_PATH)
             self.books_toolbar.enable_button(True)
 
     def find_books(self, search_text):
@@ -1145,9 +1147,9 @@ class ReadEtextsActivity(activity.Activity):
             self.alert(_('Error'), _('You must enter at least one search word.'))
             self.books_toolbar.search_entry.grab_focus()
             return
-        f = open('bookcatalog.txt', 'r')
+        f = open('bookcatalog.txt', 'rb')
         while f:
-            line = str(f.readline(), "iso-8859-1")
+            line = f.readline().decode('iso-8859-1')
             if not line:
                 break
             line_lower = line.lower()
@@ -1159,9 +1161,9 @@ class ReadEtextsActivity(activity.Activity):
                     words_found = words_found + 1
                 i = i + 1
             if words_found == len(search_tuple):
-                iter = self.ls.append()
+                _iter = self.ls.append()
                 book_tuple = line.split('|')
-                self.ls.set(iter, COLUMN_TITLE, book_tuple[0],  COLUMN_AUTHOR, book_tuple[1],  COLUMN_PATH, \
+                self.ls.set(_iter, COLUMN_TITLE, book_tuple[0],  COLUMN_AUTHOR, book_tuple[1],  COLUMN_PATH, \
                             book_tuple[2].rstrip())
         f.close()
         self.list_scroller.show()
@@ -1318,7 +1320,7 @@ class ReadEtextsActivity(activity.Activity):
         self.current_found_item = -1
         self.etext_file.seek(0)
         while self.etext_file:
-            line = str(self.etext_file.readline(), "iso-8859-1")
+            line = str(self.etext_file.readline())
             line_length = len(line)
             if not line:
                 break

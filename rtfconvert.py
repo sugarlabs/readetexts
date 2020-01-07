@@ -23,8 +23,8 @@ import sys
 
 def check(file_path):
 
-    rtf_file = open(file_path,"r")
-    line = rtf_file.readline()
+    rtf_file = open(file_path,"rb")
+    line = rtf_file.readline().decode('iso-8859-1')
     rtf_file.close()
     
     if line.startswith('{\\rtf1'):

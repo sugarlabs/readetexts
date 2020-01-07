@@ -29,14 +29,14 @@ MAX_LENGTH = (LINE_LENGTH * MAX_PARAGRAPH_LINES)
 
 def convert(file_path,  output_path):
 
-    pg_file = open(file_path,"r")
+    pg_file = open(file_path,"rb")
     out = open(output_path, 'w')
     previous_line_length = 0
     paragraph_length = 0
     conversion_rejected = False
 
     while pg_file:
-        line = pg_file.readline()
+        line = pg_file.readline().decode('iso-8859-1')
         outline = ''
         if not line:
             break

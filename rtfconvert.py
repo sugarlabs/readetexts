@@ -21,20 +21,22 @@ import sys
 
 # This is a script to take the a file in RTF format and convert it to a text file readable by Read Etexts.
 
+
 def check(file_path):
 
-    rtf_file = open(file_path,"rb")
+    rtf_file = open(file_path, "rb")
     line = rtf_file.readline().decode('iso-8859-1')
     rtf_file.close()
-    
+
     if line.startswith('{\\rtf1'):
         return True
     else:
         return False
 
+
 def convert(file_path,  output_path):
 
-    rtf_file = open(file_path,"r")
+    rtf_file = open(file_path, "r")
     out = open(output_path, 'w')
     out.write('\t\t\t\t\r\n')
     brace_count = 0
@@ -61,7 +63,8 @@ def convert(file_path,  output_path):
     rtf_file.close()
     out.close()
     print("All done!")
-    
+
+
 def strip_tags(string):
     index = 0
     copy = True
@@ -75,7 +78,8 @@ def strip_tags(string):
             output = output + string[index]
         index = index + 1
     return output
-    
+
+
 def count_braces(string):
     index = 0
     count = 0
@@ -86,6 +90,7 @@ def count_braces(string):
             count = count - 1
         index = index + 1
     return count
+
 
 if __name__ == "__main__":
     try:

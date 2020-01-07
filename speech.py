@@ -14,6 +14,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from sugar3 import power
+from gi.repository import GObject
+from gi.repository import GLib
+from gi.repository import Gdk
+from gi.repository import Gtk
+from gi.repository import Gio
 import os
 import logging
 from gettext import gettext as _
@@ -21,11 +27,6 @@ from gettext import gettext as _
 import gi
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import Gio
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GLib
-from gi.repository import GObject
 
 _HAS_GST = True
 try:
@@ -37,7 +38,6 @@ except:
     logging.error('Gst or the espeak plugin is not installed in the system.')
     _HAS_GST = False
 
-from sugar3 import power
 
 DEFAULT_PITCH = 0
 
@@ -270,7 +270,8 @@ class SpeechManager(GObject.GObject):
         else:
             voice_name = self._player.get_all_voices()[lang_code]
         if text:
-            logging.error('PLAYING %r lang %r pitch %r rate %r', text, voice_name, pitch, rate)
+            logging.error('PLAYING %r lang %r pitch %r rate %r',
+                          text, voice_name, pitch, rate)
             self._player.speak(pitch, rate, voice_name, text)
 
     def say_selected_text(self):
@@ -386,7 +387,7 @@ class _GstSpeechPlayer(GObject.GObject):
                 highlight_cb(int(mark))
             except TypeError:
                 pass
-  
+
     def speak(self, pitch, rate, voice_name, text):
         # TODO workaround for http://bugs.sugarlabs.org/ticket/1801
         if not [i for i in text if i.isalnum()]:

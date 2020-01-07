@@ -19,15 +19,16 @@
 import getopt
 import sys
 
-# This is a script to take the file GUTINDEX.ALL, the offline book catalog of Project Gutenberg, 
-# and reformat it for use by Read Etexts.  After the file gutoutput.txt is created it should be sorted 
+# This is a script to take the file GUTINDEX.ALL, the offline book catalog of Project Gutenberg,
+# and reformat it for use by Read Etexts.  After the file gutoutput.txt is created it should be sorted
 # to create bookcatalog.txt.
+
 
 def main(file_path):
 
-    gut_file = open(file_path,"r")
+    gut_file = open(file_path, "r")
     out = open("gutoutput.txt", 'w')
-    
+
     while gut_file:
         line = gut_file.readline()
         if not line:
@@ -51,7 +52,8 @@ def main(file_path):
                 else:
                     comma_pos = line.rfind(',')
                     if comma_pos > -1:
-                        line = line[0:comma_pos] + '|' + line[comma_pos+1:len(line)].lstrip()
+                        line = line[0:comma_pos] + '|' + \
+                            line[comma_pos+1:len(line)].lstrip()
                     else:
                         line = line + '| '
                 out.write(line + '|' + path + '\n')
@@ -65,7 +67,8 @@ def main(file_path):
                 else:
                     comma_pos = line.rfind(',')
                     if comma_pos > -1:
-                        line = line[0:comma_pos] + '|' + line[comma_pos+1:len(line)].lstrip()
+                        line = line[0:comma_pos] + '|' + \
+                            line[comma_pos+1:len(line)].lstrip()
                         print(line)
                     else:
                         line = line + '| '
@@ -73,6 +76,7 @@ def main(file_path):
     gut_file.close()
     out.close()
     print("All done!")
+
 
 if __name__ == "__main__":
     try:

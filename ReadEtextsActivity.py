@@ -1238,9 +1238,13 @@ class ReadEtextsActivity(activity.Activity):
         logger.debug("Starting download to %s...", path)
         try:
             getter.start(path)
+            self.download_content_length = getter.get_content_length()
+            self.download_content_type = getter.get_content_type()
+            self.textview.grab_focus()
         except:
             self.alert(_('Error'), _(
                 'Connection timed out for ') + self.selected_title)
+            self.get_book_error_cb(getter, _('Connection timed out for ') + self.selected_title)
 
         self.download_content_length = getter.get_content_length()
         self.download_content_type = getter.get_content_type()

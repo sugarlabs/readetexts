@@ -22,6 +22,7 @@ import pgconvert
 import rtfconvert
 import xopower
 import speech
+import urllib.error
 import pickle as pickle
 from gi.repository import TelepathyGLib
 from gi.repository import GObject
@@ -1208,6 +1209,7 @@ class ReadEtextsActivity(activity.Activity):
         self.list_scroller_visible = True
 
     def get_book(self):
+        self.retry = 0
         self.progressbar.show()
         self.books_toolbar.enable_button(False)
         self.list_scroller.props.sensitive = False
@@ -1223,7 +1225,7 @@ class ReadEtextsActivity(activity.Activity):
                              self.get_old_book_result_cb)
         else:
             logger.debug("http://www.gutenberg.org/dirs" +
-                         self.selected_path + "-8.zip")
+                         self.selected_path + ".zip")
             GObject.idle_add(self.download_book,  "http://www.gutenberg.org/dirs" + self.selected_path + "-8.zip",
                              self.get_iso_book_result_cb)
 
@@ -1240,12 +1242,23 @@ class ReadEtextsActivity(activity.Activity):
             self.download_content_length = getter.get_content_length()
             self.download_content_type = getter.get_content_type()
             self.textview.grab_focus()
+        except urllib.error.HTTPError as e:
+            self.retry +=1
+            if '.zip' in url and self.retry <= 2:
+                self.download_book("http://www.gutenberg.org/dirs" +
+                               self.selected_path + ".zip",  self.get_book_result_cb)
+            else:
+                self.retry = 0
+                self.alert(_('Error'), _(
+                    'Connection timed out for ') + self.selected_title)
+                self.get_book_error_cb(getter, _("Couldn't find ") + self.selected_title + _('Error') + str(e))
         except:
             self.alert(_('Error'), _(
                 'Connection timed out for ') + self.selected_title)
             self.get_book_error_cb(getter, _('Connection timed out for ') + self.selected_title)
 
     def get_iso_book_result_cb(self, getter, tempfile, suggested_name):
+        # FIXME This doesn't work anymore. After Exception, Callback is not called.
         if self.download_content_type.startswith('text/html'):
             # got an error page instead
             self.download_book("http://www.gutenberg.org/dirs" +

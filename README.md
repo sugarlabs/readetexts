@@ -12,7 +12,7 @@ to have them read to you. The built in offline catalog search lets you browse th
 How to use?
 ===========
 
-Read ETexts is part of the Sugar desktop.  Please refer to;
+Read ETexts is not part of the Sugar desktop, but can be added.  Please refer to;
 
 * [How to Get Sugar on sugarlabs.org](https://sugarlabs.org/),
 * [How to use Sugar](https://help.sugarlabs.org/),

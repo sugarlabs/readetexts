@@ -1379,7 +1379,6 @@ class ReadEtextsActivity(activity.Activity):
         self.etext_file.seek(0)
         while self.etext_file:
             line = str(self.etext_file.readline().decode('iso-8859-1'))
-            print(line)
             line_length = len(line)
             if not line:
                 break

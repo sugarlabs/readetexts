@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-19 00:31-0500\n"
-"PO-Revision-Date: 2026-03-18 06:28+0000\n"
+"PO-Revision-Date: 2026-04-01 08:11+0000\n"
 "Last-Translator: NF <rkavt@smartprojects.ge>\n"
 "Language-Team: Georgian <http://weblate.sugarlabs.org/projects/"
 "sugar-activities/readetexts/ka/>\n"
@@ -32,31 +32,31 @@ msgstr ""
 
 #: ReadEtextsActivity.py:391 readtoolbar.py:45
 msgid "Back"
-msgstr ""
+msgstr "უკან"
 
 #: ReadEtextsActivity.py:394 readtoolbar.py:48
 msgid "Previous page"
-msgstr ""
+msgstr "წინა გვერდი"
 
 #: ReadEtextsActivity.py:397 readtoolbar.py:51
 msgid "Previous bookmark"
-msgstr ""
+msgstr "წინა სანიშნი"
 
 #: ReadEtextsActivity.py:407 readtoolbar.py:61
 msgid "Forward"
-msgstr ""
+msgstr "წინ"
 
 #: ReadEtextsActivity.py:410 readtoolbar.py:64
 msgid "Next page"
-msgstr ""
+msgstr "შემდეგი გვერდი"
 
 #: ReadEtextsActivity.py:413 readtoolbar.py:67
 msgid "Next bookmark"
-msgstr ""
+msgstr "შემდეგი სანიშნი"
 
 #: ReadEtextsActivity.py:452 readtoolbar.py:112
 msgid "Toggle Bookmark"
-msgstr ""
+msgstr "სანიშნის გადართვა"
 
 #: ReadEtextsActivity.py:463 readtoolbar.py:123
 msgid "Underline"
@@ -65,7 +65,7 @@ msgstr "ხაზგასმული"
 #: ReadEtextsActivity.py:1148 ReadEtextsActivity.py:1201
 #: ReadEtextsActivity.py:1253
 msgid "Error"
-msgstr ""
+msgstr "შეცდომა"
 
 #: ReadEtextsActivity.py:1148
 msgid "You must enter at least one search word."
@@ -85,7 +85,7 @@ msgstr ""
 
 #: ReadEtextsActivity.py:1286
 msgid "Success"
-msgstr ""
+msgstr "წარმატება"
 
 #: ReadEtextsActivity.py:1286
 msgid " added to Journal."
@@ -101,27 +101,27 @@ msgstr ""
 
 #: readsidebar.py:48
 msgid "Bookmark"
-msgstr ""
+msgstr "სანიშნე"
 
 #: readtoolbar.py:217
 msgid "Zoom out"
-msgstr ""
+msgstr "დაპატარავება"
 
 #: readtoolbar.py:223
 msgid "Zoom in"
-msgstr ""
+msgstr "გადიდება"
 
 #: readtoolbar.py:234
 msgid "Fullscreen"
-msgstr ""
+msgstr "სრულ ეკრანზე"
 
 #: readtoolbar.py:279
 msgid "Previous"
-msgstr ""
+msgstr "წინა"
 
 #: readtoolbar.py:286
 msgid "Next"
-msgstr ""
+msgstr "შემდეგი"
 
 #: readtoolbar.py:338
 msgid "Get Book"

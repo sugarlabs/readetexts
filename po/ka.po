@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-19 00:31-0500\n"
-"PO-Revision-Date: 2026-06-14 03:15+0000\n"
+"PO-Revision-Date: 2026-06-15 16:05+0000\n"
 "Last-Translator: NF <rkavt@smartprojects.ge>\n"
 "Language-Team: Georgian <http://weblate.sugarlabs.org/projects/"
 "sugar-activities/readetexts/ka/>\n"
@@ -93,7 +93,7 @@ msgstr " ჩაემატა ჟურნალში."
 
 #: ReadEtextsActivity.py:1404
 msgid "Failure"
-msgstr ""
+msgstr "ჩავარდნა"
 
 #: ReadEtextsActivity.py:1404
 msgid "Error getting document from tube"

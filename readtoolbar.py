@@ -95,9 +95,7 @@ class ReadToolbar(Gtk.Toolbar):
 
         self.total_page_label = Gtk.Label()
         self.total_page_label.set_markup(
-            "<span size='14000' foreground='black'>")
-
-        self.total_page_label.set_text(' / 0')
+            "<span size='14000'> / 0</span>")
         total_page_item.add(self.total_page_label)
         self.total_page_label.show()
 
@@ -165,8 +163,9 @@ class ReadToolbar(Gtk.Toolbar):
             current_page < self.total_pages - 1
 
         self.num_page_entry.props.text = str(current_page + 1)
-        self.total_page_label.props.label = \
-            ' / ' + str(self.total_pages)
+        self.total_page_label.set_markup(
+            "<span size='14000'> / %d</span>" %
+            self.total_pages)
 
     def set_total_pages(self, pages):
         self.total_pages = pages
